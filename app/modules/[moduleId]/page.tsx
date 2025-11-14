@@ -5,8 +5,8 @@ import { ChevronLeft, ChevronRight, Clock, Trophy, BookOpen } from 'lucide-react
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { Checkbox } from '@/components/ui/Checkbox';
 import { MarkdownRenderer } from '@/components/module/MarkdownRenderer';
+import { ChecklistSidebar } from '@/components/module/ChecklistSidebar';
 import { getModuleContent, getAllModuleIds } from '@/lib/markdown';
 
 export async function generateStaticParams() {
@@ -16,12 +16,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ModulePage({
+export default async function ModulePage({
   params,
 }: {
-  params: { moduleId: string };
+  params: Promise<{ moduleId: string }>;
 }) {
-  const moduleContent = getModuleContent(params.moduleId);
+  const { moduleId } = await params;
+  const moduleContent = getModuleContent(moduleId);
 
   if (!moduleContent) {
     notFound();
@@ -36,7 +37,7 @@ export default function ModulePage({
 
   // Find prev/next modules by getting all modules and finding adjacent ones
   const allModuleIds = getAllModuleIds();
-  const currentIndex = allModuleIds.indexOf(params.moduleId);
+  const currentIndex = allModuleIds.indexOf(moduleId);
   const prevModule = currentIndex > 0 ? allModuleIds[currentIndex - 1] : null;
   const nextModule = currentIndex < allModuleIds.length - 1 ? allModuleIds[currentIndex + 1] : null;
 
@@ -136,33 +137,7 @@ export default function ModulePage({
           {/* Sidebar */}
           <div className="lg:col-span-1">
             {/* Checklist */}
-            {checklistItems.length > 0 && (
-              <Card className="p-6 sticky top-4">
-                <h3 className="text-lg font-bold text-text-primary mb-4">
-                  Learning Objectives
-                </h3>
-                <div className="space-y-3">
-                  {checklistItems.map((item) => (
-                    <div key={item.id} className="flex items-start gap-3">
-                      <Checkbox
-                        id={item.id}
-                        checked={false}
-                        onChange={() => {
-                          // Will integrate with ProgressContext later
-                          console.log('Toggle checklist item:', item.id);
-                        }}
-                      />
-                      <label
-                        htmlFor={item.id}
-                        className="text-sm text-text-secondary cursor-pointer flex-1 leading-tight"
-                      >
-                        {item.text}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            )}
+            <ChecklistSidebar checklistItems={checklistItems} />
 
             {/* Prerequisites */}
             {metadata.prerequisites.length > 0 && (
