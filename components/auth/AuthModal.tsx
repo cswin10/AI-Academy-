@@ -81,8 +81,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <Card className="relative w-full max-w-md p-8">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
+      <div className="min-h-screen w-full flex items-center justify-center py-8">
+        <Card className="relative w-full max-w-md p-8 my-auto">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -202,6 +203,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           </button>
         </div>
       </Card>
+      </div>
     </div>
   );
 }
