@@ -51,16 +51,28 @@ Each type requires different tools, workflows, and quality standards.
 
 ### The Content Production Pipeline
 
-**Traditional Pipeline:**
-```
-Ideation → Research → Creation → Editing → Approval → Publishing
-(Hours/Days per piece)
-```
+```mermaid
+graph TB
+    subgraph Traditional["⏰ Traditional Pipeline (Hours/Days)"]
+        T1[Ideation] --> T2[Research]
+        T2 --> T3[Creation]
+        T3 --> T4[Editing]
+        T4 --> T5[Approval]
+        T5 --> T6[Publishing]
+    end
 
-**AI-Enhanced Pipeline:**
-```
-Brief → AI Generation → Human Refinement → Publishing
-(Minutes/Hours per piece)
+    subgraph AIEnhanced["⚡ AI-Enhanced Pipeline (Minutes/Hours)"]
+        A1[Brief] --> A2[AI Generation]
+        A2 --> A3[Human Refinement]
+        A3 --> A4[Publishing]
+    end
+
+    T6 -.vs.-> A4
+
+    style Traditional fill:#EF4444,stroke:#DC2626,color:#fff
+    style AIEnhanced fill:#10B981,stroke:#059669,color:#fff
+    style A2 fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style A3 fill:#3B82F6,stroke:#1D4ED8,color:#fff
 ```
 
 **Key Difference**: AI handles first draft, humans focus on quality and strategy.
@@ -539,17 +551,42 @@ Tasks:
 
 ### The Content Factory Model
 
-**System Architecture:**
-```
-Input: Content Briefs
-↓
-AI Generation Layer (multiple tools)
-↓
-Quality Control (automated + human)
-↓
-Distribution (multi-platform)
-↓
-Analytics & Feedback Loop
+```mermaid
+graph TD
+    A[📋 Content Briefs<br/>Topics & Requirements] --> B[🤖 AI Generation Layer]
+
+    B --> C1[GPT-4<br/>Writing]
+    B --> C2[Midjourney<br/>Images]
+    B --> C3[ElevenLabs<br/>Voice]
+    B --> C4[Synthesia<br/>Video]
+
+    C1 --> D[✅ Quality Control]
+    C2 --> D
+    C3 --> D
+    C4 --> D
+
+    D --> E1[Automated QA<br/>Word count, SEO, Links]
+    D --> E2[Human Review<br/>Facts, Brand, Flow]
+
+    E1 --> F[📤 Multi-Platform Distribution]
+    E2 --> F
+
+    F --> G1[Blog/Website]
+    F --> G2[Social Media]
+    F --> G3[Email]
+    F --> G4[Video Platforms]
+
+    G1 --> H[📊 Analytics & Performance]
+    G2 --> H
+    G3 --> H
+    G4 --> H
+
+    H -.Feedback Loop.-> A
+
+    style A fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style B fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style D fill:#F59E0B,stroke:#D97706,color:#fff
+    style H fill:#10B981,stroke:#059669,color:#fff
 ```
 
 **Example: Blog Post Factory:**
@@ -631,6 +668,32 @@ Track:
 ```
 
 ### Multi-Platform Content Adaptation
+
+```mermaid
+graph TD
+    A[📝 Source Content<br/>Long-form Blog Post<br/>1500 words] --> B[🤖 AI Adaptation Engine]
+
+    B --> C1[💼 LinkedIn Article<br/>800 words<br/>Professional tone]
+    B --> C2[🐦 Twitter Thread<br/>10 tweets<br/>Hook + numbered]
+    B --> C3[📧 Email Newsletter<br/>300 words<br/>Conversational + CTA]
+    B --> C4[📸 Instagram Caption<br/>150 words<br/>Hooks + hashtags]
+    B --> C5[🎥 Video Script<br/>2 minutes<br/>Visual cues]
+    B --> C6[📊 Infographic Data<br/>5 key stats<br/>Visual format]
+
+    C1 --> D[📤 Scheduled Distribution]
+    C2 --> D
+    C3 --> D
+    C4 --> D
+    C5 --> D
+    C6 --> D
+
+    D --> E[🎯 Target Audiences]
+
+    style A fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style B fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style D fill:#F59E0B,stroke:#D97706,color:#fff
+    style E fill:#10B981,stroke:#059669,color:#fff
+```
 
 **One Source, Many Formats:**
 
