@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useSupabase } from '@/hooks/useSupabase';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
@@ -20,8 +21,13 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,7 +86,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
   };
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
       <div className="min-h-screen w-full flex items-center justify-center py-8">
         <Card className="relative w-full max-w-md p-8 my-auto shadow-2xl">
@@ -206,4 +212,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
