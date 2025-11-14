@@ -58,6 +58,38 @@ Authorization: System checks if john@example.com has "premium" role
 
 ### Session Management
 
+```mermaid
+graph TB
+    A[👤 User Login] --> B[📧 Enter Email<br/>🔑 Enter Password]
+
+    B --> C[🔐 Supabase Auth<br/>Verify Credentials]
+
+    C -->|❌ Invalid| D[Error: Wrong<br/>email/password]
+
+    C -->|✅ Valid| E[🎫 Generate JWT Token<br/>Signed with secret]
+
+    E --> F[💾 Store Session<br/>in Database]
+
+    F --> G[🍪 Send Token to Client<br/>Usually in cookie]
+
+    G --> H[📄 User sees Protected Page]
+
+    H --> I[🔄 Every Request<br/>Includes Token]
+
+    I --> J{🔍 Validate Token}
+
+    J -->|✅ Valid & Not Expired| K[✅ Grant Access<br/>Identify User]
+
+    J -->|❌ Invalid or Expired| L[🚫 Redirect to Login]
+
+    K --> M[📊 User Data<br/>with RLS Policies]
+
+    style C fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style E fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style K fill:#10B981,stroke:#059669,color:#fff
+    style L fill:#EF4444,stroke:#DC2626,color:#fff
+```
+
 When user logs in:
 1. Server creates session token (cryptographically random string)
 2. Token stored in database with user ID and expiration
@@ -73,8 +105,37 @@ Supabase uses JWT tokens by default, signed with secret key.
 
 ### Payment Flow Fundamentals
 
-**One-Time Payment:**
+```mermaid
+graph TB
+    subgraph OneTime["💳 One-Time Payment Flow"]
+        O1[User clicks<br/>'Buy Now'] --> O2[Create Checkout Session<br/>Stripe API]
+        O2 --> O3[Redirect to<br/>Stripe Checkout]
+        O3 --> O4[User enters<br/>payment info]
+        O4 --> O5[💰 Stripe processes<br/>payment]
+        O5 --> O6[✅ Redirect back<br/>to your site]
+        O6 --> O7[📥 Webhook:<br/>checkout.session.completed]
+        O7 --> O8[✨ Grant access<br/>to product]
+    end
+
+    subgraph Subscription["📅 Subscription Flow"]
+        S1[User selects<br/>plan] --> S2[Create Checkout<br/>for subscription]
+        S2 --> S3[User completes<br/>payment]
+        S3 --> S4[📥 Webhook:<br/>subscription.created]
+        S4 --> S5[✅ Grant access<br/>Create customer record]
+        S5 --> S6[🔄 Stripe auto-charges<br/>monthly/annually]
+        S6 --> S7[📥 Webhook:<br/>invoice.paid]
+        S7 --> S8[✅ Maintain access]
+        S9[User cancels] --> S10[📥 Webhook:<br/>subscription.canceled]
+        S10 --> S11[🚫 Revoke access<br/>at period end]
+    end
+
+    style O5 fill:#10B981,stroke:#059669,color:#fff
+    style O8 fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style S6 fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style S11 fill:#EF4444,stroke:#DC2626,color:#fff
 ```
+
+**One-Time Payment:**
 1. User clicks "Buy Now"
 2. Frontend creates Checkout Session (Stripe API)
 3. User redirected to Stripe checkout page
@@ -83,10 +144,8 @@ Supabase uses JWT tokens by default, signed with secret key.
 6. User redirected back to your site
 7. Webhook notifies your backend
 8. You grant access to product
-```
 
 **Subscription:**
-```
 1. User selects plan (monthly/annual)
 2. Create Stripe Checkout for subscription
 3. User completes payment
@@ -95,7 +154,6 @@ Supabase uses JWT tokens by default, signed with secret key.
 6. Recurring: Stripe charges automatically
 7. Webhook: invoice.paid (each month)
 8. Webhook: subscription.canceled (if user cancels)
-```
 
 ### Row-Level Security (RLS)
 
@@ -122,6 +180,41 @@ USING (
 This runs at the database level - even if someone bypasses your frontend, they can't access data they're not authorized for.
 
 ### Webhook Security
+
+```mermaid
+graph TB
+    A[📥 Stripe sends webhook<br/>payment event] --> B[🔍 Your Server receives<br/>POST request]
+
+    B --> C[🔑 Extract signature<br/>from headers]
+
+    C --> D{🛡️ Verify Signature<br/>with Webhook Secret}
+
+    D -->|❌ Invalid| E[🚫 Reject Request<br/>400 Bad Request<br/>Log suspicious activity]
+
+    D -->|✅ Valid| F[✅ Signature verified<br/>Event is from Stripe]
+
+    F --> G{📋 Event Type?}
+
+    G -->|checkout.session.completed| H[💰 Process Payment<br/>Grant access to product]
+
+    G -->|invoice.paid| I[✅ Maintain Subscription<br/>Update billing date]
+
+    G -->|subscription.canceled| J[🚫 Revoke Access<br/>Send cancellation email]
+
+    G -->|payment_failed| K[⚠️ Alert User<br/>Retry payment]
+
+    H --> L[💾 Update Database<br/>Log event]
+    I --> L
+    J --> L
+    K --> L
+
+    L --> M[✅ Return 200 OK<br/>to Stripe]
+
+    style D fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style E fill:#EF4444,stroke:#DC2626,color:#fff
+    style F fill:#10B981,stroke:#059669,color:#fff
+    style M fill:#3B82F6,stroke:#1D4ED8,color:#fff
+```
 
 When Stripe sends webhooks, verify they're actually from Stripe:
 
