@@ -1,11 +1,11 @@
 ---
-number: 6
+number: 7
 title: Core Interface Tools
 description: Master Notion, Airtable, and Google Sheets to build powerful dashboards and databases that serve as your AI operations command center.
 estimatedTime: "4-6 days"
 difficulty: Intermediate
 skillLevel: "Low-code"
-prerequisites: ["01-foundations", "02-understanding-llms", "03-ai-content-creation"]
+prerequisites: ["01-foundations", "02-operator-mindset", "03-understanding-llms", "04-security-ethics", "05-ai-content-creation", "06-tool-primer"]
 category: Interface & Data
 ---
 

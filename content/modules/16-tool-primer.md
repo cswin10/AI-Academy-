@@ -1,11 +1,11 @@
 ---
-number: 16
+number: 6
 title: "AI Operator Tool Primer"
 description: "Understanding the essential tools you'll use throughout your AI Operator journey—what they do, when to use them, and why they matter."
 estimatedTime: "1-2 days"
 difficulty: "Beginner"
 skillLevel: "No-code"
-prerequisites: ["01-foundations", "02-operator-mindset", "03-understanding-llms", "04-security-ethics"]
+prerequisites: ["01-foundations", "02-operator-mindset", "03-understanding-llms", "04-security-ethics", "05-ai-content-creation"]
 category: "Foundation"
 ---
 
