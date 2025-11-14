@@ -187,6 +187,8 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
   let inQuizBlock = false;
   let taskLines: string[] = [];
   let quizLines: string[] = [];
+  let introContent: string[] = [];
+  let beforeFirstSection = true;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -249,6 +251,22 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
     // Check for main section headings (## heading)
     const sectionMatch = line.match(/^##\s+(.+)$/);
     if (sectionMatch && !inCodeBlock) {
+      // If this is the first section and we have intro content, create Introduction section
+      if (beforeFirstSection && introContent.length > 0) {
+        const introText = introContent.join('\n').trim();
+        if (introText) {
+          sectionNumber++;
+          sections.push({
+            id: `${moduleId}-section-${sectionNumber}`,
+            title: 'Introduction',
+            content: introText,
+            sectionNumber,
+          });
+        }
+        introContent = [];
+        beforeFirstSection = false;
+      }
+
       // Save previous section
       if (currentSection) {
         currentSection.content = currentContent.join('\n').trim();
@@ -256,6 +274,7 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
       }
 
       // Start new section
+      beforeFirstSection = false;
       sectionNumber++;
       const title = sectionMatch[1].trim();
       currentSection = {
@@ -266,6 +285,16 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
       };
       currentContent = [];
       continue;
+    }
+
+    // Skip the main H1 title
+    if (line.match(/^#\s+(.+)$/)) {
+      continue;
+    }
+
+    // Capture content before first section as intro
+    if (beforeFirstSection && !inCodeBlock && line.trim()) {
+      introContent.push(line);
     }
 
     // Add content to current section
@@ -304,8 +333,11 @@ const parseTask = (taskContent: string, moduleId: string, sectionId: string): Ta
 
     if (!title) return null;
 
+    // Create deterministic ID from title (so it persists across page loads)
+    const taskSlug = slugify(title);
+
     return {
-      id: `${sectionId}-task-${Date.now()}`,
+      id: `${sectionId}-task-${taskSlug}`,
       title,
       description,
       xpReward,
@@ -325,7 +357,7 @@ const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null =
     let currentQuestion: Partial<QuizQuestion> | null = null;
     let inQuestions = false;
 
-    lines.forEach(line => {
+    for (const line of lines) {
       const trimmed = line.trim();
 
       if (trimmed.startsWith('title:')) {
@@ -334,12 +366,12 @@ const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null =
         inQuestions = true;
       } else if (inQuestions && trimmed.startsWith('- question:')) {
         // Save previous question
-        if (currentQuestion && currentQuestion.question && currentQuestion.options) {
+        if (currentQuestion?.question && currentQuestion?.options && currentQuestion.options.length > 0) {
           questions.push({
             id: `${sectionId}-q${questions.length + 1}`,
             question: currentQuestion.question,
             options: currentQuestion.options,
-            correctAnswer: currentQuestion.correctAnswer || 0,
+            correctAnswer: currentQuestion.correctAnswer ?? 0,
             explanation: currentQuestion.explanation,
           });
         }
@@ -353,7 +385,7 @@ const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null =
         const optionsStr = trimmed.substring(8).trim();
         // Parse array format: [A, B, C, D]
         const match = optionsStr.match(/\[(.*)\]/);
-        if (match) {
+        if (match && currentQuestion.options) {
           currentQuestion.options = match[1].split(',').map(o => o.trim());
         }
       } else if (currentQuestion && trimmed.startsWith('correct:')) {
@@ -361,15 +393,15 @@ const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null =
       } else if (currentQuestion && trimmed.startsWith('explanation:')) {
         currentQuestion.explanation = trimmed.substring(12).trim();
       }
-    });
+    }
 
     // Save last question
-    if (currentQuestion && currentQuestion.question && currentQuestion.options) {
+    if (currentQuestion?.question && currentQuestion?.options && currentQuestion.options.length > 0) {
       questions.push({
         id: `${sectionId}-q${questions.length + 1}`,
         question: currentQuestion.question,
         options: currentQuestion.options,
-        correctAnswer: currentQuestion.correctAnswer || 0,
+        correctAnswer: currentQuestion.correctAnswer ?? 0,
         explanation: currentQuestion.explanation,
       });
     }
