@@ -1,11 +1,11 @@
 ---
-number: 15
+number: 17
 title: Final Portfolio Requirements
 description: Build a portfolio that gets you hired or wins clients. Learn to present your work, write compelling case studies, and position yourself as a professional AI Operator.
 estimatedTime: "7-10 days"
 difficulty: Advanced
 skillLevel: "No-code"
-prerequisites: ["01-foundations", "02-understanding-llms", "03-ai-content-creation", "04-core-interface-tools", "05-data-layer", "06-automation-layer", "07-apis-webhooks", "08-ai-workflows-rag-agents", "09-payments-auth", "10-monitoring-logging", "11-product-building", "12-consulting-business-skills", "13-security-ethics", "14-operator-mindset"]
+prerequisites: ["01-foundations", "02-operator-mindset", "03-understanding-llms", "04-security-ethics", "05-ai-content-creation", "06-tool-primer", "07-core-interface-tools", "08-data-layer", "09-automation-layer", "10-apis-webhooks", "11-rag-systems", "12-ai-agents", "13-payments-auth", "14-monitoring-logging", "15-product-building", "16-consulting-business-skills"]
 category: Business & Production
 ---
 

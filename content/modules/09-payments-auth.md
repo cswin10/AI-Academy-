@@ -1,11 +1,11 @@
 ---
-number: 11
+number: 13
 title: Payments & Authentication
 description: Transform projects into products by implementing Stripe payments and Supabase authentication. Learn to handle user sessions, subscriptions, and secure access.
 estimatedTime: "4-6 days"
 difficulty: Intermediate
 skillLevel: "Low-code"
-prerequisites: ["01-foundations", "02-understanding-llms", "03-ai-content-creation", "04-core-interface-tools", "05-data-layer"]
+prerequisites: ["01-foundations", "02-operator-mindset", "03-understanding-llms", "04-security-ethics", "05-ai-content-creation", "06-tool-primer", "07-core-interface-tools", "08-data-layer", "09-automation-layer", "10-apis-webhooks"]
 category: Business & Production
 ---
 

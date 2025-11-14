@@ -1,11 +1,11 @@
 ---
-number: 13
+number: 15
 title: Product Building Track
 description: Take AI projects from idea to launched product. Learn MVP development, user feedback loops, iteration strategies, and how to build products people actually want.
 estimatedTime: "7-10 days"
 difficulty: Advanced
 skillLevel: "No-code"
-prerequisites: ["01-foundations", "04-core-interface-tools", "05-data-layer", "06-automation-layer", "08-ai-workflows-rag-agents", "09-payments-auth", "10-monitoring-logging"]
+prerequisites: ["01-foundations", "02-operator-mindset", "03-understanding-llms", "04-security-ethics", "05-ai-content-creation", "06-tool-primer", "07-core-interface-tools", "08-data-layer", "09-automation-layer", "10-apis-webhooks", "11-rag-systems", "12-ai-agents", "13-payments-auth", "14-monitoring-logging"]
 category: Business & Production
 ---
 
