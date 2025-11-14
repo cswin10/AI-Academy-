@@ -357,7 +357,7 @@ const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null =
     let currentQuestion: Partial<QuizQuestion> | null = null;
     let inQuestions = false;
 
-    lines.forEach(line => {
+    for (const line of lines) {
       const trimmed = line.trim();
 
       if (trimmed.startsWith('title:')) {
@@ -366,12 +366,12 @@ const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null =
         inQuestions = true;
       } else if (inQuestions && trimmed.startsWith('- question:')) {
         // Save previous question
-        if (currentQuestion && currentQuestion.question && currentQuestion.options) {
+        if (currentQuestion?.question && currentQuestion?.options && currentQuestion.options.length > 0) {
           questions.push({
             id: `${sectionId}-q${questions.length + 1}`,
             question: currentQuestion.question,
             options: currentQuestion.options,
-            correctAnswer: currentQuestion.correctAnswer || 0,
+            correctAnswer: currentQuestion.correctAnswer ?? 0,
             explanation: currentQuestion.explanation,
           });
         }
@@ -385,7 +385,7 @@ const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null =
         const optionsStr = trimmed.substring(8).trim();
         // Parse array format: [A, B, C, D]
         const match = optionsStr.match(/\[(.*)\]/);
-        if (match) {
+        if (match && currentQuestion.options) {
           currentQuestion.options = match[1].split(',').map(o => o.trim());
         }
       } else if (currentQuestion && trimmed.startsWith('correct:')) {
@@ -393,15 +393,15 @@ const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null =
       } else if (currentQuestion && trimmed.startsWith('explanation:')) {
         currentQuestion.explanation = trimmed.substring(12).trim();
       }
-    });
+    }
 
     // Save last question
-    if (currentQuestion && currentQuestion.question && currentQuestion.options) {
+    if (currentQuestion?.question && currentQuestion?.options && currentQuestion.options.length > 0) {
       questions.push({
         id: `${sectionId}-q${questions.length + 1}`,
         question: currentQuestion.question,
         options: currentQuestion.options,
-        correctAnswer: currentQuestion.correctAnswer || 0,
+        correctAnswer: currentQuestion.correctAnswer ?? 0,
         explanation: currentQuestion.explanation,
       });
     }
