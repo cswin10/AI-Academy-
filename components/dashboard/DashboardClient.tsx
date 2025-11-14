@@ -158,9 +158,6 @@ export function DashboardClient() {
                 </div>
               </div>
             </div>
-            <p className="text-xs text-text-secondary mt-2">
-              Rank: #{profile.leaderboard_rank || 'N/A'}
-            </p>
           </Card>
         </div>
 
