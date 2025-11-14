@@ -5,6 +5,10 @@ import { ProgressProvider } from "@/contexts/ProgressContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
+// Handle URL with or without protocol for Netlify deployment
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const fullUrl = siteUrl.startsWith('http') ? siteUrl : `https://${siteUrl}`;
+
 export const metadata: Metadata = {
   title: {
     default: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
@@ -15,7 +19,7 @@ export const metadata: Metadata = {
   authors: [{ name: "AI Operator Roadmap" }],
   creator: "AI Operator Roadmap",
   publisher: "AI Operator Roadmap",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(fullUrl),
   openGraph: {
     type: "website",
     locale: "en_US",
