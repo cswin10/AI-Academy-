@@ -72,14 +72,14 @@ export function useBadges() {
     if (user) {
       // Subscribe to new badges
       const subscription = supabase
-        .channel(`user_badges:${user.id}`)
+        .channel(`user_badges:${user!.id}`)
         .on(
           'postgres_changes',
           {
             event: 'INSERT',
             schema: 'public',
             table: 'user_badges',
-            filter: `user_id=eq.${user.id}`,
+            filter: `user_id=eq.${user!.id}`,
           },
           async (payload) => {
             // Fetch the full badge details

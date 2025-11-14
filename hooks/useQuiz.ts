@@ -110,7 +110,7 @@ export function useQuiz(moduleId?: string) {
               .from('quiz_attempts')
               .select('*')
               .eq('quiz_id', quizData.id)
-              .eq('user_id', user.id)
+              .eq('user_id', user!.id)
               .order('started_at', { ascending: false });
 
             if (attemptsData) {

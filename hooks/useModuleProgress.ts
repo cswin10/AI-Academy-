@@ -53,14 +53,14 @@ export function useModuleProgress(moduleId?: string) {
 
     // Subscribe to changes
     const subscription = supabase
-      .channel(`module_progress:${user.id}`)
+      .channel(`module_progress:${user!.id}`)
       .on(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
           table: 'module_progress',
-          filter: `user_id=eq.${user.id}`,
+          filter: `user_id=eq.${user!.id}`,
         },
         () => {
           fetchProgress();
