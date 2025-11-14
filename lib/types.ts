@@ -17,6 +17,7 @@ export interface ModuleContent {
   sections: Section[];
   checklistItems: ChecklistItem[];
   structuredSections?: ModuleSection[]; // New structured format
+  finalQuiz?: SectionQuiz; // Final module quiz
 }
 
 export interface Section {

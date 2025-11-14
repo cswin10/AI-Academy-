@@ -44,7 +44,7 @@ export const getModuleContent = (moduleId: string): ModuleContent | null => {
     const checklistItems = extractChecklistItems(content, moduleId);
 
     // Extract structured sections (new format)
-    const structuredSections = extractStructuredSections(content, moduleId);
+    const { sections: structuredSections, finalQuiz } = extractStructuredSections(content, moduleId);
 
     return {
       metadata,
@@ -52,6 +52,7 @@ export const getModuleContent = (moduleId: string): ModuleContent | null => {
       sections,
       checklistItems,
       structuredSections,
+      finalQuiz,
     };
   } catch (error) {
     console.error(`Error loading module ${moduleId}:`, error);
@@ -175,9 +176,10 @@ export const generateTableOfContents = (sections: Section[]) => {
 };
 
 // Extract structured sections with tasks and quizzes
-export const extractStructuredSections = (content: string, moduleId: string): ModuleSection[] => {
+export const extractStructuredSections = (content: string, moduleId: string): { sections: ModuleSection[]; finalQuiz?: SectionQuiz } => {
   const sections: ModuleSection[] = [];
   const lines = content.split('\n');
+  let finalQuiz: SectionQuiz | undefined = undefined;
 
   let currentSection: ModuleSection | null = null;
   let sectionNumber = 0;
@@ -306,10 +308,21 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
   // Save last section
   if (currentSection) {
     currentSection.content = currentContent.join('\n').trim();
-    sections.push(currentSection);
+
+    // Check if this is a final quiz section
+    if (currentSection.title.toLowerCase().includes('final quiz') ||
+        currentSection.title.toLowerCase().includes('module quiz')) {
+      // If it has a quiz, extract it as the final quiz
+      if (currentSection.quiz) {
+        finalQuiz = currentSection.quiz;
+        // Don't add this section to the main sections list
+      }
+    } else {
+      sections.push(currentSection);
+    }
   }
 
-  return sections;
+  return { sections, finalQuiz };
 };
 
 // Parse task from task block

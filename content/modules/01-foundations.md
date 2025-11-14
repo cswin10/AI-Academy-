@@ -255,6 +255,35 @@ questions:
     explanation: Track time, quality, and repeatability to understand if the workflow is truly valuable and can be used consistently.
 ```
 
+## Final Quiz
+
+Test your understanding of the foundational concepts covered in this module.
+
+```quiz
+title: Module 1 Final Assessment
+questions:
+  - question: What distinguishes an AI Operator from a traditional machine learning engineer?
+    options: [They build neural networks, They orchestrate existing AI tools to solve problems, They only work with code, They manage server infrastructure]
+    correct: 1
+    explanation: AI Operators focus on using existing AI capabilities effectively rather than building AI systems from scratch.
+  - question: In systems thinking, what is a leverage point?
+    options: [The most expensive part of a system, A place where small changes create big impact, The final output, The starting input]
+    correct: 1
+    explanation: Leverage points are places where minimal effort produces maximum results in a system.
+  - question: Why should you verify LLM outputs for important decisions?
+    options: [They are always wrong, They can make errors and need human oversight, They are too slow, They cost too much]
+    correct: 1
+    explanation: LLMs can produce errors and should always have human review for critical decisions.
+  - question: What is the first step in building an AI workflow?
+    options: [Buy expensive AI tools, Jump straight to prompting, Map the full process from input to output, Hire a developer]
+    correct: 2
+    explanation: Understanding the complete process helps identify where AI adds value and ensures repeatability.
+  - question: Which of these should NEVER be input into public LLMs?
+    options: [Public information, Your own content, Customer personal data without consent, General knowledge questions]
+    correct: 2
+    explanation: Customer personal data and sensitive information should never be shared with LLMs without proper consent and security measures.
+```
+
 ## Completion Checklist
 
 - [ ] Understand the role and responsibilities of an AI Operator
