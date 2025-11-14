@@ -1,6 +1,6 @@
 import React from 'react';
 import { Hero } from '@/components/home/Hero';
-import { ModuleCard } from '@/components/home/ModuleCard';
+import { ModuleListWithProgress } from '@/components/home/ModuleListWithProgress';
 import { LearningPaths } from '@/components/home/LearningPaths';
 import { getAllModules } from '@/lib/markdown';
 import type { Metadata } from 'next';
@@ -20,14 +20,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   // Load all modules from the filesystem
   const allModules = getAllModules();
-
-  // Convert to ModuleCardData format
-  const moduleCards = allModules.map((metadata) => ({
-    metadata,
-    progress: 0,
-    isStarted: false,
-    isCompleted: false,
-  }));
 
   // Generate JSON-LD structured data for SEO
   const jsonLd = {
@@ -83,11 +75,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {moduleCards.map((module) => (
-              <ModuleCard key={module.metadata.id} module={module} />
-            ))}
-          </div>
+          <ModuleListWithProgress modules={allModules} />
         </div>
       </section>
 
