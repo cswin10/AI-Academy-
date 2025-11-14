@@ -29,6 +29,21 @@ This module establishes the foundational mindset and knowledge you'll build upon
 
 An AI Operator is distinct from traditional tech roles. You're not writing neural networks from scratch—you're orchestrating existing AI capabilities to solve problems.
 
+```mermaid
+graph TB
+    A[Business Problem] --> B[AI Operator]
+    B --> C[AI Tools & APIs]
+    B --> D[No-Code Platforms]
+    B --> E[Integration Logic]
+    C --> F[Automated Solution]
+    D --> F
+    E --> F
+    F --> G[Measurable Value]
+
+    style B fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style G fill:#10B981,stroke:#059669,color:#fff
+```
+
 **Key Responsibilities:**
 - **Systems Thinking**: Understanding how different tools and processes connect
 - **Workflow Automation**: Building automated systems that leverage AI
@@ -61,14 +76,31 @@ Systems thinking is the foundation of effective AI operation. Every business pro
 4. **Leverage Points**: Find where small changes create big impact
 
 **Example: Content Marketing System**
-```
-INPUT: Topic ideas, brand guidelines
-PROCESS: Research → Writing → Editing → Design → Publishing
-OUTPUT: Published content, traffic, leads
-FEEDBACK: Performance data → Topic refinement
+
+```mermaid
+graph LR
+    A[Topic Ideas<br/>Brand Guidelines] --> B[Research]
+    B --> C[Writing]
+    C --> D[Editing]
+    D --> E[Design]
+    E --> F[Publishing]
+    F --> G[Published Content<br/>Traffic<br/>Leads]
+    G --> H[Performance Data]
+    H -.Feedback.-> A
+
+    style A fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style G fill:#10B981,stroke:#059669,color:#fff
+    style H fill:#F59E0B,stroke:#D97706,color:#fff
 ```
 
 An AI Operator looks at this and asks: "Which steps can AI automate or enhance?"
+
+**AI Enhancement Opportunities:**
+- 🤖 **Research**: Use Perplexity or GPT-4 for topic research
+- 🤖 **Writing**: Generate first drafts with Claude
+- 🤖 **Editing**: Use Grammarly + GPT-4 for style improvements
+- 🤖 **Design**: Generate images with Midjourney/DALL-E
+- 🤖 **Publishing**: Automate with Make.com or Zapier
 
 ### Identifying Automation Opportunities
 
@@ -174,6 +206,39 @@ An AI Operator knows what tools exist and when to use them.
 7. **Monitoring**: Custom dashboards, logging systems
 
 ### The Practical Stack
+
+```mermaid
+graph TD
+    subgraph Beginner["🌱 Beginner Stack"]
+        A1[ChatGPT Plus]
+        A2[Claude Pro]
+        A3[Make.com/Zapier]
+        A4[Airtable/Sheets]
+        A5[Perplexity]
+    end
+
+    subgraph Intermediate["🚀 Intermediate Stack"]
+        B1[OpenAI API]
+        B2[Anthropic API]
+        B3[Cursor/Replit]
+        B4[Custom Workflows]
+        B5[Database Integration]
+    end
+
+    subgraph Advanced["⚡ Advanced Stack"]
+        C1[Self-Hosted Models]
+        C2[Custom Deployment]
+        C3[Orchestration Systems]
+        C4[Real-time Monitoring]
+    end
+
+    Beginner --> Intermediate
+    Intermediate --> Advanced
+
+    style Beginner fill:#10B981,stroke:#059669,color:#fff
+    style Intermediate fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style Advanced fill:#8B5CF6,stroke:#6D28D9,color:#fff
+```
 
 **For Beginners (Start Here):**
 - ChatGPT Plus (with GPT-4)

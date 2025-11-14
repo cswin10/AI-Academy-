@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Callout } from '../ui/Callout';
 import { CodeBlock } from '../ui/CodeBlock';
+import { MermaidDiagram } from '../ui/MermaidDiagram';
 
 interface MarkdownRendererProps {
   content: string;
@@ -89,6 +90,11 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) =
                   {children}
                 </code>
               );
+            }
+
+            // Handle Mermaid diagrams
+            if (language === 'mermaid') {
+              return <MermaidDiagram chart={code} />;
             }
 
             return <CodeBlock code={code} language={language} />;
