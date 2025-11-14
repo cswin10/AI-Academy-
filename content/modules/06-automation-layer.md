@@ -52,37 +52,101 @@ But professional automation goes deeper:
 
 ### Workflow Design Patterns
 
+```mermaid
+graph TB
+    subgraph Linear["📏 Linear Workflow - Simple Sequential"]
+        L1[Trigger:<br/>Form Submission] --> L2[Action 1:<br/>Save to Airtable]
+        L2 --> L3[Action 2:<br/>Send Email]
+        L3 --> L4[Action 3:<br/>Create Calendar Event]
+        L4 --> L5[✅ Done]
+    end
+
+    subgraph Branching["🔀 Branching Workflow - Conditional Logic"]
+        B1[Trigger:<br/>New Lead] --> B2{Check Score}
+        B2 -->|Score > 70<br/>High| B3[Notify Sales Team<br/>Create Priority Task]
+        B2 -->|Score ≤ 70<br/>Low| B4[Add to Nurture<br/>Campaign]
+    end
+
+    subgraph Parallel["⚡ Parallel Workflow - Concurrent Actions"]
+        P1[Trigger:<br/>New Article] --> P2[Split Paths]
+        P2 --> P3[Path 1:<br/>Generate Summary]
+        P2 --> P4[Path 2:<br/>Create Social Posts]
+        P2 --> P5[Path 3:<br/>Update Analytics]
+        P3 --> P6[Wait for All]
+        P4 --> P6
+        P5 --> P6
+        P6 --> P7[✅ Continue]
+    end
+
+    subgraph Loop["🔁 Loop Workflow - Iterative Processing"]
+        Lo1[Trigger:<br/>Daily 9am] --> Lo2[Get List:<br/>Pending Tasks]
+        Lo2 --> Lo3{For Each Task}
+        Lo3 --> Lo4[Send Reminder<br/>Email]
+        Lo4 --> Lo5{More Items?}
+        Lo5 -->|Yes| Lo3
+        Lo5 -->|No| Lo6[✅ Done]
+    end
+
+    style Linear fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style Branching fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style Parallel fill:#10B981,stroke:#059669,color:#fff
+    style Loop fill:#F59E0B,stroke:#D97706,color:#fff
+```
+
 **Linear Workflows** (Simple)
-```
-Trigger → Action 1 → Action 2 → Action 3 → Done
-```
-Example: New form submission → Save to Airtable → Send email → Create calendar event
+- Example: New form submission → Save to Airtable → Send email → Create calendar event
 
 **Branching Workflows** (Conditional)
-```
-Trigger → Check Condition
-          ├─ If Yes → Action A
-          └─ If No → Action B
-```
-Example: New lead → Check score → If high, notify sales → If low, add to nurture campaign
+- Example: New lead → Check score → If high, notify sales → If low, add to nurture campaign
 
 **Parallel Workflows** (Concurrent)
-```
-Trigger → Split into parallel paths
-          ├─ Path 1 → Actions
-          ├─ Path 2 → Actions
-          └─ Path 3 → Actions
-          → Wait for all → Continue
-```
-Example: New article → Generate summary + Create social posts + Update analytics (all at once)
+- Example: New article → Generate summary + Create social posts + Update analytics (all at once)
 
 **Loop Workflows** (Iterative)
-```
-Trigger → Get list of items → For each item → Do actions → Next item
-```
-Example: Daily trigger → Get all pending tasks → For each task → Send reminder email
+- Example: Daily trigger → Get all pending tasks → For each task → Send reminder email
 
 ### Error Handling Philosophy
+
+```mermaid
+graph TB
+    A[⚡ Workflow Execution] --> B{Data Valid?}
+
+    B -->|❌ No| C1[🛡️ Level 1: PREVENTION<br/>• Validate required fields<br/>• Check data types<br/>• Sanitize inputs]
+    C1 --> C2[❌ Stop & Log Error]
+
+    B -->|✅ Yes| D[Process Action]
+
+    D --> E{Success?}
+
+    E -->|❌ Failed| F[🔄 Level 2: RECOVERY<br/>Retry Logic]
+
+    F --> G{Retry Count}
+    G -->|Attempt 1| H1[Wait 5 seconds]
+    G -->|Attempt 2| H2[Wait 10 seconds]
+    G -->|Attempt 3| H3[Wait 20 seconds]
+
+    H1 --> D
+    H2 --> D
+    H3 --> D
+
+    G -->|Max Retries<br/>Reached| I[📊 Check Failure Rate]
+
+    I --> J{Failures > 10<br/>in last hour?}
+
+    J -->|Yes| K[🚨 CIRCUIT BREAKER<br/>• Pause workflow<br/>• Prevent cost spiral]
+
+    J -->|No| L[🔔 Level 3: NOTIFICATION<br/>• Log to database<br/>• Send Slack alert<br/>• Email notification]
+
+    K --> M[⏸️ Human Intervention<br/>Required]
+
+    E -->|✅ Success| N[✅ Continue Workflow<br/>Log Success]
+
+    style C1 fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style F fill:#F59E0B,stroke:#D97706,color:#fff
+    style L fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style K fill:#EF4444,stroke:#DC2626,color:#fff
+    style N fill:#10B981,stroke:#059669,color:#fff
+```
 
 Your workflows WILL fail. APIs go down. Rate limits hit. Data is malformed. Professional automation anticipates this.
 
@@ -230,6 +294,45 @@ Length: {platform_max_length}
 **Problem:** Sales team receiving 50-100 leads per day from website form. Needed company information, LinkedIn profile, and lead scoring before routing to sales reps.
 
 **Bad Approach:** Sales reps manually researching each lead (30 mins per lead).
+
+```mermaid
+graph TB
+    A[🔔 Trigger:<br/>New Lead in<br/>Google Sheets] --> B[🏢 Get Company Data<br/>Clearbit API]
+
+    B -->|Success| C[📊 Company Data<br/>Retrieved]
+    B -->|Fail| D[🤖 Fallback:<br/>GPT-4 Research]
+    D --> C
+
+    C --> E[💼 Get LinkedIn<br/>PhantomBuster API]
+
+    E --> F[🎯 Score Lead<br/>Claude AI]
+
+    F --> G[📈 Score & Priority<br/>Calculated]
+
+    G --> H{Score Check}
+
+    H -->|Score > 70<br/>HIGH| I[⚡ High Priority Path<br/>• Create Salesforce Lead<br/>• Assign to Senior Rep<br/>• Send Slack Alert]
+
+    H -->|Score 40-70<br/>MEDIUM| J[📧 Medium Priority Path<br/>• Create Salesforce Lead<br/>• Add to Nurture Campaign]
+
+    H -->|Score < 40<br/>LOW| K[📰 Low Priority Path<br/>• Add to Newsletter List]
+
+    I --> L[✅ Update Google Sheets<br/>with Enriched Data]
+    J --> L
+    K --> L
+
+    L --> M[📊 Log to Analytics<br/>Airtable Table]
+
+    F -.Scoring Fails.-> N[⚠️ Error Handler:<br/>Default Medium Priority]
+    N --> J
+
+    style A fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style F fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style I fill:#10B981,stroke:#059669,color:#fff
+    style J fill:#F59E0B,stroke:#D97706,color:#fff
+    style K fill:#6B7280,stroke:#4B5563,color:#fff
+    style N fill:#EF4444,stroke:#DC2626,color:#fff
+```
 
 **Good Approach (Built in Make):**
 
