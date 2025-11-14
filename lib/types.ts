@@ -16,6 +16,7 @@ export interface ModuleContent {
   content: string;
   sections: Section[];
   checklistItems: ChecklistItem[];
+  structuredSections?: ModuleSection[]; // New structured format
 }
 
 export interface Section {
@@ -23,6 +24,37 @@ export interface Section {
   title: string;
   level: number;
   slug: string;
+}
+
+export interface ModuleSection {
+  id: string;
+  title: string;
+  content: string;
+  sectionNumber: number;
+  tasks?: Task[];
+  quiz?: SectionQuiz;
+}
+
+export interface Task {
+  id: string;
+  title: string;
+  description: string;
+  xpReward: number;
+}
+
+export interface SectionQuiz {
+  id: string;
+  sectionId: string;
+  title: string;
+  questions: QuizQuestion[];
+}
+
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation?: string;
 }
 
 export interface ChecklistItem {

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { ModuleMetadata, ModuleContent, Section, ChecklistItem } from './types';
+import { ModuleMetadata, ModuleContent, Section, ChecklistItem, ModuleSection, Task, SectionQuiz, QuizQuestion } from './types';
 
 const CONTENT_DIR = path.join(process.cwd(), 'content/modules');
 
@@ -43,11 +43,15 @@ export const getModuleContent = (moduleId: string): ModuleContent | null => {
     // Extract checklist items
     const checklistItems = extractChecklistItems(content, moduleId);
 
+    // Extract structured sections (new format)
+    const structuredSections = extractStructuredSections(content, moduleId);
+
     return {
       metadata,
       content,
       sections,
       checklistItems,
+      structuredSections,
     };
   } catch (error) {
     console.error(`Error loading module ${moduleId}:`, error);
@@ -168,4 +172,218 @@ export const generateTableOfContents = (sections: Section[]) => {
   });
 
   return toc;
+};
+
+// Extract structured sections with tasks and quizzes
+export const extractStructuredSections = (content: string, moduleId: string): ModuleSection[] => {
+  const sections: ModuleSection[] = [];
+  const lines = content.split('\n');
+
+  let currentSection: ModuleSection | null = null;
+  let sectionNumber = 0;
+  let currentContent: string[] = [];
+  let inCodeBlock = false;
+  let inTaskBlock = false;
+  let inQuizBlock = false;
+  let taskLines: string[] = [];
+  let quizLines: string[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Track code blocks to avoid parsing inside them
+    if (line.trim().startsWith('```')) {
+      if (!inCodeBlock) {
+        // Starting a code block
+        const blockType = line.trim().substring(3).trim();
+        if (blockType === 'task') {
+          inTaskBlock = true;
+          taskLines = [];
+          continue;
+        } else if (blockType === 'quiz') {
+          inQuizBlock = true;
+          quizLines = [];
+          continue;
+        }
+        inCodeBlock = true;
+      } else {
+        // Ending a code block
+        if (inTaskBlock) {
+          // Parse and add task to current section
+          const task = parseTask(taskLines.join('\n'), moduleId, currentSection?.id || `${moduleId}-section-${sectionNumber}`);
+          if (task && currentSection) {
+            if (!currentSection.tasks) currentSection.tasks = [];
+            currentSection.tasks.push(task);
+          }
+          inTaskBlock = false;
+          taskLines = [];
+          inCodeBlock = false;
+          continue;
+        } else if (inQuizBlock) {
+          // Parse and add quiz to current section
+          const quiz = parseQuiz(quizLines.join('\n'), currentSection?.id || `${moduleId}-section-${sectionNumber}`);
+          if (quiz && currentSection) {
+            currentSection.quiz = quiz;
+          }
+          inQuizBlock = false;
+          quizLines = [];
+          inCodeBlock = false;
+          continue;
+        }
+        inCodeBlock = false;
+      }
+    }
+
+    // Capture task block content
+    if (inTaskBlock) {
+      taskLines.push(line);
+      continue;
+    }
+
+    // Capture quiz block content
+    if (inQuizBlock) {
+      quizLines.push(line);
+      continue;
+    }
+
+    // Check for main section headings (## heading)
+    const sectionMatch = line.match(/^##\s+(.+)$/);
+    if (sectionMatch && !inCodeBlock) {
+      // Save previous section
+      if (currentSection) {
+        currentSection.content = currentContent.join('\n').trim();
+        sections.push(currentSection);
+      }
+
+      // Start new section
+      sectionNumber++;
+      const title = sectionMatch[1].trim();
+      currentSection = {
+        id: `${moduleId}-section-${sectionNumber}`,
+        title,
+        content: '',
+        sectionNumber,
+      };
+      currentContent = [];
+      continue;
+    }
+
+    // Add content to current section
+    if (currentSection && !inCodeBlock) {
+      currentContent.push(line);
+    }
+  }
+
+  // Save last section
+  if (currentSection) {
+    currentSection.content = currentContent.join('\n').trim();
+    sections.push(currentSection);
+  }
+
+  return sections;
+};
+
+// Parse task from task block
+const parseTask = (taskContent: string, moduleId: string, sectionId: string): Task | null => {
+  try {
+    const lines = taskContent.split('\n');
+    let title = '';
+    let description = '';
+    let xpReward = 10;
+
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('title:')) {
+        title = trimmed.substring(6).trim();
+      } else if (trimmed.startsWith('description:')) {
+        description = trimmed.substring(12).trim();
+      } else if (trimmed.startsWith('xp:')) {
+        xpReward = parseInt(trimmed.substring(3).trim()) || 10;
+      }
+    });
+
+    if (!title) return null;
+
+    return {
+      id: `${sectionId}-task-${Date.now()}`,
+      title,
+      description,
+      xpReward,
+    };
+  } catch (error) {
+    console.error('Error parsing task:', error);
+    return null;
+  }
+};
+
+// Parse quiz from quiz block
+const parseQuiz = (quizContent: string, sectionId: string): SectionQuiz | null => {
+  try {
+    const lines = quizContent.split('\n');
+    let title = 'Section Quiz';
+    const questions: QuizQuestion[] = [];
+    let currentQuestion: Partial<QuizQuestion> | null = null;
+    let inQuestions = false;
+
+    lines.forEach(line => {
+      const trimmed = line.trim();
+
+      if (trimmed.startsWith('title:')) {
+        title = trimmed.substring(6).trim();
+      } else if (trimmed === 'questions:') {
+        inQuestions = true;
+      } else if (inQuestions && trimmed.startsWith('- question:')) {
+        // Save previous question
+        if (currentQuestion && currentQuestion.question && currentQuestion.options) {
+          questions.push({
+            id: `${sectionId}-q${questions.length + 1}`,
+            question: currentQuestion.question,
+            options: currentQuestion.options,
+            correctAnswer: currentQuestion.correctAnswer || 0,
+            explanation: currentQuestion.explanation,
+          });
+        }
+        // Start new question
+        currentQuestion = {
+          question: trimmed.substring(11).trim(),
+          options: [],
+          correctAnswer: 0,
+        };
+      } else if (currentQuestion && trimmed.startsWith('options:')) {
+        const optionsStr = trimmed.substring(8).trim();
+        // Parse array format: [A, B, C, D]
+        const match = optionsStr.match(/\[(.*)\]/);
+        if (match) {
+          currentQuestion.options = match[1].split(',').map(o => o.trim());
+        }
+      } else if (currentQuestion && trimmed.startsWith('correct:')) {
+        currentQuestion.correctAnswer = parseInt(trimmed.substring(8).trim()) || 0;
+      } else if (currentQuestion && trimmed.startsWith('explanation:')) {
+        currentQuestion.explanation = trimmed.substring(12).trim();
+      }
+    });
+
+    // Save last question
+    if (currentQuestion && currentQuestion.question && currentQuestion.options) {
+      questions.push({
+        id: `${sectionId}-q${questions.length + 1}`,
+        question: currentQuestion.question,
+        options: currentQuestion.options,
+        correctAnswer: currentQuestion.correctAnswer || 0,
+        explanation: currentQuestion.explanation,
+      });
+    }
+
+    if (questions.length === 0) return null;
+
+    return {
+      id: `${sectionId}-quiz`,
+      sectionId,
+      title,
+      questions,
+    };
+  } catch (error) {
+    console.error('Error parsing quiz:', error);
+    return null;
+  }
 };
