@@ -187,6 +187,8 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
   let inQuizBlock = false;
   let taskLines: string[] = [];
   let quizLines: string[] = [];
+  let introContent: string[] = [];
+  let beforeFirstSection = true;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -249,6 +251,22 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
     // Check for main section headings (## heading)
     const sectionMatch = line.match(/^##\s+(.+)$/);
     if (sectionMatch && !inCodeBlock) {
+      // If this is the first section and we have intro content, create Introduction section
+      if (beforeFirstSection && introContent.length > 0) {
+        const introText = introContent.join('\n').trim();
+        if (introText) {
+          sectionNumber++;
+          sections.push({
+            id: `${moduleId}-section-${sectionNumber}`,
+            title: 'Introduction',
+            content: introText,
+            sectionNumber,
+          });
+        }
+        introContent = [];
+        beforeFirstSection = false;
+      }
+
       // Save previous section
       if (currentSection) {
         currentSection.content = currentContent.join('\n').trim();
@@ -256,6 +274,7 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
       }
 
       // Start new section
+      beforeFirstSection = false;
       sectionNumber++;
       const title = sectionMatch[1].trim();
       currentSection = {
@@ -266,6 +285,16 @@ export const extractStructuredSections = (content: string, moduleId: string): Mo
       };
       currentContent = [];
       continue;
+    }
+
+    // Skip the main H1 title
+    if (line.match(/^#\s+(.+)$/)) {
+      continue;
+    }
+
+    // Capture content before first section as intro
+    if (beforeFirstSection && !inCodeBlock && line.trim()) {
+      introContent.push(line);
     }
 
     // Add content to current section
@@ -304,8 +333,11 @@ const parseTask = (taskContent: string, moduleId: string, sectionId: string): Ta
 
     if (!title) return null;
 
+    // Create deterministic ID from title (so it persists across page loads)
+    const taskSlug = slugify(title);
+
     return {
-      id: `${sectionId}-task-${Date.now()}`,
+      id: `${sectionId}-task-${taskSlug}`,
       title,
       description,
       xpReward,
