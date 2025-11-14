@@ -20,7 +20,7 @@ export function ModuleListWithProgress({ modules }: ModuleListWithProgressProps)
 
     return {
       metadata,
-      progress: moduleProgress?.progress_percentage || 0,
+      progress: moduleProgress?.completion_percentage || 0,
       isStarted: !!moduleProgress && !moduleProgress.completed_at,
       isCompleted: !!moduleProgress?.completed_at,
     };
