@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { ProgressProvider } from "@/contexts/ProgressContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -17,11 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen flex flex-col">
-        <ProgressProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </ProgressProvider>
+        <AuthProvider>
+          <ProgressProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </ProgressProvider>
+        </AuthProvider>
       </body>
     </html>
   );
