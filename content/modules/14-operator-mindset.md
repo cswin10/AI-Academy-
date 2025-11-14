@@ -126,6 +126,33 @@ Helps with: Build product vs. stable job, ship imperfect vs. wait for perfect, s
 
 ### Build vs. Buy Framework
 
+```mermaid
+graph TB
+    A[🤔 Need Feature/Tool] --> B{Is it your core<br/>differentiator?}
+
+    B -->|Yes - Secret sauce| C[🔨 BUILD CUSTOM<br/>This makes you unique]
+
+    B -->|No| D{Good tools<br/>exist?}
+
+    D -->|Yes| E{Speed or<br/>expertise critical?}
+    D -->|No| C
+
+    E -->|Yes - Speed matters| F[💰 BUY/USE TOOL<br/>Don't reinvent wheel]
+    E -->|No - Have time| G{Long-term cost<br/>prohibitive?}
+
+    G -->|Yes| C
+    G -->|No| F
+
+    C --> H[Examples:<br/>✅ Custom RAG system<br/>✅ Your AI workflows<br/>✅ Unique algorithms]
+
+    F --> I[Examples:<br/>✅ Stripe payments<br/>✅ Supabase auth<br/>✅ Pinecone vectors]
+
+    style C fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style F fill:#10B981,stroke:#059669,color:#fff
+    style H fill:#FDE68A,stroke:#F59E0B,color:#000
+    style I fill:#BBF7D0,stroke:#059669,color:#000
+```
+
 When to build custom vs. use existing tool:
 
 **Build Custom When:**
