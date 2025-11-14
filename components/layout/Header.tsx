@@ -2,19 +2,22 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, Zap, User } from 'lucide-react';
+import { Menu, X, Zap, User, LogOut, LogIn } from 'lucide-react';
 import { useSupabase } from '@/hooks/useSupabase';
 import { useModuleProgress } from '@/hooks/useModuleProgress';
 import { XPDisplay } from '../gamification/XPDisplay';
+import { AuthModal } from '../auth/AuthModal';
+import { Button } from '../ui/Button';
 
 interface HeaderProps {
   onMenuToggle?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
-  const { user } = useSupabase();
+  const { user, supabase } = useSupabase();
   const { progress } = useModuleProgress();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const navItems = [
     { label: 'Home', href: '/' },
@@ -33,6 +36,11 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
     if (onMenuToggle) {
       onMenuToggle();
     }
+  };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.location.reload();
   };
 
   return (
@@ -77,14 +85,31 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
                   <User className="w-4 h-4 text-purple-primary" />
                   <span className="text-sm font-medium text-purple-primary">Dashboard</span>
                 </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-2 px-4 py-2 text-text-secondary hover:text-text-primary transition-colors"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
               </>
             ) : (
-              <div className="flex flex-col items-end">
-                <span className="text-xs text-text-secondary">Sign in to track progress</span>
-                <span className="text-sm font-bold text-purple-primary">
-                  {completedModules}/{totalModules} modules
-                </span>
-              </div>
+              <>
+                <div className="flex flex-col items-end mr-2">
+                  <span className="text-xs text-text-secondary">Sign in to track progress</span>
+                  <span className="text-sm font-bold text-purple-primary">
+                    {completedModules}/{totalModules} modules
+                  </span>
+                </div>
+                <Button
+                  onClick={() => setAuthModalOpen(true)}
+                  variant="primary"
+                  size="sm"
+                  icon={<LogIn className="w-4 h-4" />}
+                >
+                  Sign In
+                </Button>
+              </>
             )}
           </div>
 
@@ -112,15 +137,40 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
                   {item.label}
                 </Link>
               ))}
-              {user && (
-                <Link
-                  href="/dashboard"
-                  className="text-base font-medium text-purple-primary hover:text-purple-primary/80 transition-colors flex items-center gap-2"
-                  onClick={() => setMobileMenuOpen(false)}
+              {user ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="text-base font-medium text-purple-primary hover:text-purple-primary/80 transition-colors flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <User className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <Button
+                  onClick={() => {
+                    setAuthModalOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  variant="primary"
+                  size="md"
+                  icon={<LogIn className="w-4 h-4" />}
+                  className="w-full"
                 >
-                  <User className="w-4 h-4" />
-                  Dashboard
-                </Link>
+                  Sign In
+                </Button>
               )}
               <div className="pt-4 border-t border-gray-800 flex items-center justify-between">
                 <span className="text-sm text-text-secondary">Progress</span>
@@ -132,6 +182,9 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
           </div>
         )}
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
     </header>
   );
 };
