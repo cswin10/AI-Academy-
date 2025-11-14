@@ -197,6 +197,7 @@ export function ModulePageClient({
                     <ChecklistSidebarClient
                       moduleId={moduleId}
                       checklistItems={checklistItems}
+                      showCard={false}
                     />
                   </Card>
                 )}

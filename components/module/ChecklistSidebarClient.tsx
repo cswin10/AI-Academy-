@@ -15,15 +15,26 @@ interface ChecklistItem {
 interface ChecklistSidebarClientProps {
   moduleId: string;
   checklistItems: ChecklistItem[];
+  showCard?: boolean; // Option to wrap in Card or not
 }
 
-export function ChecklistSidebarClient({ moduleId, checklistItems }: ChecklistSidebarClientProps) {
+// Helper function to strip markdown formatting from text
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1') // Remove bold
+    .replace(/\*(.+?)\*/g, '$1')     // Remove italic
+    .replace(/_(.+?)_/g, '$1')        // Remove italic underscore
+    .replace(/`(.+?)`/g, '$1')        // Remove inline code
+    .trim();
+}
+
+export function ChecklistSidebarClient({ moduleId, checklistItems, showCard = true }: ChecklistSidebarClientProps) {
   const { user } = useSupabase();
   const { completed, toggleItem, isCompleted } = useChecklistProgress(moduleId);
 
   const handleToggle = async (itemId: string) => {
     if (!user) {
-      alert('Please sign in to track your progress');
+      alert('Please sign in to track your progress and earn XP!');
       return;
     }
     await toggleItem(moduleId, itemId);
@@ -43,8 +54,8 @@ export function ChecklistSidebarClient({ moduleId, checklistItems }: ChecklistSi
   const totalCount = checklistItems.length;
   const progressPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
-  return (
-    <Card className="p-6 sticky top-4">
+  const content = (
+    <>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-text-primary">Progress Checklist</h3>
         <span className="text-sm text-text-secondary">
@@ -71,38 +82,40 @@ export function ChecklistSidebarClient({ moduleId, checklistItems }: ChecklistSi
             </h4>
             <div className="space-y-2">
               {items.map((item) => {
-                const completed = isCompleted(item.id);
+                const itemCompleted = isCompleted(item.id);
+                const cleanText = stripMarkdown(item.text);
 
                 return (
                   <button
                     key={item.id}
                     onClick={() => handleToggle(item.id)}
+                    type="button"
                     className={`
-                      w-full flex items-start gap-3 p-2 rounded-lg text-left
-                      transition-all duration-200
-                      ${completed
-                        ? 'bg-success/10 hover:bg-success/20'
-                        : 'hover:bg-gray-800/50'
+                      w-full flex items-start gap-3 p-3 rounded-lg text-left
+                      transition-all duration-200 border-2
+                      ${itemCompleted
+                        ? 'bg-success/10 hover:bg-success/20 border-success/30'
+                        : 'bg-gray-800/30 hover:bg-gray-800/50 border-gray-700 hover:border-purple-primary/50'
                       }
-                      ${!user ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                      ${!user ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-[1.01]'}
                     `}
                     disabled={!user}
                   >
-                    {completed ? (
+                    {itemCompleted ? (
                       <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                     ) : (
-                      <Circle className="w-5 h-5 text-gray-600 flex-shrink-0 mt-0.5" />
+                      <Circle className="w-5 h-5 text-gray-500 flex-shrink-0 mt-0.5" />
                     )}
                     <span
-                      className={`text-sm ${
-                        completed
+                      className={`text-sm flex-1 ${
+                        itemCompleted
                           ? 'text-text-primary line-through opacity-75'
                           : 'text-text-secondary'
                       }`}
                     >
-                      {item.text}
-                      {completed && (
-                        <span className="ml-2 text-xs text-success">+10 XP</span>
+                      {cleanText}
+                      {itemCompleted && (
+                        <span className="ml-2 text-xs text-success font-semibold">+10 XP ✓</span>
                       )}
                     </span>
                   </button>
@@ -120,6 +133,12 @@ export function ChecklistSidebarClient({ moduleId, checklistItems }: ChecklistSi
           </p>
         </div>
       )}
-    </Card>
+    </>
   );
+
+  if (showCard) {
+    return <Card className="p-6 sticky top-4">{content}</Card>;
+  }
+
+  return <div>{content}</div>;
 }
