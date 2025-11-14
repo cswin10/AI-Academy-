@@ -1,5 +1,5 @@
 ---
-number: 12
+number: 14
 title: Consulting & Business Skills
 description: Build a thriving AI consulting practice. Master client discovery, pricing strategies, proposal writing, and project management for AI implementations.
 estimatedTime: "5-7 days"

@@ -1,22 +1,22 @@
 ---
-number: 14
+number: 2
 title: Operator Mindset
 description: Develop the mental models and frameworks that separate great AI Operators from good ones. Learn systems thinking, decision-making frameworks, and how to stay current.
 estimatedTime: "3-4 days"
-difficulty: Intermediate
+difficulty: Beginner
 prerequisites: ["01-foundations"]
 category: Foundation
 ---
 
-# 📘 MODULE 14: Operator Mindset
+# 📘 MODULE 2: Operator Mindset
 
 **Estimated Time:** 3-4 days
-**Difficulty:** Intermediate
+**Difficulty:** Beginner
 **Prerequisites:** Module 1 (Foundations)
 
 ## 📖 Overview & Why This Matters
 
-You now have the technical skills. You can build databases, APIs, automations, AI agents, and products. But here's what separates AI Operators earning $80K from those earning $200K+: How they think.
+Before you dive into the technical skills—databases, APIs, automations, AI agents—you need to develop the right mindset. This is what separates AI Operators earning $80K from those earning $200K+: How they think.
 
 The best operators don't just execute tasks - they see systems, spot leverage points, make high-quality decisions quickly, and know when to build versus when to buy. They don't chase every new AI model or tool. They focus on outcomes, not technologies.
 
@@ -949,11 +949,11 @@ Long-term (this year):
 
 ### What's Next?
 
-Module 15 (Final Portfolio Requirements) is where you bring everything together into a portfolio that gets you hired or wins clients.
+Module 3 (Understanding LLMs) dives deep into how Large Language Models work, how to prompt them effectively, and how to get consistent, high-quality outputs for your AI systems.
 
 ## ✅ Module Completion Checklist
 
-Before moving to Module 15, you should be able to confidently say "yes" to all of these:
+Before moving to Module 3, you should be able to confidently say "yes" to all of these:
 
 - [ ] I think in systems, not just individual components
 - [ ] I have decision frameworks that help me choose quickly

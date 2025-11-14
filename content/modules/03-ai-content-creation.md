@@ -1,5 +1,5 @@
 ---
-number: 3
+number: 5
 title: "AI-Powered Content Creation & Media Systems"
 description: "Master content creation at scale using AI tools for writing, voice, images, and video."
 estimatedTime: "5-7 days"

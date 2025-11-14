@@ -1,5 +1,5 @@
 ---
-number: 8
+number: 10
 title: AI Workflows, RAG & Agents
 description: Build sophisticated AI systems with RAG, agents with tool calling, prompt chaining, and memory. This is where you become a true AI engineer.
 estimatedTime: "7-10 days"

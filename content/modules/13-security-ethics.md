@@ -1,5 +1,5 @@
 ---
-number: 13
+number: 4
 title: Security & Ethics
 description: Build trustworthy AI systems with proper data privacy, security best practices, and ethical considerations. Learn GDPR basics and responsible AI development.
 estimatedTime: "3-5 days"

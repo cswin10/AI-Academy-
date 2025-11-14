@@ -1,5 +1,5 @@
 ---
-number: 9
+number: 11
 title: Payments & Authentication
 description: Transform projects into products by implementing Stripe payments and Supabase authentication. Learn to handle user sessions, subscriptions, and secure access.
 estimatedTime: "4-6 days"

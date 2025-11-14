@@ -1,5 +1,5 @@
 ---
-number: 11
+number: 13
 title: Product Building Track
 description: Take AI projects from idea to launched product. Learn MVP development, user feedback loops, iteration strategies, and how to build products people actually want.
 estimatedTime: "7-10 days"

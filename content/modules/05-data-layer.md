@@ -1,5 +1,5 @@
 ---
-number: 5
+number: 7
 title: Data Layer
 description: Graduate from spreadsheets to real databases and vector stores. Learn Supabase, PostgreSQL basics, and how to implement vector search for AI applications.
 estimatedTime: "5-7 days"

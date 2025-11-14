@@ -1,5 +1,5 @@
 ---
-number: 4
+number: 6
 title: Core Interface Tools
 description: Master Notion, Airtable, and Google Sheets to build powerful dashboards and databases that serve as your AI operations command center.
 estimatedTime: "4-6 days"

@@ -69,11 +69,19 @@ export default async function ModulePage({
   const totalItems = checklistItems.length;
   const progress = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
 
-  // Find prev/next modules by getting all modules and finding adjacent ones
-  const allModuleIds = getAllModuleIds();
-  const currentIndex = allModuleIds.indexOf(moduleId);
-  const prevModule = currentIndex > 0 ? allModuleIds[currentIndex - 1] : null;
-  const nextModule = currentIndex < allModuleIds.length - 1 ? allModuleIds[currentIndex + 1] : null;
+  // Find prev/next modules by number (not alphabetically)
+  // Get all modules sorted by number, then find adjacent ones
+  const allModules = getAllModuleIds()
+    .map((id) => {
+      const content = getModuleContent(id);
+      return content ? { id, number: content.metadata.number } : null;
+    })
+    .filter((m): m is { id: string; number: number } => m !== null)
+    .sort((a, b) => a.number - b.number);
+
+  const currentIndex = allModules.findIndex(m => m.id === moduleId);
+  const prevModule = currentIndex > 0 ? allModules[currentIndex - 1].id : null;
+  const nextModule = currentIndex < allModules.length - 1 ? allModules[currentIndex + 1].id : null;
 
   return (
     <div className="min-h-screen pb-20">

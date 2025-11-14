@@ -1,5 +1,5 @@
 ---
-number: 6
+number: 8
 title: Automation Layer
 description: Master Zapier, Make, and n8n to build sophisticated multi-step workflows that connect all your tools. Learn error handling, monitoring, and advanced automation patterns.
 estimatedTime: "6-8 days"

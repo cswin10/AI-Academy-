@@ -433,16 +433,16 @@ You'll add to this portfolio throughout the roadmap. By Module 15, you'll have 1
 
 ## Next Steps
 
-In Module 2, you'll dive deep into understanding LLMs—how to prompt them effectively, when to use different models, and how to get consistent, high-quality outputs.
+In Module 2 (Operator Mindset), you'll develop the mental frameworks and strategic thinking patterns that separate great AI Operators from good ones. You'll learn systems thinking, decision frameworks, and how to stay current without burning out.
 
 **Prepare By:**
-- Testing ChatGPT and Claude with various prompts
-- Observing where they excel and struggle
-- Collecting examples of tasks you want to automate
-- Identifying processes in your work that could benefit from AI
+- Thinking about processes in your work that could be improved
+- Identifying where you spend most of your time
+- Considering what "high-leverage" work means to you
+- Reflecting on how you currently make decisions
 
 ---
 
 **Time to Complete**: 2-3 days
 **Prerequisites**: None—this is the starting point!
-**Next Module**: [02 - Understanding LLMs](./02-understanding-llms)
+**Next Module**: [02 - Operator Mindset](./14-operator-mindset)
