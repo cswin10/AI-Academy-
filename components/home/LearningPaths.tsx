@@ -13,7 +13,7 @@ export const LearningPaths: React.FC = () => {
       title: 'No-Code Founder',
       icon: <Target className="w-6 h-6" />,
       description: 'Build AI products without writing code',
-      modules: [1, 2, 3, 4, 6, 9, 11, 12, 15],
+      modules: [1, 2, 3, 4, 7, 10, 13, 14, 17],
       duration: '40-60 hours',
       color: 'purple',
     },
@@ -22,8 +22,8 @@ export const LearningPaths: React.FC = () => {
       title: 'Automation Expert',
       icon: <Zap className="w-6 h-6" />,
       description: 'Master AI workflow automation',
-      modules: [1, 2, 4, 5, 6, 7, 8, 10],
-      duration: '50-70 hours',
+      modules: [1, 2, 4, 5, 7, 8, 9, 11, 12],
+      duration: '55-75 hours',
       color: 'blue',
     },
     {
@@ -31,7 +31,7 @@ export const LearningPaths: React.FC = () => {
       title: 'AI Consultant',
       icon: <Briefcase className="w-6 h-6" />,
       description: 'Advise businesses on AI implementation',
-      modules: [1, 2, 3, 11, 12, 13, 14, 15],
+      modules: [1, 2, 3, 13, 14, 15, 16, 17],
       duration: '45-65 hours',
       color: 'teal',
     },
@@ -98,7 +98,7 @@ export const LearningPaths: React.FC = () => {
         <div className="mt-8 text-center text-sm text-text-secondary">
           <p>
             💡 <span className="font-semibold">Pro tip:</span> All paths overlap significantly.
-            The full sequential path (1→15) is also excellent!
+            The full sequential path (1→17) is also excellent!
           </p>
         </div>
       </div>
