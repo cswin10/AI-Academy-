@@ -40,6 +40,32 @@ By the end of this module, you will:
 
 ### The Three Pillars of Observability
 
+```mermaid
+graph TB
+    A[🔍 Your AI System] --> B[📋 Logs<br/>WHAT happened?]
+    A --> C[📊 Metrics<br/>HOW MUCH/OFTEN?]
+    A --> D[🔄 Traces<br/>HOW it flows?]
+
+    B --> B1["10:23:45 User started<br/>10:23:47 API initiated<br/>10:23:51 Generated (847 tokens)<br/>10:23:51 Saved to DB"]
+
+    C --> C1["• 45 API calls/min<br/>• 2.3s avg response<br/>• 0.8% error rate<br/>• 1.2M tokens today<br/>• $24.50 cost"]
+
+    D --> D1["Request → Auth (120ms)<br/>→ Load user (45ms)<br/>→ AI gen (2100ms)<br/>→ Save DB (89ms)<br/>= 2354ms total"]
+
+    B1 --> E{Questions Answered}
+    C1 --> E
+    D1 --> E
+
+    E --> E1["❓ What broke?<br/>→ Logs"]
+    E --> E2["❓ How bad is it?<br/>→ Metrics"]
+    E --> E3["❓ Where's bottleneck?<br/>→ Traces"]
+
+    style B fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style C fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style D fill:#10B981,stroke:#059669,color:#fff
+    style E fill:#F59E0B,stroke:#D97706,color:#fff
+```
+
 **1. Logs** (What happened)
 ```
 2024-01-15 10:23:45 INFO User 123 started content generation
@@ -68,6 +94,29 @@ Together, these let you answer:
 - Where's the bottleneck? (Traces)
 
 ### Error Levels
+
+```mermaid
+graph TB
+    A[📝 Log Event Occurs] --> B{Severity Level?}
+
+    B -->|DEBUG| C1[🔍 DEBUG<br/>Developer info<br/>Very verbose<br/>'Retrieved 15 docs']
+    B -->|INFO| C2[ℹ️ INFO<br/>Normal operations<br/>'User upgraded<br/>to premium']
+    B -->|WARN| C3[⚠️ WARN<br/>Unusual but OK<br/>'API slower: 3.2s<br/>vs avg 1.5s']
+    B -->|ERROR| C4[❌ ERROR<br/>Failed, recovering<br/>'API failed,<br/>retrying 2/3']
+    B -->|CRITICAL| C5[🚨 CRITICAL<br/>System broken<br/>'DB connection lost<br/>ALL requests fail']
+
+    C1 --> D1[📄 Log to file<br/>No alerts]
+    C2 --> D1
+    C3 --> D2[📊 Log + Track metric<br/>No alerts yet]
+    C4 --> D3[📧 Log + Alert if<br/> >10/min]
+    C5 --> D4[🚨 IMMEDIATE ALERT<br/>Page on-call engineer]
+
+    style C1 fill:#6B7280,stroke:#4B5563,color:#fff
+    style C2 fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style C3 fill:#F59E0B,stroke:#D97706,color:#fff
+    style C4 fill:#EF4444,stroke:#DC2626,color:#fff
+    style C5 fill:#991B1B,stroke:#7F1D1D,color:#fff
+```
 
 Not all errors are equal:
 
