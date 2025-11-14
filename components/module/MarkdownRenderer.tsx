@@ -13,45 +13,46 @@ interface MarkdownRendererProps {
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
   return (
-    <div className="prose prose-invert max-w-none">
+    <div className="prose prose-invert max-w-none" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ node, ...props }) => (
-            <h1 className="text-4xl font-bold text-text-primary mt-8 mb-4" {...props} />
+            <h1 className="text-4xl font-bold text-text-primary mt-8 mb-4" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           h2: ({ node, ...props }) => (
-            <h2 className="text-3xl font-bold text-text-primary mt-8 mb-4 border-b border-gray-800 pb-2" {...props} />
+            <h2 className="text-3xl font-bold text-text-primary mt-8 mb-4 border-b border-gray-800 pb-2" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           h3: ({ node, ...props }) => (
-            <h3 className="text-2xl font-bold text-text-primary mt-6 mb-3" {...props} />
+            <h3 className="text-2xl font-bold text-text-primary mt-6 mb-3" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           h4: ({ node, ...props }) => (
-            <h4 className="text-xl font-semibold text-text-primary mt-4 mb-2" {...props} />
+            <h4 className="text-xl font-semibold text-text-primary mt-4 mb-2" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           p: ({ node, ...props }) => (
-            <p className="text-text-primary leading-relaxed my-4" {...props} />
+            <p className="text-base text-text-primary leading-relaxed my-4" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           ul: ({ node, ...props }) => (
-            <ul className="list-disc list-inside text-text-primary space-y-2 my-4" {...props} />
+            <ul className="list-disc list-inside text-text-primary space-y-2 my-4" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           ol: ({ node, ...props }) => (
-            <ol className="list-decimal list-inside text-text-primary space-y-2 my-4" {...props} />
+            <ol className="list-decimal list-inside text-text-primary space-y-2 my-4" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           li: ({ node, ...props }) => (
-            <li className="text-text-primary leading-relaxed" {...props} />
+            <li className="text-base text-text-primary leading-relaxed" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           a: ({ node, ...props }) => (
             <a
               className="text-purple-primary hover:text-purple-light underline transition-colors"
+              style={{ fontFamily: 'inherit' }}
               {...props}
             />
           ),
           strong: ({ node, ...props }) => (
-            <strong className="font-bold text-text-primary" {...props} />
+            <strong className="font-bold text-text-primary" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           em: ({ node, ...props }) => (
-            <em className="italic text-text-primary" {...props} />
+            <em className="italic text-text-primary" style={{ fontFamily: 'inherit' }} {...props} />
           ),
           blockquote: ({ node, children, ...props }) => {
             // Check if this is a callout

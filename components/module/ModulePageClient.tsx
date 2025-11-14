@@ -16,7 +16,7 @@ import { SectionQuizComponent } from '@/components/module/SectionQuizComponent';
 import { useModuleProgress } from '@/hooks/useModuleProgress';
 import { useChecklistProgress } from '@/hooks/useChecklistProgress';
 import { useSupabase } from '@/hooks/useSupabase';
-import type { ModuleMetadata, ModuleSection } from '@/lib/types';
+import type { ModuleMetadata, ModuleSection, SectionQuiz } from '@/lib/types';
 
 interface ModulePageClientProps {
   moduleId: string;
@@ -31,6 +31,7 @@ interface ModulePageClientProps {
   nextModule: string | null;
   allModules: ModuleMetadata[];
   structuredSections?: ModuleSection[];
+  finalQuiz?: SectionQuiz;
 }
 
 export function ModulePageClient({
@@ -42,6 +43,7 @@ export function ModulePageClient({
   nextModule,
   allModules,
   structuredSections,
+  finalQuiz,
 }: ModulePageClientProps) {
   const { user } = useSupabase();
   const { progress: allProgress, startModule, completeModule } = useModuleProgress();
@@ -184,6 +186,27 @@ export function ModulePageClient({
                     )}
                   </div>
                 ))}
+
+                {/* Completion Checklist */}
+                {checklistItems.length > 0 && (
+                  <Card className="p-6 mt-8">
+                    <h2 className="text-2xl font-bold text-text-primary mb-4">Completion Checklist</h2>
+                    <p className="text-sm text-text-secondary mb-6">
+                      Complete these objectives to master this module and earn full XP.
+                    </p>
+                    <ChecklistSidebarClient
+                      moduleId={moduleId}
+                      checklistItems={checklistItems}
+                    />
+                  </Card>
+                )}
+
+                {/* Final Module Quiz */}
+                {finalQuiz && (
+                  <div className="mt-8">
+                    <SectionQuizComponent quiz={{...finalQuiz, title: 'Final Module Quiz'}} />
+                  </div>
+                )}
               </div>
             ) : (
               /* Legacy Layout (for modules not yet restructured) */
