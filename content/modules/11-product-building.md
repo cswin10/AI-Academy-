@@ -61,6 +61,33 @@ MVP: Web form where you paste text, click button, get AI rewrite, copy result
 
 ### The Build-Measure-Learn Loop
 
+```mermaid
+graph LR
+    A[💡 Hypothesis:<br/>'Users need X'] --> B[🔨 BUILD<br/>Smallest MVP<br/>to test assumption]
+
+    B --> C[📊 MEASURE<br/>Track what users<br/>actually do]
+
+    C --> D[🧠 LEARN<br/>Analyze data<br/>Talk to users<br/>Form insights]
+
+    D --> E{Validated?}
+
+    E -->|Yes| F[✅ Double down<br/>Add next feature]
+    E -->|No| G[🔄 Pivot<br/>New hypothesis]
+
+    F --> H[💡 New Hypothesis]
+    G --> H
+
+    H --> B
+
+    I[⏱️ Complete loop in<br/>DAYS not months] -.Goal.-> B
+
+    style B fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style C fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style D fill:#F59E0B,stroke:#D97706,color:#fff
+    style F fill:#10B981,stroke:#059669,color:#fff
+    style G fill:#EF4444,stroke:#DC2626,color:#fff
+```
+
 1. **Build**: Ship smallest version that tests assumption
 2. **Measure**: Track what users actually do (not what they say)
 3. **Learn**: Analyze data, talk to users, form hypotheses
@@ -69,6 +96,26 @@ MVP: Web form where you paste text, click button, get AI rewrite, copy result
 This loop should take days, not months.
 
 ### Problem-First vs. Solution-First
+
+```mermaid
+graph TB
+    subgraph Wrong["❌ Solution-First (Usually Fails)"]
+        W1[🛠️ I built RAG system<br/>with vector search<br/>and agents] --> W2[🤔 Now what problem<br/>does this solve?]
+        W2 --> W3[🔍 Searching for users<br/>who might need this]
+        W3 --> W4[💔 Usually fails:<br/>No product-market fit]
+    end
+
+    subgraph Right["✅ Problem-First (Usually Succeeds)"]
+        R1[😫 Observed problem:<br/>Sales teams spend<br/>3hrs/day on emails] --> R2[💡 What's simplest<br/>AI solution?]
+        R2 --> R3[🔨 Build that<br/>MVP first]
+        R3 --> R4[✅ Usually succeeds:<br/>Clear value prop]
+    end
+
+    style Wrong fill:#EF4444,stroke:#DC2626,color:#fff
+    style Right fill:#10B981,stroke:#059669,color:#fff
+    style W4 fill:#FCA5A5,stroke:#DC2626,color:#000
+    style R4 fill:#86EFAC,stroke:#059669,color:#000
+```
 
 **Solution-First (Wrong):**
 ```
