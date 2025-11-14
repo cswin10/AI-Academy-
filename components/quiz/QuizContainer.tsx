@@ -247,7 +247,6 @@ export function QuizContainer({ moduleId }: QuizContainerProps) {
           <Button
             onClick={() => {
               setShowResults(false);
-              setCurrentAttempt(null);
             }}
             variant="primary"
             className="w-full"
