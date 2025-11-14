@@ -40,6 +40,25 @@ By the end of this module, you will:
 
 ### Databases vs. Spreadsheets: The Real Difference
 
+```mermaid
+graph TD
+    A[📊 Need Data Storage?] --> B{Scale & Complexity Check}
+
+    B -->|< 50K records<br/>Simple relationships<br/>Visual editing| C[📋 Airtable/Sheets]
+
+    B -->|> 100K records<br/>Complex queries<br/>Performance critical| D[🗄️ Real Database<br/>PostgreSQL/Supabase]
+
+    C --> C1[✅ Great for:<br/>• Team collaboration<br/>• Manual editing<br/>• Simple workflows]
+
+    D --> D1[✅ Great for:<br/>• Production apps<br/>• Fast queries<br/>• Row-level security<br/>• Transactions]
+
+    C -.Migrate when you outgrow.-> D
+
+    style C fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style D fill:#10B981,stroke:#059669,color:#fff
+    style B fill:#F59E0B,stroke:#D97706,color:#fff
+```
+
 Spreadsheets are like keeping papers in folders. Databases are like having a librarian who can find anything instantly.
 
 **Spreadsheets/Airtable are great when:**
@@ -69,6 +88,41 @@ Why Supabase specifically?
 - **Great documentation** (actually written for humans)
 
 ### Vector Embeddings: The Magic Behind Semantic Search
+
+```mermaid
+graph LR
+    subgraph Text["📝 Text Input"]
+        T1["The cat sat<br/>on the mat"]
+        T2["A feline rested<br/>on the rug"]
+        T3["Python programming<br/>language"]
+    end
+
+    subgraph Embeddings["🔢 Vector Embeddings (1536 dimensions)"]
+        E1["[0.2, 0.8, 0.1, 0.4, ...]<br/>✨ Similar values"]
+        E2["[0.19, 0.81, 0.09, 0.39, ...]<br/>✨ Similar values"]
+        E3["[0.7, 0.1, 0.9, 0.2, ...]<br/>❌ Different values"]
+    end
+
+    subgraph Search["🔍 Semantic Search"]
+        S1["Query: 'kitten on carpet'<br/>[0.21, 0.79, 0.11, 0.38, ...]"]
+        S2["✅ Finds T1 & T2<br/>Even without exact words!"]
+    end
+
+    T1 -->|OpenAI API<br/>text-embedding-3-small| E1
+    T2 -->|OpenAI API<br/>text-embedding-3-small| E2
+    T3 -->|OpenAI API<br/>text-embedding-3-small| E3
+
+    E1 -.Similar.-> E2
+    E1 -.Different.-> E3
+    E2 -.Different.-> E3
+
+    S1 --> S2
+
+    style E1 fill:#10B981,stroke:#059669,color:#fff
+    style E2 fill:#10B981,stroke:#059669,color:#fff
+    style E3 fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style S2 fill:#3B82F6,stroke:#1D4ED8,color:#fff
+```
 
 Here's the concept that unlocks modern AI: Every piece of text can be converted into a list of numbers (a vector) that represents its meaning. Similar meanings = similar numbers.
 
@@ -216,6 +270,36 @@ collection = client.create_collection("my_documents")
 **Problem:** SaaS company with 500+ support articles. Support team was using keyword search, which missed 40% of relevant articles. Customers were getting frustrated with unhelpful search results.
 
 **Bad Approach:** Elasticsearch with keyword matching. Searching for "how do I export data" wouldn't find articles about "downloading your information."
+
+```mermaid
+graph TD
+    A[❓ User Question<br/>'How do I export data?'] --> B[🔢 OpenAI API<br/>Generate Embedding]
+
+    B --> C[🔍 Pinecone Search<br/>Find 5 Similar Articles]
+
+    C --> D[📊 Results:<br/>Article IDs + Scores]
+
+    D --> E[🗄️ Supabase Query<br/>Fetch Full Articles]
+
+    E --> F[📄 Article 1: Data Export Guide<br/>📄 Article 2: Download Options<br/>📄 Article 3: Backup Settings]
+
+    F --> G[🤖 Optional: GPT-4<br/>Synthesize Answer]
+
+    G --> H[✅ Response to User<br/>Answer + Citations]
+
+    subgraph Storage["💾 Data Storage (Setup Phase)"]
+        S1[500 Articles in Supabase<br/>id, title, content, category]
+        S2[500 Embeddings in Pinecone<br/>vector + metadata]
+    end
+
+    Storage -.Pre-computed.-> C
+    Storage -.Source data.-> E
+
+    style A fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style C fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style E fill:#10B981,stroke:#059669,color:#fff
+    style H fill:#F59E0B,stroke:#D97706,color:#fff
+```
 
 **Good Approach:**
 1. Set up Supabase database with `articles` table (id, title, content, category, created_at)
