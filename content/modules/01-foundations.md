@@ -4,6 +4,7 @@ title: "Foundations of a Modern AI Operator"
 description: "Understanding systems thinking and how AI actually works in business contexts."
 estimatedTime: "2-3 days"
 difficulty: "Beginner"
+skillLevel: "No-code"
 prerequisites: []
 category: "Foundation"
 ---

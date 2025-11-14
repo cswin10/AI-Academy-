@@ -4,6 +4,7 @@ title: AI Workflows, RAG & Agents
 description: Build sophisticated AI systems with RAG, agents with tool calling, prompt chaining, and memory. This is where you become a true AI engineer.
 estimatedTime: "7-10 days"
 difficulty: Advanced
+skillLevel: "Low-code"
 prerequisites: ["01-foundations", "02-understanding-llms", "03-ai-content-creation", "04-core-interface-tools", "05-data-layer", "06-automation-layer", "07-apis-webhooks"]
 category: Automation & Intelligence
 ---

@@ -32,6 +32,7 @@ export const getModuleContent = (moduleId: string): ModuleContent | null => {
       description: data.description || '',
       estimatedTime: data.estimatedTime || 'TBD',
       difficulty: data.difficulty || 'Beginner',
+      skillLevel: data.skillLevel || undefined,
       prerequisites: data.prerequisites || [],
       category: data.category || 'Foundation',
     };

@@ -4,6 +4,7 @@ title: APIs & Webhooks
 description: Master REST APIs, webhooks, authentication methods, and API testing. Learn to work with any tool's API, even when pre-built integrations don't exist.
 estimatedTime: "5-7 days"
 difficulty: Intermediate
+skillLevel: "Low-code"
 prerequisites: ["01-foundations", "02-understanding-llms", "03-ai-content-creation", "04-core-interface-tools", "05-data-layer", "06-automation-layer"]
 category: Automation & Intelligence
 ---

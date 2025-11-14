@@ -4,6 +4,7 @@ title: Consulting & Business Skills
 description: Build a thriving AI consulting practice. Master client discovery, pricing strategies, proposal writing, and project management for AI implementations.
 estimatedTime: "5-7 days"
 difficulty: Intermediate
+skillLevel: "No-code"
 prerequisites: ["01-foundations", "02-understanding-llms", "04-core-interface-tools", "05-data-layer", "06-automation-layer"]
 category: Business & Production
 ---

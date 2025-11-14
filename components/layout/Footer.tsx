@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Github, Twitter, Linkedin, Heart } from 'lucide-react';
+import { Github, Twitter, MessageCircle, Heart } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -46,40 +46,55 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Community */}
+          {/* Community & Creator */}
           <div>
             <h4 className="text-sm font-semibold text-text-primary uppercase tracking-wider mb-3">
-              Community
+              Community & Connect
             </h4>
-            <div className="flex gap-3">
+            <div className="flex gap-3 mb-4">
               <a
-                href="https://github.com"
+                href="https://github.com/cswin10/AI-Academy-"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-text-secondary hover:text-purple-primary hover:bg-gray-700 transition-all"
-                aria-label="GitHub"
+                aria-label="GitHub Repository"
+                title="View on GitHub"
               >
                 <Github className="w-5 h-5" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://twitter.com/charlieswinhoe"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-text-secondary hover:text-purple-primary hover:bg-gray-700 transition-all"
-                aria-label="Twitter"
+                aria-label="Twitter/X"
+                title="Follow on Twitter/X"
               >
                 <Twitter className="w-5 h-5" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://discord.gg/ai-operators"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-text-secondary hover:text-purple-primary hover:bg-gray-700 transition-all"
-                aria-label="LinkedIn"
+                aria-label="Discord Community"
+                title="Join our Discord"
               >
-                <Linkedin className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5" />
               </a>
             </div>
+            <p className="text-xs text-text-secondary">
+              Built by{' '}
+              <a
+                href="https://dizzyotter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-primary hover:text-purple-light transition-colors"
+              >
+                Dizzy Otter
+              </a>
+              {' '}& Charlie Swinhoe
+            </p>
           </div>
         </div>
 

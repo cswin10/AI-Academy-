@@ -4,6 +4,7 @@ title: Automation Layer
 description: Master Zapier, Make, and n8n to build sophisticated multi-step workflows that connect all your tools. Learn error handling, monitoring, and advanced automation patterns.
 estimatedTime: "6-8 days"
 difficulty: Intermediate
+skillLevel: "Low-code"
 prerequisites: ["01-foundations", "02-understanding-llms", "03-ai-content-creation", "04-core-interface-tools", "05-data-layer"]
 category: Automation & Intelligence
 ---

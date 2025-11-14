@@ -4,6 +4,7 @@ title: Monitoring & Logging
 description: Keep your AI systems healthy with error tracking, analytics, and performance monitoring. Learn Sentry, PostHog, and production observability.
 estimatedTime: "3-5 days"
 difficulty: Intermediate
+skillLevel: "Low-code"
 prerequisites: ["01-foundations", "05-data-layer", "06-automation-layer", "09-payments-auth"]
 category: Business & Production
 ---

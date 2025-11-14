@@ -4,6 +4,7 @@ title: "Understanding LLMs"
 description: "Learn about different LLMs, their strengths, and how to use them effectively."
 estimatedTime: "3-5 days"
 difficulty: "Beginner"
+skillLevel: "No-code"
 prerequisites: ["01-foundations"]
 category: "Foundation"
 ---

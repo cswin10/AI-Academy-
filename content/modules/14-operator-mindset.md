@@ -4,6 +4,7 @@ title: Operator Mindset
 description: Develop the mental models and frameworks that separate great AI Operators from good ones. Learn systems thinking, decision-making frameworks, and how to stay current.
 estimatedTime: "3-4 days"
 difficulty: Beginner
+skillLevel: "No-code"
 prerequisites: ["01-foundations"]
 category: Foundation
 ---

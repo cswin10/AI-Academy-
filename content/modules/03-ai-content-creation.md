@@ -4,6 +4,7 @@ title: "AI-Powered Content Creation & Media Systems"
 description: "Master content creation at scale using AI tools for writing, voice, images, and video."
 estimatedTime: "5-7 days"
 difficulty: "Intermediate"
+skillLevel: "No-code"
 prerequisites: ["02-understanding-llms"]
 category: "Interface & Data"
 ---

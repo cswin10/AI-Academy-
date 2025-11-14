@@ -4,6 +4,7 @@ title: Security & Ethics
 description: Build trustworthy AI systems with proper data privacy, security best practices, and ethical considerations. Learn GDPR basics and responsible AI development.
 estimatedTime: "3-5 days"
 difficulty: Beginner
+skillLevel: "No-code"
 prerequisites: ["01-foundations", "05-data-layer", "07-apis-webhooks", "09-payments-auth"]
 category: Business & Production
 ---

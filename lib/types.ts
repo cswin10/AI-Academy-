@@ -6,6 +6,7 @@ export interface ModuleMetadata {
   description: string;
   estimatedTime: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
+  skillLevel?: 'No-code' | 'Low-code' | 'Code';
   prerequisites: string[];
   category: 'Foundation' | 'Interface & Data' | 'Automation & Intelligence' | 'Business & Production';
 }

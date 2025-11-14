@@ -20,7 +20,7 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({ module }) => {
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
             <span className="text-xs font-bold text-purple-primary bg-purple-primary/10 px-2 py-1 rounded">
               MODULE {String(metadata.number).padStart(2, '0')}
             </span>
@@ -32,6 +32,16 @@ export const ModuleCard: React.FC<ModuleCardProps> = ({ module }) => {
             `}>
               {metadata.difficulty}
             </span>
+            {metadata.skillLevel && (
+              <span className={`
+                text-xs font-semibold px-2 py-1 rounded
+                ${metadata.skillLevel === 'No-code' ? 'bg-teal-500/10 text-teal-400' : ''}
+                ${metadata.skillLevel === 'Low-code' ? 'bg-blue-500/10 text-blue-400' : ''}
+                ${metadata.skillLevel === 'Code' ? 'bg-purple-500/10 text-purple-400' : ''}
+              `}>
+                {metadata.skillLevel}
+              </span>
+            )}
           </div>
           <h3 className="text-xl font-bold text-text-primary mb-2">{metadata.title}</h3>
         </div>

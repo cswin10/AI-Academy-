@@ -7,7 +7,8 @@ import { Card } from '@/components/ui/Card';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { MarkdownRenderer } from '@/components/module/MarkdownRenderer';
 import { ChecklistSidebar } from '@/components/module/ChecklistSidebar';
-import { getModuleContent, getAllModuleIds } from '@/lib/markdown';
+import { ProgressRoadmap } from '@/components/home/ProgressRoadmap';
+import { getModuleContent, getAllModuleIds, getAllModules } from '@/lib/markdown';
 import type { Metadata } from 'next';
 
 export async function generateStaticParams() {
@@ -82,6 +83,9 @@ export default async function ModulePage({
   const currentIndex = allModules.findIndex(m => m.id === moduleId);
   const prevModule = currentIndex > 0 ? allModules[currentIndex - 1].id : null;
   const nextModule = currentIndex < allModules.length - 1 ? allModules[currentIndex + 1].id : null;
+
+  // Get all modules for progress roadmap
+  const allModulesMetadata = getAllModules();
 
   return (
     <div className="min-h-screen pb-20">
@@ -178,6 +182,15 @@ export default async function ModulePage({
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
+            {/* Progress Roadmap */}
+            <div className="mb-6">
+              <ProgressRoadmap
+                modules={allModulesMetadata}
+                currentModuleId={moduleId}
+                completedModuleIds={[]} // TODO: Integrate with ProgressContext
+              />
+            </div>
+
             {/* Checklist */}
             <ChecklistSidebar checklistItems={checklistItems} />
 

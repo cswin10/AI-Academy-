@@ -4,6 +4,7 @@ title: Data Layer
 description: Graduate from spreadsheets to real databases and vector stores. Learn Supabase, PostgreSQL basics, and how to implement vector search for AI applications.
 estimatedTime: "5-7 days"
 difficulty: Intermediate
+skillLevel: "Low-code"
 prerequisites: ["01-foundations", "02-understanding-llms", "03-ai-content-creation", "04-core-interface-tools"]
 category: Interface & Data
 ---
