@@ -1,6 +1,17 @@
 import React from 'react';
 import { ExternalLink, Book, Code, Video, Workflow, MessageSquare } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Resources",
+  description: "Essential tools, platforms, and communities for AI operators. Curated list of 60+ resources including OpenAI, Claude, Make.com, Cursor, and more.",
+  openGraph: {
+    title: "AI Operator Resources & Tools",
+    description: "Essential tools, platforms, and communities for AI operators. Everything you need to build AI-powered systems.",
+    url: "/resources",
+  },
+};
 
 export default function ResourcesPage() {
   const resources = [

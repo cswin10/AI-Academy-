@@ -3,6 +3,17 @@ import Link from 'next/link';
 import { ArrowRight, Target, Users, Zap } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Learn about the AI Operator Roadmap - a comprehensive learning platform designed to transform you from complete beginner to professional AI operator in months.",
+  openGraph: {
+    title: "About AI Operator Roadmap",
+    description: "A structured, comprehensive path from zero to professional AI operator that anyone can follow.",
+    url: "/about",
+  },
+};
 
 export default function AboutPage() {
   return (

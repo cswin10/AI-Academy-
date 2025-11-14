@@ -6,8 +6,41 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
-  description: "A comprehensive, free educational resource for learning AI systems building from beginner to professional level.",
+  title: {
+    default: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
+    template: "%s | AI Operator Roadmap"
+  },
+  description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents. Build real-world AI products from scratch.",
+  keywords: ["AI operator", "AI automation", "LLM", "ChatGPT", "Claude", "no-code AI", "AI systems", "machine learning", "prompt engineering", "AI course"],
+  authors: [{ name: "AI Operator Roadmap" }],
+  creator: "AI Operator Roadmap",
+  publisher: "AI Operator Roadmap",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
+    description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
+    siteName: "AI Operator Roadmap",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
+    description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
+    creator: "@aioperator",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({

@@ -1,7 +1,20 @@
 import React from 'react';
 import { Hero } from '@/components/home/Hero';
 import { ModuleCard } from '@/components/home/ModuleCard';
+import { LearningPaths } from '@/components/home/LearningPaths';
 import { getAllModules } from '@/lib/markdown';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
+  description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents. Build real-world AI products from scratch. 100% free.",
+  openGraph: {
+    title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
+    description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
+    url: "/",
+    type: "website",
+  },
+};
 
 // This will be a server component by default
 export default function HomePage() {
@@ -16,9 +29,47 @@ export default function HomePage() {
     isCompleted: false,
   }));
 
+  // Generate JSON-LD structured data for SEO
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: 'AI Operator Roadmap',
+    description: 'Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.',
+    provider: {
+      '@type': 'Organization',
+      name: 'AI Operator Roadmap',
+    },
+    educationalLevel: 'Beginner to Advanced',
+    inLanguage: 'en',
+    isAccessibleForFree: true,
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: 'online',
+      courseWorkload: 'PT120H', // ~120 hours total
+    },
+    numberOfCredits: 0,
+    hasPart: allModules.map((module) => ({
+      '@type': 'Course',
+      name: `Module ${module.number}: ${module.title}`,
+      description: module.description,
+      educationalLevel: module.difficulty,
+      timeRequired: module.estimatedTime,
+      url: `/modules/${module.id}`,
+    })),
+  };
+
   return (
     <div className="min-h-screen">
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Hero />
+
+      {/* Learning Paths */}
+      <LearningPaths />
 
       {/* Modules Section */}
       <section id="modules" className="py-16 px-4">

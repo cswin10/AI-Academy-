@@ -8,12 +8,46 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { MarkdownRenderer } from '@/components/module/MarkdownRenderer';
 import { ChecklistSidebar } from '@/components/module/ChecklistSidebar';
 import { getModuleContent, getAllModuleIds } from '@/lib/markdown';
+import type { Metadata } from 'next';
 
 export async function generateStaticParams() {
   const moduleIds = getAllModuleIds();
   return moduleIds.map((id) => ({
     moduleId: id,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ moduleId: string }>;
+}): Promise<Metadata> {
+  const { moduleId } = await params;
+  const moduleContent = getModuleContent(moduleId);
+
+  if (!moduleContent) {
+    return {
+      title: 'Module Not Found',
+    };
+  }
+
+  const { metadata } = moduleContent;
+
+  return {
+    title: `Module ${metadata.number}: ${metadata.title}`,
+    description: metadata.description,
+    openGraph: {
+      title: `Module ${metadata.number}: ${metadata.title}`,
+      description: metadata.description,
+      url: `/modules/${moduleId}`,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Module ${metadata.number}: ${metadata.title}`,
+      description: metadata.description,
+    },
+  };
 }
 
 export default async function ModulePage({
