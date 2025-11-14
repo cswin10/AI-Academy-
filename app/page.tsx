@@ -1,46 +1,15 @@
 import React from 'react';
 import { Hero } from '@/components/home/Hero';
 import { ModuleCard } from '@/components/home/ModuleCard';
+import { getAllModules } from '@/lib/markdown';
 
 // This will be a server component by default
 export default function HomePage() {
-  // For now, we'll create mock module data
-  // In production, this would come from getAllModules()
-  const mockModules = [
-    {
-      id: '01-foundations',
-      number: 1,
-      title: 'Foundations of a Modern AI Operator',
-      description: 'Understanding systems thinking and how AI actually works in business contexts.',
-      estimatedTime: '2-3 days',
-      difficulty: 'Beginner' as const,
-      prerequisites: [],
-      category: 'Foundation' as const,
-    },
-    {
-      id: '02-understanding-llms',
-      number: 2,
-      title: 'Understanding LLMs',
-      description: 'Learn about different LLMs, their strengths, and how to use them effectively.',
-      estimatedTime: '3-5 days',
-      difficulty: 'Beginner' as const,
-      prerequisites: ['01-foundations'],
-      category: 'Foundation' as const,
-    },
-    {
-      id: '03-ai-content-creation',
-      number: 3,
-      title: 'AI-Powered Content Creation & Media Systems',
-      description: 'Master content creation at scale using AI tools for writing, voice, images, and video.',
-      estimatedTime: '5-7 days',
-      difficulty: 'Intermediate' as const,
-      prerequisites: ['02-understanding-llms'],
-      category: 'Interface & Data' as const,
-    },
-  ];
+  // Load all modules from the filesystem
+  const allModules = getAllModules();
 
   // Convert to ModuleCardData format
-  const moduleCards = mockModules.map((metadata) => ({
+  const moduleCards = allModules.map((metadata) => ({
     metadata,
     progress: 0,
     isStarted: false,
@@ -67,12 +36,6 @@ export default function HomePage() {
             {moduleCards.map((module) => (
               <ModuleCard key={module.metadata.id} module={module} />
             ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <p className="text-text-secondary">
-              More modules coming soon as content generation completes...
-            </p>
           </div>
         </div>
       </section>
