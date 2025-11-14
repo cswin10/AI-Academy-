@@ -42,22 +42,37 @@ By the end of this module, you will:
 
 ### RAG: The Complete Picture
 
-Basic RAG (what you built in Module 5):
-```
-User Question → Embed → Search vectors → Retrieve docs → Generate answer
+```mermaid
+graph TB
+    subgraph Basic["📋 Basic RAG - 70% Accuracy"]
+        B1[User Question] --> B2[Generate<br/>Embedding]
+        B2 --> B3[Vector Search<br/>Top 3 Docs]
+        B3 --> B4[Retrieve Full<br/>Documents]
+        B4 --> B5[Generate<br/>Answer]
+        B5 --> B6[Return to User]
+    end
+
+    subgraph Production["🚀 Production RAG - 95% Accuracy"]
+        P1[User Question] --> P2[🔍 Query Enhancement<br/>Generate variants<br/>Expand/rephrase]
+        P2 --> P3[⚡ Hybrid Search<br/>Vector + Keyword<br/>Multiple sources]
+        P3 --> P4[📊 Rerank Results<br/>Score by relevance<br/>AI-powered ranking]
+        P4 --> P5[🔗 Context Assembly<br/>Merge chunks<br/>Add metadata]
+        P5 --> P6[🤖 Answer Generation<br/>With citations<br/>Source tracking]
+        P6 --> P7[✅ Quality Check<br/>Hallucination detection<br/>Confidence score]
+        P7 --> P8[📤 Return with Sources<br/>Answer + Citations]
+    end
+
+    Basic -.Upgrade to.-> Production
+
+    style Basic fill:#F59E0B,stroke:#D97706,color:#fff
+    style Production fill:#10B981,stroke:#059669,color:#fff
 ```
 
+Basic RAG (what you built in Module 5):
+- User Question → Embed → Search vectors → Retrieve docs → Generate answer
+
 Production RAG (what you'll build here):
-```
-User Question
-  → Query enhancement (expand/rephrase)
-  → Hybrid search (vectors + keywords)
-  → Rerank results (score by relevance)
-  → Context assembly (chunk merging)
-  → Answer generation (with citations)
-  → Quality check (hallucination detection)
-  → Return with sources
-```
+- Query enhancement → Hybrid search → Reranking → Context assembly → Answer generation → Quality check
 
 The difference: Basic RAG works 70% of the time. Production RAG works 95% of the time.
 
@@ -142,6 +157,46 @@ The AI is choosing which tools to use and when - that's the key difference from 
 - Reference in future conversations
 
 ### The ReAct Pattern
+
+```mermaid
+graph TB
+    A[🎯 Goal Received:<br/>'Research competitor pricing'] --> B[💭 Thought 1:<br/>'I should search<br/>for pricing info']
+
+    B --> C[⚡ Action 1:<br/>search_web]
+    C --> D[📊 Observation 1:<br/>'Found 5 results<br/>First looks relevant']
+
+    D --> E[💭 Thought 2:<br/>'I should read<br/>the pricing page']
+
+    E --> F[⚡ Action 2:<br/>read_webpage<br/>competitor.com/pricing]
+    F --> G[📊 Observation 2:<br/>'Pricing: $99/month<br/>for pro plan']
+
+    G --> H{💭 Thought 3:<br/>Have enough info?}
+
+    H -->|No - Need more| I[⚡ Action 3:<br/>Use another tool]
+    I --> J[📊 Observation 3]
+    J --> H
+
+    H -->|Yes - Complete| K[✅ Final Answer:<br/>'Competitor charges<br/>$99/month for pro']
+
+    subgraph Tools["🛠️ Available Tools"]
+        T1[search_web]
+        T2[read_webpage]
+        T3[save_to_db]
+        T4[create_table]
+    end
+
+    Tools -.Can use any tool.-> C
+    Tools -.Can use any tool.-> F
+    Tools -.Can use any tool.-> I
+
+    style B fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style E fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style C fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style F fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style D fill:#F59E0B,stroke:#D97706,color:#fff
+    style G fill:#F59E0B,stroke:#D97706,color:#fff
+    style K fill:#10B981,stroke:#059669,color:#fff
+```
 
 ReAct (Reasoning + Acting) is the dominant agent pattern:
 
@@ -288,6 +343,50 @@ const run = await openai.beta.threads.runs.create(thread.id, {
 - Embed all articles
 - User asks question → search → return top 3 → generate answer
 - Works okay, but 30% of questions get wrong or incomplete answers
+
+```mermaid
+graph TB
+    A[❓ User Question:<br/>'How do I reset password?'] --> B[📝 Step 1:<br/>Query Enhancement]
+
+    B --> B1[Generate Variants:<br/>• 'How to reset password'<br/>• 'Password reset steps'<br/>• 'Forgot password help']
+
+    B1 --> C[🔍 Step 2:<br/>Hybrid Search]
+
+    C --> C1[Vector Search<br/>Pinecone]
+    C --> C2[Keyword Search<br/>PostgreSQL]
+
+    C1 --> D[📊 Combined Results<br/>15 candidate articles]
+    C2 --> D
+
+    D --> E[🎯 Step 3:<br/>AI Reranking]
+
+    E --> E1[Claude Scores<br/>Each Article 1-10]
+
+    E1 --> F[📋 Top 5 Articles<br/>Ranked by relevance]
+
+    F --> G[🔗 Step 4:<br/>Context Assembly]
+
+    G --> G1[Merge chunks<br/>Add citations<br/>Include metadata]
+
+    G1 --> H[🤖 Step 5:<br/>Answer Generation]
+
+    H --> H1[GPT-4 with context<br/>Include source citations<br/>[1], [2], [3]]
+
+    H1 --> I[✅ Step 6:<br/>Quality Check]
+
+    I --> I1{Confidence Score<br/>& Hallucination Check}
+
+    I1 -->|High Confidence| J[✅ Return Answer:<br/>'To reset password:<br/>1. Go to login...'<br/>Sources: [1] [2]]
+
+    I1 -->|Low Confidence| K[⚠️ Flag for Human:<br/>'Unclear - needs<br/>manual review']
+
+    style A fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style B fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style E fill:#F59E0B,stroke:#D97706,color:#fff
+    style H fill:#10B981,stroke:#059669,color:#fff
+    style J fill:#10B981,stroke:#059669,color:#fff
+    style K fill:#EF4444,stroke:#DC2626,color:#fff
+```
 
 **Advanced Approach (Production RAG):**
 
