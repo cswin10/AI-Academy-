@@ -57,6 +57,33 @@ Total: 50 minutes. You talk 30%, they talk 70%.
 
 ### Pricing Models
 
+```mermaid
+graph TB
+    A[💰 Choose Pricing Model] --> B{Project Type?}
+
+    B -->|Ongoing support<br/>Unclear scope| C1[⏱️ Hourly<br/>$100-300/hr<br/>✅ Simple billing<br/>❌ Caps income]
+
+    B -->|Defined deliverable<br/>Clear scope| C2[📦 Project-Based<br/>$5K-50K<br/>✅ Clear budget<br/>❌ Scope creep risk]
+
+    B -->|High-impact<br/>Measurable ROI| C3[💎 Value-Based<br/>% of value created<br/>✅ Aligned incentives<br/>❌ Longer sales cycle]
+
+    B -->|Long-term partnership<br/>Regular work| C4[🔄 Retainer<br/>$3K-15K/month<br/>✅ Predictable income<br/>❌ Feels like employment]
+
+    B -->|Complex relationship<br/>Best of both| C5[🎯 Hybrid<br/>Project + hourly<br/>Retainer + bonuses<br/>Most common]
+
+    C1 --> D[💵 Invoice Client]
+    C2 --> D
+    C3 --> D
+    C4 --> D
+    C5 --> D
+
+    style C1 fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style C2 fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style C3 fill:#10B981,stroke:#059669,color:#fff
+    style C4 fill:#F59E0B,stroke:#D97706,color:#fff
+    style C5 fill:#EC4899,stroke:#DB2777,color:#fff
+```
+
 **Hourly** ($100-300/hour)
 - Pro: Simple, easy to bill
 - Con: Penalizes efficiency, caps income
