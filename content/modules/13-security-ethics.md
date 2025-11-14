@@ -40,6 +40,26 @@ By the end of this module, you will:
 
 ### The CIA Triad
 
+```mermaid
+graph TB
+    A[🔒 Information Security] --> B[Confidentiality<br/>WHO can access?]
+    A --> C[Integrity<br/>IS IT accurate?]
+    A --> D[Availability<br/>IS IT accessible?]
+
+    B --> B1[🔐 Encryption<br/>At rest & in transit]
+    B --> B2[👤 Access controls<br/>Authentication & auth]
+
+    C --> C1[✅ Input validation<br/>Sanitize data]
+    C --> C2[📊 Database constraints<br/>& audit logs]
+
+    D --> D1[💾 Backups<br/>& redundancy]
+    D --> D2[🔍 Monitoring<br/>& alerts]
+
+    style B fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style C fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style D fill:#10B981,stroke:#059669,color:#fff
+```
+
 Three pillars of information security:
 
 **Confidentiality**: Only authorized people can access data
@@ -58,6 +78,35 @@ Three pillars of information security:
 - Monitoring and alerts
 
 ### Defense in Depth
+
+```mermaid
+graph TB
+    A[🌐 Internet/Attacker] --> L1[Layer 1: Network<br/>🛡️ Firewall<br/>DDoS protection]
+
+    L1 --> L2[Layer 2: Application<br/>✅ Input validation<br/>SQL injection prevention]
+
+    L2 --> L3[Layer 3: Authentication<br/>🔑 Who are you?<br/>MFA, passwords]
+
+    L3 --> L4[Layer 4: Authorization<br/>🚪 What can you do?<br/>Role-based access]
+
+    L4 --> L5[Layer 5: Data<br/>🔐 Encryption<br/>At rest & in transit]
+
+    L5 --> L6[Layer 6: Audit<br/>📝 Logging<br/>Track all actions]
+
+    L6 --> L7[Layer 7: Monitor<br/>🔍 Alerts<br/>Detect anomalies]
+
+    L7 --> D[💾 Protected Data]
+
+    X[❌ Attack on Layer 3<br/>Authentication bypass] -.Blocked by.-> L4
+    X -.Still protected by.-> L5
+    X -.Still protected by.-> L6
+    X -.Still protected by.-> L7
+
+    style L1 fill:#EF4444,stroke:#DC2626,color:#fff
+    style L4 fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style L7 fill:#10B981,stroke:#059669,color:#fff
+    style D fill:#10B981,stroke:#059669,color:#fff
+```
 
 Don't rely on a single security measure. Layer multiple protections:
 
