@@ -55,6 +55,46 @@ Your app → API Request → Software's server → Process → API Response → 
 
 ### REST API Basics
 
+```mermaid
+graph LR
+    subgraph Methods["📡 HTTP Methods"]
+        A1[GET<br/>Read Data<br/>📖]
+        A2[POST<br/>Create New<br/>➕]
+        A3[PUT/PATCH<br/>Update Existing<br/>✏️]
+        A4[DELETE<br/>Remove Data<br/>🗑️]
+    end
+
+    subgraph Request["📤 API Request"]
+        B1[Method: GET]
+        B2[URL: /users/123]
+        B3[Headers:<br/>Authorization: Bearer token<br/>Content-Type: application/json]
+        B4[Body: JSON data]
+    end
+
+    subgraph Auth["🔐 Authentication"]
+        C1[API Key<br/>X-API-Key: key]
+        C2[Bearer Token<br/>Authorization: Bearer token]
+        C3[OAuth 2.0<br/>Multi-step flow]
+        C4[Basic Auth<br/>Username:Password]
+    end
+
+    subgraph Response["📥 API Response"]
+        D1[Status: 200 OK ✅]
+        D2[Status: 400 Bad Request ❌]
+        D3[Status: 401 Unauthorized 🔒]
+        D4[Status: 429 Rate Limit ⏱️]
+        D5[Status: 500 Server Error 💥]
+    end
+
+    Methods --> Request
+    Auth --> Request
+    Request --> Response
+
+    style Methods fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style Auth fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style Response fill:#10B981,stroke:#059669,color:#fff
+```
+
 REST (Representational State Transfer) is the most common API architecture. It uses standard HTTP methods:
 
 **GET** - Retrieve data
@@ -118,6 +158,32 @@ Header: Authorization: Basic base64(username:password)
 Less common now, considered less secure.
 
 ### Webhooks: Push vs. Pull
+
+```mermaid
+graph TB
+    subgraph Polling["🔄 Traditional Polling (PULL) - Inefficient"]
+        P1[Your App] -->|Request 1:<br/>'Any new data?'| P2[External API]
+        P2 -->|'No'| P1
+        P1 -->|Wait 5 min...<br/>Request 2:<br/>'Any new data?'| P2
+        P2 -->|'No'| P1
+        P1 -->|Wait 5 min...<br/>Request 3:<br/>'Any new data?'| P2
+        P2 -->|'Yes! Here: {...}'| P1
+        P3[❌ Problems:<br/>• Wasted API calls<br/>• Uses rate limits<br/>• Not real-time<br/>• High latency]
+    end
+
+    subgraph Webhooks["⚡ Webhooks (PUSH) - Efficient"]
+        W1[External Service] -.Register webhook URL.-> W2[Your App]
+        W3[Event Occurs:<br/>Payment received] --> W1
+        W1 -->|Instant POST:<br/>https://you.com/webhook<br/>Data: payment_details| W2
+        W2 -->|Process data| W4[Take action]
+        W5[✅ Benefits:<br/>• Real-time<br/>• No wasted calls<br/>• Event-driven<br/>• Efficient]
+    end
+
+    style Polling fill:#EF4444,stroke:#DC2626,color:#fff
+    style Webhooks fill:#10B981,stroke:#059669,color:#fff
+    style P3 fill:#FCA5A5,stroke:#DC2626,color:#000
+    style W5 fill:#86EFAC,stroke:#059669,color:#000
+```
 
 **Traditional API (Pull)**: Your app asks "anything new?" every few minutes
 - Inefficient (many wasted requests)
@@ -262,6 +328,37 @@ curl -X POST https://api.openai.com/v1/chat/completions \
 **Problem:** Company wanted a Slack bot that could answer questions about internal documentation using RAG, but no pre-built integration existed.
 
 **Bad Approach:** Try to force Zapier to do it (doesn't support complex RAG logic).
+
+```mermaid
+graph TB
+    A[💬 User in Slack:<br/>'How do I export data?'] -->|Webhook POST| B[📥 Webhook Receiver<br/>Supabase Edge Function]
+
+    B --> C[🔢 Step 1:<br/>Generate Embedding<br/>OpenAI API]
+
+    C --> D[🔍 Step 2:<br/>Search Pinecone<br/>Find 3 Similar Docs]
+
+    D --> E[📊 Results:<br/>Doc IDs + Scores]
+
+    E --> F[🗄️ Step 3:<br/>Fetch Full Docs<br/>from Supabase]
+
+    F --> G[📄 Retrieved Docs:<br/>• Export Guide<br/>• Data Download FAQ<br/>• Backup Settings]
+
+    G --> H[🤖 Step 4:<br/>Generate Answer<br/>GPT-4 + Context]
+
+    H --> I[💡 AI Response:<br/>Answer + Citations]
+
+    I --> J[📤 Step 5:<br/>Post to Slack<br/>Slack API]
+
+    J --> K[✅ User sees answer<br/>in thread]
+
+    B -.Ignore if bot message.-> L[🚫 Skip Processing]
+
+    style A fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style D fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style F fill:#10B981,stroke:#059669,color:#fff
+    style H fill:#F59E0B,stroke:#D97706,color:#fff
+    style K fill:#10B981,stroke:#059669,color:#fff
+```
 
 **Good Approach:**
 
