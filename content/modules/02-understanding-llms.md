@@ -18,6 +18,34 @@ This module teaches you practical LLM knowledge—not deep learning theory, but 
 
 ## The LLM Landscape
 
+```mermaid
+graph TB
+    subgraph Commercial["💼 Commercial Leaders"]
+        A1[OpenAI<br/>GPT-4 Turbo<br/>GPT-4o]
+        A2[Anthropic<br/>Claude 3.5 Sonnet<br/>Claude Opus]
+        A3[Google<br/>Gemini Ultra<br/>Gemini Pro]
+    end
+
+    subgraph Specialized["🎯 Specialized"]
+        B1[Perplexity<br/>Real-time Research]
+        B2[Grok<br/>X/Twitter Data]
+    end
+
+    subgraph OpenSource["🔓 Open Source"]
+        C1[Llama 3<br/>Meta]
+        C2[Mistral<br/>European]
+    end
+
+    Commercial --> D[Your AI Systems]
+    Specialized --> D
+    OpenSource --> D
+
+    style Commercial fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style Specialized fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style OpenSource fill:#10B981,stroke:#059669,color:#fff
+    style D fill:#F59E0B,stroke:#D97706,color:#fff
+```
+
 ### Major LLM Providers
 
 **OpenAI (GPT Series)**
@@ -109,6 +137,19 @@ This simple mechanism, scaled up with billions of parameters and trained on mass
 
 LLMs don't always pick the most likely next token—they use controlled randomness.
 
+```mermaid
+graph LR
+    A[Input Prompt] --> B{Temperature Setting}
+
+    B -->|0.0 - 0.3<br/>Deterministic| C[Factual Output<br/>Code Generation<br/>Data Extraction]
+    B -->|0.5 - 0.8<br/>Balanced| D[General Writing<br/>Brainstorming<br/>Most Use Cases]
+    B -->|1.0 - 2.0<br/>Creative| E[Creative Writing<br/>Idea Generation<br/>Variation]
+
+    style C fill:#10B981,stroke:#059669,color:#fff
+    style D fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style E fill:#8B5CF6,stroke:#6D28D9,color:#fff
+```
+
 **Temperature (0.0 to 2.0):**
 - **0.0**: Deterministic, always picks most likely token
 - **0.7**: Balanced creativity and consistency
@@ -167,6 +208,22 @@ Context: You are an expert content marketer analyzing blog performance.
 Task: Analyze the following traffic data and identify trends.
 Format: Provide a bullet-point summary followed by 3 actionable recommendations.
 Constraints: Focus on data from the last 30 days only.
+```
+
+```mermaid
+graph TD
+    A[📝 Start with Goal] --> B[🎭 Set Context/Role]
+    B --> C[📋 Define Task]
+    C --> D[📊 Specify Format]
+    D --> E[⚙️ Add Constraints]
+    E --> F{Test Output}
+    F -->|Good| G[✅ Save Prompt]
+    F -->|Needs Work| H[🔄 Refine Prompt]
+    H --> B
+
+    style A fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style G fill:#10B981,stroke:#059669,color:#fff
+    style H fill:#F59E0B,stroke:#D97706,color:#fff
 ```
 
 ### Prompting Techniques
