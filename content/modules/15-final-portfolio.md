@@ -58,6 +58,31 @@ Employers and clients care about portfolios more than resumes in AI operations.
 
 ### The Three Types of Portfolio Projects
 
+```mermaid
+graph TB
+    A[🎯 Complete Portfolio] --> B[1️⃣ DEPTH Project<br/>Show Mastery]
+    A --> C[2️⃣ BREADTH Projects<br/>Show Versatility]
+    A --> D[3️⃣ POLISH Project<br/>Show Professionalism]
+
+    B --> B1[Complex system<br/>Multiple technologies<br/>Real business problem]
+    B --> B2[Example:<br/>Full RAG system<br/>+ auth + payments<br/>+ monitoring]
+
+    C --> C1[Different problems<br/>Different tools<br/>Different industries]
+    C --> C2[Examples:<br/>• Content automation<br/>• Lead enrichment<br/>• Customer support AI]
+
+    D --> D1[Beautiful UI<br/>Complete docs<br/>Live demo]
+    D --> D2[Example:<br/>Public product<br/>with 100+ users]
+
+    B -.Need at least.-> E[✅ All 3 Types]
+    C -.Need at least.-> E
+    D -.Need at least.-> E
+
+    style B fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style C fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style D fill:#10B981,stroke:#059669,color:#fff
+    style E fill:#F59E0B,stroke:#D97706,color:#fff
+```
+
 **1. Depth Projects** (Show mastery)
 - One complex system
 - Multiple technologies integrated
@@ -79,6 +104,30 @@ Employers and clients care about portfolios more than resumes in AI operations.
 You need at least one of each type.
 
 ### The Case Study Formula
+
+```mermaid
+graph LR
+    A[1️⃣ CONTEXT<br/>What was<br/>the situation?] --> B[2️⃣ PROBLEM<br/>What specific<br/>pain existed?]
+
+    B --> C[3️⃣ SOLUTION<br/>What did<br/>you build?<br/>High-level]
+
+    C --> D[4️⃣ IMPLEMENTATION<br/>How did you<br/>build it?<br/>Some tech details]
+
+    D --> E[5️⃣ RESULTS<br/>Measurable<br/>impact?<br/>$$ saved, hours saved]
+
+    E --> F[6️⃣ LESSONS<br/>What did<br/>you learn?]
+
+    G[❌ Bad:<br/>'Built RAG with<br/>Pinecone, OpenAI<br/>1536-dim vectors'] -.vs.-> H[✅ Good:<br/>'Agency saved 15hrs/wk<br/>searching 1000+ posts<br/>ROI: $28K/year']
+
+    style A fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style B fill:#EF4444,stroke:#DC2626,color:#fff
+    style C fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style D fill:#F59E0B,stroke:#D97706,color:#fff
+    style E fill:#10B981,stroke:#059669,color:#fff
+    style F fill:#6366F1,stroke:#4F46E5,color:#fff
+    style G fill:#FCA5A5,stroke:#DC2626,color:#000
+    style H fill:#86EFAC,stroke:#059669,color:#000
+```
 
 Don't just describe what you built. Tell a story:
 
