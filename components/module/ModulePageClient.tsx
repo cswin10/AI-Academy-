@@ -10,10 +10,13 @@ import { MarkdownRenderer } from '@/components/module/MarkdownRenderer';
 import { ChecklistSidebarClient } from '@/components/module/ChecklistSidebarClient';
 import { QuizContainer } from '@/components/quiz/QuizContainer';
 import { ProgressRoadmap } from '@/components/home/ProgressRoadmap';
+import { SectionCard } from '@/components/module/SectionCard';
+import { TaskCard } from '@/components/module/TaskCard';
+import { SectionQuizComponent } from '@/components/module/SectionQuizComponent';
 import { useModuleProgress } from '@/hooks/useModuleProgress';
 import { useChecklistProgress } from '@/hooks/useChecklistProgress';
 import { useSupabase } from '@/hooks/useSupabase';
-import type { ModuleMetadata } from '@/lib/types';
+import type { ModuleMetadata, ModuleSection } from '@/lib/types';
 
 interface ModulePageClientProps {
   moduleId: string;
@@ -27,6 +30,7 @@ interface ModulePageClientProps {
   prevModule: string | null;
   nextModule: string | null;
   allModules: ModuleMetadata[];
+  structuredSections?: ModuleSection[];
 }
 
 export function ModulePageClient({
@@ -37,6 +41,7 @@ export function ModulePageClient({
   prevModule,
   nextModule,
   allModules,
+  structuredSections,
 }: ModulePageClientProps) {
   const { user } = useSupabase();
   const { progress: allProgress, startModule, completeModule } = useModuleProgress();
@@ -140,16 +145,59 @@ export function ModulePageClient({
       {/* Main Content */}
       <div className="container mx-auto max-w-5xl px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Markdown Content */}
+          {/* Content Area */}
           <div className="lg:col-span-2">
-            <Card className="p-8">
-              <MarkdownRenderer content={content} />
-            </Card>
+            {structuredSections && structuredSections.length > 0 ? (
+              /* New Structured Layout */
+              <div className="space-y-6">
+                {structuredSections.map((section, index) => (
+                  <div key={section.id}>
+                    {/* Section Content */}
+                    <SectionCard
+                      title={section.title}
+                      content={section.content}
+                      sectionNumber={section.sectionNumber}
+                      defaultExpanded={index === 0}
+                    />
 
-            {/* Quiz Section */}
-            <div className="mt-8">
-              <QuizContainer moduleId={moduleId} />
-            </div>
+                    {/* Tasks for this section */}
+                    {section.tasks && section.tasks.length > 0 && (
+                      <div className="space-y-4 mt-4">
+                        {section.tasks.map(task => (
+                          <TaskCard
+                            key={task.id}
+                            taskId={task.id}
+                            moduleId={moduleId}
+                            title={task.title}
+                            description={task.description}
+                            xpReward={task.xpReward}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Quiz for this section */}
+                    {section.quiz && (
+                      <div className="mt-4">
+                        <SectionQuizComponent quiz={section.quiz} />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Legacy Layout (for modules not yet restructured) */
+              <>
+                <Card className="p-8">
+                  <MarkdownRenderer content={content} />
+                </Card>
+
+                {/* Quiz Section */}
+                <div className="mt-8">
+                  <QuizContainer moduleId={moduleId} />
+                </div>
+              </>
+            )}
 
             {/* Navigation */}
             <div className="flex items-center justify-between mt-8">

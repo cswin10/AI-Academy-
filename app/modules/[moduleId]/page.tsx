@@ -56,7 +56,7 @@ export default async function ModulePage({
     notFound();
   }
 
-  const { metadata, content, checklistItems } = moduleContent;
+  const { metadata, content, checklistItems, structuredSections } = moduleContent;
 
   // Find prev/next modules by number (not alphabetically)
   // Get all modules sorted by number, then find adjacent ones
@@ -82,6 +82,7 @@ export default async function ModulePage({
         metadata={metadata}
         content={content}
         checklistItems={checklistItems}
+        structuredSections={structuredSections}
         prevModule={prevModule}
         nextModule={nextModule}
         allModules={allModulesMetadata}
