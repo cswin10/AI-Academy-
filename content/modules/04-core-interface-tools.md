@@ -37,6 +37,42 @@ By the end of this module, you will:
 
 ### The Interface Layer Philosophy
 
+```mermaid
+graph TB
+    subgraph Users["👥 Human Users"]
+        U1[End Users<br/>Trigger & View]
+        U2[AI Operator<br/>Configure & Monitor]
+    end
+
+    subgraph Interface["🎨 Interface Layer - Where Humans Interact"]
+        I1[Notion<br/>Dashboards & Docs]
+        I2[Airtable<br/>Databases & Forms]
+        I3[Google Sheets<br/>Analytics & Config]
+    end
+
+    subgraph Execution["⚙️ Execution Layer - Where Work Happens"]
+        E1[AI APIs<br/>GPT-4, Claude, etc.]
+        E2[Automation Tools<br/>Make, Zapier]
+        E3[Custom Scripts<br/>Python, Node.js]
+    end
+
+    subgraph Storage["💾 Storage Layer - Where Data Lives"]
+        S1[Databases<br/>PostgreSQL, Supabase]
+        S2[File Systems<br/>S3, Google Drive]
+        S3[Vector Stores<br/>Pinecone, Weaviate]
+    end
+
+    Users --> Interface
+    Interface --> Execution
+    Execution --> Storage
+    Storage -.Read.-> Execution
+    Execution -.Results.-> Interface
+
+    style Interface fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style Execution fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style Storage fill:#10B981,stroke:#059669,color:#fff
+```
+
 Think of your AI operations stack in three layers:
 
 1. **The Execution Layer** (APIs, AI models, automations) - where the work happens
@@ -143,6 +179,43 @@ Example: Your Airtable CRM is the source of truth for customer data. Notion migh
 
 **Bad Approach:** Different Google Sheets for each client, content stored in random Google Docs, status tracked in Slack messages.
 
+```mermaid
+graph TB
+    subgraph Airtable["📊 Airtable - Source of Truth"]
+        A1[Clients Table<br/>Contracts, Guidelines]
+        A2[Content Pieces<br/>Status Workflow]
+        A3[Publishing Channels<br/>Distribution]
+        A4[AI Generations<br/>Raw Output]
+
+        A1 --> A2
+        A2 --> A3
+        A2 --> A4
+    end
+
+    subgraph Notion["📋 Notion - Client Portals"]
+        N1[Client Dashboard<br/>Their Content Calendar]
+        N2[Request Form<br/>New Content Ideas]
+        N3[Preview & Approval<br/>Review Interface]
+    end
+
+    subgraph Sheets["📈 Google Sheets - Analytics"]
+        S1[Capacity Dashboard<br/>Team Bandwidth]
+        S2[Deadline Tracker<br/>Due Dates]
+        S3[Revenue Metrics<br/>Client Value]
+    end
+
+    Airtable -->|Sync| Notion
+    Airtable -->|Export| Sheets
+    Notion -->|Requests| Airtable
+
+    C[👥 15 Clients] --> Notion
+    T[👨‍💼 Team] --> Sheets
+
+    style Airtable fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style Notion fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style Sheets fill:#10B981,stroke:#059669,color:#fff
+```
+
 **Good Approach:** Built an Airtable base with four tables:
 1. Clients (master list with contracts, brand guidelines)
 2. Content Pieces (linked to clients, with status workflow)
@@ -158,6 +231,32 @@ Created Notion client portals that pull from Airtable to show each client their 
 **Problem:** B2B company had 3,000 leads in their CRM but minimal information about them - just name, email, and company. Sales team was wasting time researching each lead manually.
 
 **Bad Approach:** Export CSV, manually Google each company, copy-paste information back into CRM.
+
+```mermaid
+graph LR
+    A[📊 Airtable Leads<br/>Name, Email, Company] --> B{✅ Enrich<br/>Checkbox?}
+
+    B -->|Checked| C[⚡ Make Webhook<br/>Triggered]
+
+    C --> D[📝 Build Prompt<br/>from Formula Field]
+
+    D --> E[🤖 GPT-4 API<br/>Company Research]
+
+    E --> F[📤 JSON Response<br/>Industry, Size, Tech,<br/>News, Pain Points]
+
+    F --> G[🔄 Make Updates<br/>Airtable Record]
+
+    G --> H[✨ Enriched Lead<br/>Ready for Sales]
+
+    H --> I[📈 Dashboard<br/>Status & Metrics]
+
+    B -->|Not Checked| J[⏸️ No Action<br/>Manual Lead]
+
+    style A fill:#8B5CF6,stroke:#6D28D9,color:#fff
+    style E fill:#3B82F6,stroke:#1D4ED8,color:#fff
+    style H fill:#10B981,stroke:#059669,color:#fff
+    style I fill:#F59E0B,stroke:#D97706,color:#fff
+```
 
 **Good Approach:**
 1. Built an Airtable base as the lead management system
