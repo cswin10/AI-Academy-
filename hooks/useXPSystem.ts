@@ -60,7 +60,7 @@ export function useXPSystem() {
       const { data } = await supabase
         .from('xp_transactions')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', user!.id)
         .order('created_at', { ascending: false })
         .limit(10);
 
@@ -73,14 +73,14 @@ export function useXPSystem() {
 
     // Subscribe to new XP
     const subscription = supabase
-      .channel(`xp_transactions:${user.id}`)
+      .channel(`xp_transactions:${user!.id}`)
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'xp_transactions',
-          filter: `user_id=eq.${user.id}`,
+          filter: `user_id=eq.${user!.id}`,
         },
         (payload) => {
           setRecentTransactions(prev => [payload.new as XPTransaction, ...prev].slice(0, 10));

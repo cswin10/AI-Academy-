@@ -55,14 +55,14 @@ export function useUserProfile() {
 
     // Subscribe to profile changes
     const subscription = supabase
-      .channel(`profile:${user.id}`)
+      .channel(`profile:${user!.id}`)
       .on(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
           table: 'profiles',
-          filter: `id=eq.${user.id}`,
+          filter: `id=eq.${user!.id}`,
         },
         (payload) => {
           setProfile(payload.new as UserProfile);

@@ -13,6 +13,8 @@ export function useStreak() {
     if (!user) return;
 
     async function updateStreak() {
+      if (!user) return;
+
       try {
         const { error } = await supabase.rpc('update_user_streak', {
           p_user_id: user.id,
