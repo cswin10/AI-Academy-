@@ -214,11 +214,11 @@ export function DashboardClient() {
                               <div className="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
                                 <div
                                   className="h-full bg-warning"
-                                  style={{ width: `${p.progress_percentage || 0}%` }}
+                                  style={{ width: `${p.completion_percentage || 0}%` }}
                                 />
                               </div>
                               <span className="text-xs text-text-secondary">
-                                {p.progress_percentage || 0}%
+                                {p.completion_percentage || 0}%
                               </span>
                             </div>
                           </div>
