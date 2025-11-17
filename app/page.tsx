@@ -7,10 +7,10 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
-  description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents. Build real-world AI products from scratch. 100% free.",
+  description: "Master AI operations with 17 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents. Build real-world AI products from scratch. 100% free.",
   openGraph: {
     title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
-    description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
+    description: "Master AI operations with 17 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
     url: "/",
     type: "website",
   },
@@ -26,7 +26,7 @@ export default function HomePage() {
     '@context': 'https://schema.org',
     '@type': 'Course',
     name: 'AI Operator Roadmap',
-    description: 'Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.',
+    description: 'Master AI operations with 17 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.',
     provider: {
       '@type': 'Organization',
       name: 'AI Operator Roadmap',
@@ -71,7 +71,7 @@ export default function HomePage() {
               The Complete Roadmap
             </h2>
             <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-              15 comprehensive modules to take you from complete beginner to professional AI operator
+              17 comprehensive modules to take you from complete beginner to professional AI operator
             </p>
           </div>
 

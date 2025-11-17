@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
     template: "%s | AI Operator Roadmap"
   },
-  description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents. Build real-world AI products from scratch.",
+  description: "Master AI operations with 17 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents. Build real-world AI products from scratch.",
   keywords: ["AI operator", "AI automation", "LLM", "ChatGPT", "Claude", "no-code AI", "AI systems", "machine learning", "prompt engineering", "AI course"],
   authors: [{ name: "AI Operator Roadmap" }],
   creator: "AI Operator Roadmap",
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
-    description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
+    description: "Master AI operations with 17 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
     siteName: "AI Operator Roadmap",
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Operator Roadmap - From Zero to Professional AI Systems Builder",
-    description: "Master AI operations with 15 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
+    description: "Master AI operations with 17 comprehensive modules. Learn LLMs, automation, RAG systems, and AI agents.",
     creator: "@aioperator",
   },
   robots: {
