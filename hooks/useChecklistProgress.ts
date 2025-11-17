@@ -15,6 +15,7 @@ export function useChecklistProgress(moduleId?: string) {
   const { user } = useSupabase();
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [toggling, setToggling] = useState<Set<string>>(new Set()); // Prevent rapid-fire clicks
   const supabase = createClient();
 
   useEffect(() => {
@@ -74,42 +75,63 @@ export function useChecklistProgress(moduleId?: string) {
   const toggleItem = async (moduleId: string, itemId: string) => {
     if (!user) return;
 
+    // Prevent rapid-fire clicks on same item
+    if (toggling.has(itemId)) {
+      console.log('Already processing this item, please wait...');
+      return;
+    }
+
     const isCompleted = completed.has(itemId);
 
-    if (isCompleted) {
-      // Uncomplete
-      const { error } = await supabase
-        .from('checklist_progress')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('module_id', moduleId)
-        .eq('checklist_item_id', itemId);
+    // Mark as toggling
+    setToggling(prev => new Set(prev).add(itemId));
 
-      if (error) {
-        console.error('Error uncompleting item:', error);
-        return;
-      }
+    try {
+      if (isCompleted) {
+        // Uncomplete
+        const { error } = await supabase
+          .from('checklist_progress')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('module_id', moduleId)
+          .eq('checklist_item_id', itemId);
 
-      setCompleted(prev => {
-        const next = new Set(prev);
-        next.delete(itemId);
-        return next;
-      });
-    } else {
-      // Complete
-      try {
+        if (error) {
+          console.error('Error uncompleting item:', error);
+          return;
+        }
+
+        setCompleted(prev => {
+          const next = new Set(prev);
+          next.delete(itemId);
+          return next;
+        });
+      } else {
+        // Complete
         const { error } = await supabase.rpc('complete_checklist_item', {
           p_user_id: user.id,
           p_module_id: moduleId,
           p_checklist_item_id: itemId,
         });
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error completing item:', error);
+          throw error;
+        }
 
         setCompleted(prev => new Set(prev).add(itemId));
-      } catch (err) {
-        console.error('Error completing item:', err);
       }
+    } catch (err) {
+      console.error('Error toggling item:', err);
+    } finally {
+      // Remove from toggling set after a delay
+      setTimeout(() => {
+        setToggling(prev => {
+          const next = new Set(prev);
+          next.delete(itemId);
+          return next;
+        });
+      }, 500);
     }
   };
 

@@ -93,6 +93,11 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) =
               );
             }
 
+            // Skip quiz and task blocks - they should be handled by structured sections
+            if (language === 'quiz' || language === 'task') {
+              return null;
+            }
+
             // Handle Mermaid diagrams
             if (language === 'mermaid') {
               return <MermaidDiagram chart={code} />;
