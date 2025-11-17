@@ -186,6 +186,43 @@ Always show with specifics.
 
 You want people to find you when they search for "AI automation consultant" or "AI operations engineer."
 
+```quiz
+title: Portfolio Fundamentals Quiz
+questions:
+- question: What are the three types of portfolio projects you need?
+  options: [Personal, Professional, and Public, Depth (mastery), Breadth (versatility), and Polish (professionalism), Frontend, Backend, and Full-stack, Small, Medium, and Large]
+  correct: 1
+  explanation: You need at least one of each type - Depth projects show mastery of complex systems, Breadth projects show versatility across different problems, and Polish projects show professional quality with beautiful UI and complete docs.
+- question: What is the most important part of a case study?
+  options: [Technical architecture details, Measurable results and business impact, List of technologies used, Screenshots of the UI]
+  correct: 1
+  explanation: The most important part is measurable results and business impact. Don't just describe what you built - explain the problem solved and quantify the impact (hours saved, revenue generated, costs reduced).
+- question: What is good positioning using the Who-What-How framework?
+  options: [I help businesses with AI, I'm an AI consultant available for hire, I help B2B SaaS companies reduce support costs by 40% by building RAG-powered customer support systems, I build AI automation solutions]
+  correct: 2
+  explanation: Good positioning is specific about who you serve (B2B SaaS), what you deliver (reduce support costs by 40%), and how you're different (specialize in RAG-powered support systems). Generic statements don't differentiate you.
+- question: According to the Show Don't Tell principle, which statement is better?
+  options: [I'm experienced with AI automation, Built 3 production AI automations processing 10K+ operations/month, I'm a fast learner, I know how to build RAG systems]
+  correct: 1
+  explanation: Always show with specifics. "Built 3 production AI automations processing 10K+ operations/month" is concrete proof, while "I'm experienced" is just a claim anyone can make.
+- question: Why are video demos 10x better than screenshots?
+  options: [They look more professional, They're easier to create, People will actually watch a 2-minute video but won't read 5 pages, They use more bandwidth]
+  correct: 2
+  explanation: Video demos are more effective because people will watch a 2-minute Loom video but won't read 5 pages of text. Show the problem, demo the solution, show results, and quick tech overview - all in 2 minutes.
+```
+
+```task
+title: Select and Document Your Portfolio Projects
+description: Audit all projects you've built and select 3-5 for your portfolio using the selection matrix (score technical complexity, business impact, relevance, demo-ability, and metrics). Ensure you have at least one Depth, Breadth, and Polish project. Document why you chose each one.
+xp: 10
+```
+
+```task
+title: Write Three Case Studies
+description: Write complete case studies for 3 portfolio projects using the provided template. Include Context, Problem, Solution, Implementation, Results with metrics, and Lessons Learned. Each case study should be 800-1200 words and tell a compelling story focused on impact, not just features.
+xp: 25
+```
+
 ## 🛠️ Tools Deep Dive
 
 ### Portfolio Website Builders
@@ -401,6 +438,61 @@ Wanted to build SaaS product, used portfolio to validate and attract first users
 - Transparent metrics built trust
 - Real user case studies proved value
 - Content attracted SEO traffic
+
+```quiz
+title: Portfolio Success Strategies Quiz
+questions:
+- question: In Example 1 (Portfolio That Got $180K Job), what made the candidate stand out?
+  options: [Having a PhD in AI, Years of experience, Portfolio showed he could actually build with case studies demonstrating business impact, plus specific positioning, Expensive certifications, Working at a big tech company]
+  correct: 2
+  explanation: The portfolio proved ability with real projects, case studies showed business impact with metrics, projects covered breadth of skills, public building showed learning ability, and specific positioning attracted right companies.
+- question: In Example 2 (Won $50K in Consulting), what was the key to success?
+  options: [Lowest prices, Ultra-specific niche (legal AI) with real results, metrics, credibility, and targeted outreach, Working 80 hours per week, Having the most features]
+  correct: 1
+  explanation: Success came from ultra-specific positioning (legal AI), real client results with metrics ($40K saved), credibility (GitHub stars, published content), and targeted outreach to the right audience. The portfolio matched target client needs perfectly.
+- question: What is the Three Projects Rule?
+  options: [You need 3 projects minimum, You need exactly 3 projects total, You don't need 20 projects - you need 3 really good ones (Impressive, Relevant, Accessible), You should delete old projects every 3 months, Build 3 projects per month]
+  correct: 2
+  explanation: Quality over quantity. You need 3 really good projects - one that's technically impressive, one that's relevant to what you want to do next, and one that's accessible (anyone can understand and try).
+- question: How should you maximize value from each portfolio project?
+  options: [Just add it to your website, Turn one project into case study, LinkedIn post, Twitter thread, tutorial, YouTube video, and GitHub repo, Only share it on LinkedIn, Keep it private to make it exclusive]
+  correct: 1
+  explanation: One good project can become multiple content pieces - case study on website, LinkedIn post, Twitter thread, tutorial blog post, YouTube walkthrough, and GitHub repo. This maximizes reach and demonstrates expertise.
+- question: What should every portfolio page include to make it easy to hire you?
+  options: [Just your project descriptions, Your resume in PDF format, Clear call-to-action, email/Calendly link, rough pricing/process, and fast response time, Long autobiography, List of all technologies you know]
+  correct: 2
+  explanation: Make it easy to hire you with clear CTAs, easy contact methods (email/Calendly), transparent pricing or process, and commitment to fast response. Don't make people hunt for how to work with you.
+```
+
+```task
+title: Create Demo Videos for Your Projects
+description: Record 2-minute Loom demo videos for at least 3 portfolio projects. Follow the structure - show the problem (15 sec), demo the solution (60 sec), show results (30 sec), quick tech overview (15 sec). Upload to Loom or YouTube and embed in your portfolio.
+xp: 15
+```
+
+```task
+title: Build Your Portfolio Website
+description: Create a professional portfolio website with at least 3 projects, case studies, about section, and contact information. Use Next.js + Vercel, Framer, Webflow, or Notion. Deploy to a custom domain. Ensure it's mobile responsive and loads fast. Include analytics tracking.
+xp: 25
+```
+
+```task
+title: Optimize Your LinkedIn Profile
+description: Update your LinkedIn to showcase your portfolio. Update headline with clear positioning, write compelling About section, add portfolio projects to Experience/Featured, include links to live demos and case studies. Write and publish a launch post about your portfolio with key projects and metrics.
+xp: 10
+```
+
+```task
+title: Launch Your Portfolio Publicly
+description: Announce your portfolio across multiple channels. Write LinkedIn post with project highlights, create Twitter thread showcasing your work, post in relevant communities (Indie Hackers, Reddit), and email your network. Track engagement and respond to all comments. Aim for 100+ views in first week.
+xp: 15
+```
+
+```task
+title: Create Your Positioning Statement
+description: Write a clear positioning statement using the Who-What-How framework. Define who you serve (specific industry/company size), what you deliver (specific outcomes with metrics), and how you're different (specialization/approach). Test it with 3 people to ensure it's clear and compelling.
+xp: 10
+```
 
 ## ⚠️ Common Pitfalls
 

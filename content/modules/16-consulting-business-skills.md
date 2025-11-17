@@ -211,6 +211,43 @@ Good: "We'll use the AI model that's best at understanding complex requests like
 
 Rule: Explain outcomes, not technology.
 
+```quiz
+title: Consulting Fundamentals Quiz
+questions:
+- question: What is the correct structure for a discovery call?
+  options: [You talk 70%, they talk 30%, You talk 30%, they talk 70%, Split 50/50, You pitch your services immediately]
+  correct: 1
+  explanation: In discovery calls, you should talk 30% and let the client talk 70%. Your job is to understand their problem deeply, not to pitch. Ask questions about their current state, pain points, impact, and ideal future.
+- question: Which pricing model is best for a project with unclear scope and ongoing support needs?
+  options: [Project-based flat fee, Value-based percentage, Hourly rate, Free trial period]
+  correct: 2
+  explanation: Hourly pricing is best for unclear scope and ongoing support because it's simple to bill and doesn't put you at risk for scope creep. Once scope becomes clear, you can switch to project-based pricing.
+- question: What should you do when a client asks for an addition outside the current scope?
+  options: [Say yes to keep them happy, Add it for free if it's small, Present options - add to Phase 2, replace existing deliverable, or bill hourly for the addition, Refuse to do it]
+  correct: 2
+  explanation: Never say yes without discussing scope/budget. Present options: add to Phase 2 (separate proposal), replace an existing deliverable, or bill hourly. This respects both your time and maintains clear boundaries.
+- question: What is the main benefit of the productized service model?
+  options: [Higher prices, Easier to price, easier to sell, scalable, and clear expectations, More customization, Longer projects]
+  correct: 1
+  explanation: Productized services are easier to price and sell because they're standardized packages. They're scalable (can serve more clients with same offering) and set clear expectations upfront.
+- question: When explaining AI to clients, what should you focus on?
+  options: [Technical details like embedding dimensions and cosine similarity, Outcomes and results, not technology details, The specific models and APIs you'll use, How much you know about AI]
+  correct: 1
+  explanation: Explain outcomes, not technology. Clients care about results - "answer customer questions 3x faster" not "RAG with vector embeddings." Technology is just the "how."
+```
+
+```task
+title: Conduct a Mock Discovery Call
+description: Practice the discovery call framework with a friend or colleague playing the role of a potential client. Follow the structure - Current State (15 min), Pain Points (10 min), Impact (10 min), Attempted Solutions (5 min), Ideal Future (5 min), Next Steps (5 min). Record it and review your performance. You should talk 30% or less.
+xp: 15
+```
+
+```task
+title: Create Your Service Package
+description: Design a productized service offering with 3 tiers (Bronze/Silver/Gold or similar). Define clear deliverables, pricing ($3K-15K range), timeline, and what's included/excluded for each tier. Create a one-page offering sheet you can share with prospects.
+xp: 15
+```
+
 ## 🛠️ Tools Deep Dive
 
 ### CRM & Pipeline Management
@@ -451,6 +488,55 @@ Specialist can say: "I've implemented this exact system for 15 law firms. Here's
 Generalist says: "I can probably figure this out."
 
 **Lesson:** Riches in niches. Pick an industry or problem type.
+
+```quiz
+title: Consulting Business Strategy Quiz
+questions:
+- question: In Example 1 ($0 to $12K/Month in 90 Days), what was the response rate for personalized cold emails?
+  options: [2%, 12% (6 calls from 50 emails), 50%, 80%]
+  correct: 1
+  explanation: The consultant got a 12% response rate by sending personalized cold emails that referenced specific observations about the prospect's business and offered clear value. Generic emails get much lower response rates.
+- question: What was the first thing the solo consultant did after landing their first $4K project?
+  options: [Hired a team, Created a case study and posted it on LinkedIn, which led to 3 inbound inquiries, Bought paid ads, Raised prices immediately]
+  correct: 1
+  explanation: They wrote a detailed case study with before/after metrics, screenshots, and client testimonial, then shared it on LinkedIn. This led to 3 inbound inquiries without any additional outreach.
+- question: In the Agency Model example, what was the net profit margin per $25K project?
+  options: [90%, 64% ($16K net after $8K contractor + $1K PM costs), 32%, 10%]
+  correct: 1
+  explanation: On average $25K projects, contractor costs were $8K and PM costs were $1K, leaving $16K net (64% margin). This shows the profitability of the agency model with contractors.
+- question: What is the key difference between a generalist and specialist AI consultant?
+  options: [Specialists charge less, Specialists can charge 3-5x more and compete on expertise not price, Generalists get more clients, There is no difference]
+  correct: 1
+  explanation: Specialists can charge $15-30K per project vs. $3-5K for generalists because they compete on expertise, not price. They can say "I've done this exact thing 15 times with measurable ROI" which wins trust and commands premium pricing.
+- question: What is the recommended payment structure for a $15K project to ensure healthy cash flow?
+  options: [100% upfront, 100% on completion, 50% upfront, 25% midpoint, 25% completion, Payment plan over 12 months]
+  correct: 2
+  explanation: For $5K-15K projects, the recommended structure is 50% upfront, 50% on delivery. For larger projects ($15K+), use 33% upfront, 33% midpoint, 34% completion. Never start work without a deposit.
+```
+
+```task
+title: Write a Complete Proposal
+description: Write a full consulting proposal using the provided template. Include Executive Summary, Current State Analysis, Proposed Solution with phases, Expected Outcomes with ROI calculation, Investment & Terms, and About You section. Base it on a real or realistic scenario with specific metrics.
+xp: 20
+```
+
+```task
+title: Calculate Value-Based Pricing
+description: For a potential consulting project, calculate the ROI. Identify current state costs (hours × rate × weeks), calculate savings from your solution, and determine your price based on value delivered. Create a one-page ROI calculator you can use in proposals. Your price should allow client to break even in 6-12 months.
+xp: 15
+```
+
+```task
+title: Build Your Consulting Swipe File
+description: Create templates for discovery call scripts, email outreach, proposals, contracts, and case studies. Store them in Notion or similar tool. Include at least 5 different templates you can customize and reuse for future clients.
+xp: 10
+```
+
+```task
+title: Execute Cold Outreach Campaign
+description: Create a list of 20 potential clients in your niche. Research each one and send personalized outreach (LinkedIn or email). Reference specific observations about their business and offer clear value. Track response rate and book at least 2 discovery calls.
+xp: 15
+```
 
 ## ⚠️ Common Pitfalls
 

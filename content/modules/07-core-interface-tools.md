@@ -98,6 +98,33 @@ In any system, each piece of data should have ONE authoritative source. If you h
 
 Example: Your Airtable CRM is the source of truth for customer data. Notion might display it, Sheets might analyze it, but updates always happen in Airtable and sync everywhere else.
 
+```quiz
+title: Interface Layer Fundamentals Quiz
+questions:
+- question: In the three-layer architecture, what is the primary role of the Interface Layer?
+  options: [Where AI models run, Where data is permanently stored, Where humans interact with the system, Where automation happens]
+  correct: 2
+  explanation: The Interface Layer (Notion, Airtable, Sheets) is where humans interact with the system, triggering workflows and viewing results. The Execution Layer is where work happens, and Storage Layer is where data lives.
+- question: What does the "Single Source of Truth" principle mean?
+  options: [Only use one tool for your entire stack, Each piece of data should have ONE authoritative source, Always tell users the truth, Use only open-source tools]
+  correct: 1
+  explanation: Single Source of Truth means each data type has one authoritative location where updates happen, preventing sync issues. Other tools can display or analyze that data, but updates happen in one place.
+- question: Why should you separate data structure from presentation?
+  options: [It makes the system more expensive, It's easier to maintain and create multiple views of the same data, It's required by regulations, It makes the system slower]
+  correct: 1
+  explanation: Separating data structure from presentation allows you to have clean, normalized data while creating multiple views and dashboards for different use cases and audiences.
+- question: Who are the two primary audiences for a well-designed Interface Layer?
+  options: [Developers and managers, End users and the AI Operator, Customers and competitors, Marketing and sales teams]
+  correct: 1
+  explanation: The Interface Layer should serve both end users (who trigger workflows and view results) and the AI Operator (who configures, monitors, and maintains systems).
+```
+
+```task
+title: Diagram Your Current Workflow
+description: Choose one workflow or process you currently manage (content creation, customer management, project tracking, etc.). Create a diagram showing: (1) Where data is currently stored, (2) How humans interact with it, (3) What manual steps are involved, (4) Where information gets duplicated or lost. Identify opportunities to apply the Interface Layer principles from this module.
+xp: 10
+```
+
 ## 🛠️ Tools Deep Dive
 
 ### Notion
@@ -171,6 +198,37 @@ Example: Your Airtable CRM is the source of truth for customer data. Notion migh
 - Quick data transformations before feeding to AI
 - Budget tracking with AI-powered forecasting
 - Automation configuration interface (input URLs, get AI-processed results)
+
+```quiz
+title: Tool Selection and Capabilities Quiz
+questions:
+- question: Which tool is best for building relational databases with proper foreign keys and rollups?
+  options: [Notion, Airtable, Google Sheets, All are equally good]
+  correct: 1
+  explanation: Airtable is a true relational database with proper foreign keys, rollups, and database functionality. Notion is lighter, and Sheets requires complex formulas to simulate relationships.
+- question: What is Notion's main advantage over Airtable?
+  options: [Faster performance, More powerful formulas, Beautiful, intuitive interface that people actually want to use, Cheaper pricing]
+  correct: 2
+  explanation: Notion's main strength is its beautiful, user-friendly interface that non-technical team members enjoy using, plus its flexibility for documentation and wikis.
+- question: When would you choose Google Sheets over Airtable?
+  options: [When you need a true relational database, When you need powerful formulas and everyone already knows how to use it, When you need the best performance with large datasets, When you need advanced field types]
+  correct: 1
+  explanation: Google Sheets is ideal when you need powerful formulas (QUERY, ARRAYFORMULA), everyone knows how to use it, and you need real-time collaboration without a learning curve.
+- question: Which tool has the steepest learning curve but most powerful database features?
+  options: [Notion, Airtable, Google Sheets, They're all equally easy]
+  correct: 1
+  explanation: Airtable has a steeper learning curve than Notion or Sheets but provides true relational database capabilities, powerful formulas, and excellent API access.
+- question: What is a key limitation of Google Sheets compared to Airtable?
+  options: [No formulas available, Not a real database with proper relationships, Can't share with others, No API access]
+  correct: 1
+  explanation: Google Sheets is a spreadsheet, not a real database. It lacks proper relational structure and requires complex formulas to simulate what Airtable does natively with linked records.
+```
+
+```task
+title: Tool Comparison Matrix
+description: Create a comparison matrix for Notion, Airtable, and Google Sheets based on YOUR specific needs. Rate each tool (1-5) on: ease of use, database capabilities, formula power, collaboration features, cost, and any other criteria important to you. Based on this analysis, decide which tool(s) you'll use for your next project and explain why.
+xp: 10
+```
 
 ## 💡 Real Business Examples
 
@@ -286,6 +344,31 @@ Created a Google Sheet dashboard showing enrichment status, costs per lead, and 
 
 **Result:** Proposal generation time dropped from 3 hours to 5 minutes. Pricing became consistent across all reps. Win rate increased 25% because proposals included AI-generated custom value propositions for each prospect's industry.
 
+```quiz
+title: Real-World Applications Quiz
+questions:
+- question: In Example 1 (Content Operations Dashboard), what was the key problem being solved?
+  options: [Content quality was poor, Nobody knew content status or which clients were behind schedule, Content was too expensive, AI wasn't working properly]
+  correct: 1
+  explanation: The problem was coordination and visibility - content was being created but nobody knew what was published where, status, or schedules. The solution provided centralized tracking.
+- question: In the Content Operations Dashboard example, which tool served as the "Source of Truth"?
+  options: [Notion, Google Sheets, Airtable, Make.com]
+  correct: 2
+  explanation: Airtable was the single source of truth with all master data. Notion provided client portals (interface), and Google Sheets provided internal analytics (dashboards).
+- question: What was the impressive result of the AI-Powered Customer Enrichment example?
+  options: [Saved $10,000 per month, Enriched 3,000 leads in two weeks for $200 and increased close rate 30%, Eliminated the sales team, Replaced the CRM system]
+  correct: 1
+  explanation: The system enriched 3,000 leads in two weeks for only $200 in AI costs, and the close rate increased 30% because sales reps had better context.
+- question: In the Customer Enrichment example, what triggered the AI enrichment process?
+  options: [Daily automated schedule, Checking an "Enrich" checkbox in Airtable, Sales rep manually sending an email, Customer filling out a form]
+  correct: 1
+  explanation: The workflow was triggered when someone checked the "Enrich" checkbox on a lead record in Airtable, which then triggered the Make webhook.
+- question: What was the key benefit of the Dynamic Pricing Calculator example?
+  options: [Lowered all prices, Reduced proposal time from 3 hours to 5 minutes with consistent pricing, Eliminated the need for sales reps, Automated all sales]
+  correct: 1
+  explanation: The system reduced proposal generation from 3 hours to 5 minutes, made pricing consistent across all reps, and increased win rates by 25% through AI-generated custom value propositions.
+```
+
 ## ⚠️ Common Pitfalls
 
 ### 1. **Building Everything in One Tool**
@@ -315,6 +398,12 @@ Created a Google Sheet dashboard showing enrichment status, costs per lead, and 
 ### 7. **Not Documenting Your Structure**
 ❌ Building a complex system and being the only person who understands it
 ✅ Create a simple Notion page documenting: What each base/database does, what the key fields mean, how data flows between tools
+
+```task
+title: Identify Your Pitfall Patterns
+description: Review the 7 common pitfalls listed in this section. Honestly identify which 2-3 pitfalls you're most likely to fall into based on your past work habits. For each, write a specific strategy you'll use to avoid it in your next project. Be concrete - don't just say "I'll avoid mixing data and automation," explain HOW you'll structure it differently.
+xp: 10
+```
 
 ## ✨ Pro Tips
 
@@ -376,6 +465,43 @@ This prevents race conditions and makes it easy to see what's in flight.
 ### Tip 7: Version Your Prompts
 
 In your AI configuration tables, include a "Prompt Version" field and "Date Modified". When you update a prompt, increment the version. This makes debugging so much easier when something breaks - you can see exactly when the prompt changed.
+
+```quiz
+title: Pro Tips and Best Practices Quiz
+questions:
+- question: What is the "AI Config Table" pattern?
+  options: [A table storing all your API keys, A configuration table where each record is a different AI task with prompts and settings, A table listing all AI tools you use, A table tracking AI costs]
+  correct: 1
+  explanation: The AI Config Table pattern uses an Airtable/database table where each record represents a different AI workflow variant, including prompts, model selection, temperature, and parameters - allowing you to modify settings without touching code.
+- question: According to Tip 1, what's the recommended pattern for combining Airtable and Notion?
+  options: [Only use Notion, don't use Airtable, Build structure in Airtable, create user-friendly views in Notion, Only use Airtable, don't use Notion, Use them for completely separate projects]
+  correct: 1
+  explanation: Use Airtable for your data structure (relationships and powerful formulas), then sync to Notion for beautiful, user-friendly interfaces that teams enjoy using.
+- question: What is the "Staging Table" pattern used for?
+  options: [Storing old data, Preventing race conditions when processing data with AI by using separate Inbox/Processing/Output tables, Testing new features, Backing up data]
+  correct: 1
+  explanation: The Staging Table pattern uses three tables (Inbox, Processing, Output) to prevent race conditions and make it easy to see what's in flight during AI processing.
+- question: Why should you version your prompts in AI configuration tables?
+  options: [It's required by OpenAI, It makes debugging easier when you can see exactly when prompts changed, It reduces costs, It improves AI quality]
+  correct: 1
+  explanation: Versioning prompts with "Prompt Version" and "Date Modified" fields makes debugging much easier - you can identify exactly when a prompt changed if something breaks.
+- question: Why is Google Sheets recommended as an "integration hub"?
+  options: [It's the fastest tool, It's free, Almost every tool can read/write to Sheets making it great for unified dashboards, It has the best formulas]
+  correct: 2
+  explanation: Google Sheets has phenomenal integration support - almost every tool can connect to it. This makes it ideal as a hub where all tools dump data, which you can then unify with QUERY() formulas.
+```
+
+```task
+title: Design an AI Config Table
+description: Create a template for an "AI Config Table" in Airtable or Google Sheets. Include fields for: Workflow Name, AI Model, System Prompt, Temperature, Max Tokens, Active Status, Prompt Version, Date Modified, and any other fields relevant to your use case. Add 2-3 sample configurations for different AI tasks you might want to automate (e.g., blog writing, social media posts, customer email responses).
+xp: 15
+```
+
+```task
+title: Build a Simple Multi-View Dashboard
+description: Choose any dataset you work with (or create sample data). Build it in one tool (Airtable, Notion, or Sheets) with at least 3 different views of the same data for different use cases. For example: (1) A table view for data entry, (2) A calendar view for scheduled items, (3) A filtered view showing only high-priority items. Document which view serves which audience or purpose.
+xp: 15
+```
 
 ## 📝 Module Project: AI-Powered Content Pipeline
 

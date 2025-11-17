@@ -1,20 +1,27 @@
 'use client';
 
 import React, { useState } from 'react';
-import { CheckCircle2, XCircle, HelpCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, HelpCircle, Sparkles } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import type { SectionQuiz } from '@/lib/types';
+import { useAuth } from '@/contexts/AuthContext';
+import { awardXP, XP_REWARDS } from '@/lib/gamification';
+import { createClient } from '@/lib/supabase/client';
 
 interface SectionQuizComponentProps {
   quiz: SectionQuiz;
+  moduleId: string;
   onComplete?: () => void;
 }
 
-export function SectionQuizComponent({ quiz, onComplete }: SectionQuizComponentProps) {
+export function SectionQuizComponent({ quiz, moduleId, onComplete }: SectionQuizComponentProps) {
+  const { user } = useAuth();
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState(false);
   const [showExplanations, setShowExplanations] = useState(false);
+  const [xpAwarded, setXpAwarded] = useState(false);
+  const [isAwarding, setIsAwarding] = useState(false);
 
   const handleAnswerSelect = (questionId: string, answerIndex: number) => {
     if (submitted) return;
@@ -24,14 +31,59 @@ export function SectionQuizComponent({ quiz, onComplete }: SectionQuizComponentP
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSubmitted(true);
     setShowExplanations(true);
 
     // Check if all answers are correct
     const allCorrect = quiz.questions.every(q => selectedAnswers[q.id] === q.correctAnswer);
-    if (allCorrect && onComplete) {
-      onComplete();
+
+    if (allCorrect) {
+      // Award XP if user is logged in and hasn't been awarded yet
+      if (user && !xpAwarded) {
+        setIsAwarding(true);
+        try {
+          // Check if this quiz was already completed
+          const supabase = createClient();
+          const { data: existing } = await supabase
+            .from('checklist_progress')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('module_id', moduleId)
+            .eq('checklist_item_id', quiz.id)
+            .single();
+
+          if (!existing) {
+            // Award XP for completing the quiz
+            const result = await awardXP(
+              user.id,
+              XP_REWARDS.COMPLETE_SECTION,
+              `Completed quiz: ${quiz.title}`,
+              moduleId
+            );
+
+            if (result.success) {
+              // Track quiz completion in database
+              await supabase.from('checklist_progress').insert({
+                user_id: user.id,
+                module_id: moduleId,
+                checklist_item_id: quiz.id,
+                xp_awarded: XP_REWARDS.COMPLETE_SECTION,
+              });
+
+              setXpAwarded(true);
+            }
+          }
+        } catch (error) {
+          console.error('Error awarding XP:', error);
+        } finally {
+          setIsAwarding(false);
+        }
+      }
+
+      if (onComplete) {
+        onComplete();
+      }
     }
   };
 
@@ -71,7 +123,21 @@ export function SectionQuizComponent({ quiz, onComplete }: SectionQuizComponentP
             Score: {score.correct} / {score.total} ({Math.round((score.correct / score.total) * 100)}%)
           </p>
           {score.correct === score.total && (
-            <p className="text-sm text-success mt-1">Perfect! You've mastered this section! 🎉</p>
+            <>
+              <p className="text-sm text-success mt-1">Perfect! You've mastered this section! 🎉</p>
+              {user && xpAwarded && (
+                <div className="flex items-center gap-2 mt-2 text-sm font-semibold text-purple-primary">
+                  <Sparkles className="w-4 h-4" />
+                  <span>+{XP_REWARDS.COMPLETE_SECTION} XP earned!</span>
+                </div>
+              )}
+              {user && isAwarding && (
+                <p className="text-sm text-text-secondary mt-2">Awarding XP...</p>
+              )}
+              {!user && (
+                <p className="text-sm text-text-secondary mt-2">Sign in to earn XP and track progress!</p>
+              )}
+            </>
           )}
           {score.correct < score.total && (
             <p className="text-sm text-warning mt-1">Review the explanations below and try again.</p>

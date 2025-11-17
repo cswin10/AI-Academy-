@@ -72,6 +72,12 @@ Final answer: [returns table]
 
 The AI is **choosing which tools to use and when**—that's the key difference from simple automation.
 
+```task
+title: Build Your First Simple Agent
+description: Create a basic agent that can use 2-3 tools (e.g., web search, calculator, note-taking). Give it a simple task like "Find the current price of Bitcoin and calculate 10% of it" and observe how it chooses which tools to use.
+xp: 15
+```
+
 ### The ReAct Pattern
 
 ```mermaid
@@ -162,6 +168,37 @@ Each step is simpler, more reliable, and easier to debug.
 - Update knowledge graph
 - Reference in future conversations
 
+```quiz
+title: Agent Fundamentals and Patterns
+questions:
+- question: What is the key difference between an AI agent and a simple automated workflow?
+  options: [Agents use more expensive AI models, Agents autonomously decide which tools to use and when, Agents are faster, Agents require less code]
+  correct: 1
+  explanation: The defining characteristic of an agent is autonomy - it decides which tools to use and when based on the goal, rather than following a predetermined sequence of steps like traditional automation.
+- question: In the ReAct pattern, what does the 'Observation' step represent?
+  options: [The agent's internal reasoning, The result returned from executing a tool, The user's feedback, The final answer]
+  correct: 1
+  explanation: In ReAct (Reasoning + Acting), the Observation is the result returned after executing a tool. The pattern is Thought → Action → Observation → repeat until complete.
+- question: Why is prompt chaining better than using one mega-prompt for complex tasks?
+  options: [It's faster, Each step is simpler and more reliable, It uses less tokens, It requires fewer AI models]
+  correct: 1
+  explanation: Breaking complex tasks into sequential focused prompts makes each step simpler, more reliable, and easier to debug. One mega-prompt tries to do too much at once and is harder to control.
+- question: What is the purpose of short-term memory in an agent system?
+  options: [To permanently store all conversations, To maintain recent conversation context within the current session, To reduce API costs, To make the agent faster]
+  correct: 1
+  explanation: Short-term memory stores recent messages in the current conversation, providing context for the next AI call. It's typically summarized when approaching token limits.
+- question: Which type of memory would you use to remember a user's preferred writing style across multiple sessions?
+  options: [Short-term memory, Long-term memory, Episodic memory, No memory needed]
+  correct: 2
+  explanation: Episodic memory stores specific facts learned about users (preferences, style, habits) that persist across sessions. Long-term memory is for conversation summaries, while episodic is for specific learned facts.
+```
+
+```task
+title: Implement the ReAct Pattern
+description: Build an agent using the ReAct pattern. For each step, have it output: Thought (reasoning), Action (tool to use), Action Input (parameters), and Observation (result). Test with a multi-step task that requires 3+ tool uses. Log the complete reasoning trace.
+xp: 25
+```
+
 ## 🛠️ Tools Deep Dive
 
 ### LangChain Agents
@@ -239,6 +276,12 @@ result = executor.invoke({
 - More expensive than GPT-4o
 - Smaller ecosystem than OpenAI
 
+```task
+title: Compare Agent Frameworks
+description: Build the same simple agent task (e.g., "Research and summarize a topic") using two different frameworks: LangChain and either Claude with manual tool handling or OpenAI Assistants API. Compare code complexity, cost, and performance.
+xp: 20
+```
+
 ### OpenAI Assistants API
 
 **Best for:** Building agents without infrastructure management
@@ -256,6 +299,27 @@ result = executor.invoke({
 - Less control over agent behavior
 - Can get expensive
 - Slower than self-hosted solutions
+
+```quiz
+title: Agent Tools and Frameworks
+questions:
+- question: What is the main advantage of using LangChain for building agents?
+  options: [It's the cheapest option, It has 100+ pre-built tool integrations and abstracts common patterns, It's the fastest framework, It requires the least code]
+  correct: 1
+  explanation: LangChain's strength is its extensive library of 100+ tool integrations and pre-built abstractions for common agent patterns like ReAct, memory, and multi-step workflows.
+- question: When would you choose Claude over GPT-4o for agent tool calling?
+  options: [When you need the cheapest option, When you need excellent reasoning and reliable tool schema following, When you need the fastest responses, When you need built-in agent frameworks]
+  correct: 1
+  explanation: Claude excels at complex reasoning and is particularly reliable at following tool schemas correctly. It's more expensive but better for tasks requiring careful reasoning and accurate tool use.
+- question: What is a key disadvantage of using OpenAI Assistants API for agents?
+  options: [No tool calling support, You're locked to OpenAI and have less control over agent behavior, It requires more code, It doesn't support persistent threads]
+  correct: 1
+  explanation: Assistants API is a managed service, which means you're locked into OpenAI's ecosystem and have less control over exactly how the agent makes decisions compared to building your own.
+- question: Which framework would be best for a simple agent that only needs 2-3 custom tools and maximum control?
+  options: [LangChain with all integrations, Raw API calls with manual tool handling (Claude/OpenAI), OpenAI Assistants API, LlamaIndex]
+  correct: 1
+  explanation: For simple use cases with just a few custom tools, using raw API calls gives you maximum control and avoids the complexity of larger frameworks. Save frameworks like LangChain for complex multi-tool scenarios.
+```
 
 ## 💡 Real Business Examples
 
@@ -481,6 +545,37 @@ Create new content that matches their style but with fresh angle."""
 - Scales from 5 to 50 clients without quality drop
 - New clients ramp up faster (learns style in 3-5 samples)
 
+```quiz
+title: Production Agent Systems
+questions:
+- question: In the research agent example, why does the agent use multiple search queries instead of just one?
+  options: [To increase API costs, Different phrasings and approaches find different relevant results, To make the system slower, To use more tools]
+  correct: 1
+  explanation: Generating multiple query variants (original, rephrased, keyword-focused) helps find results that might be missed with a single query. Different phrasings catch different aspects of the research topic.
+- question: What is the purpose of the 'reasoning trace' in production agent systems?
+  options: [To make the system slower, To log every decision for debugging and transparency, To increase costs, To confuse users]
+  correct: 1
+  explanation: Logging every thought, action, and observation creates a reasoning trace that's invaluable for debugging when things go wrong and for understanding how the agent makes decisions.
+- question: In the content production agent example, why is episodic memory important?
+  options: [To reduce API costs, To remember client preferences and writing style across sessions, To make responses faster, To reduce code complexity]
+  correct: 1
+  explanation: Episodic memory stores learned facts about each client (tone, style, topics to avoid) and retrieves them in future sessions, ensuring consistency without retraining.
+- question: Why does the research agent save findings to a database during execution rather than just at the end?
+  options: [To use more storage, To preserve partial results if the agent fails mid-task, To make it slower, To increase complexity]
+  correct: 1
+  explanation: Saving incrementally means partial results are preserved even if the agent hits an error or timeout. This is crucial for long-running tasks that might not complete in one attempt.
+- question: What is the benefit of using vector search for long-term memory in the content agent?
+  options: [It's cheaper, It allows semantic search to find relevant past content even without exact keyword matches, It's faster, It requires less code]
+  correct: 1
+  explanation: Vector search enables semantic similarity matching, so the agent can find relevant past content based on meaning rather than just exact keywords. This is much more powerful for context retrieval.
+```
+
+```task
+title: Build a Research Agent with Multiple Tools
+description: Create an agent that can research a topic using multiple tools: web search, webpage reading, and data storage. Give it a task like "Research the top 3 competitors in [industry] and save key info to a database." Ensure it makes autonomous decisions about which tools to use.
+xp: 35
+```
+
 ## ⚠️ Common Pitfalls
 
 ### 1. **No Guardrails on Agent Loops**
@@ -590,6 +685,18 @@ async def agent_with_feedback(task):
     })
 
     # Periodically analyze failures and adjust prompts
+```
+
+```task
+title: Implement Agent Guardrails
+description: Add safety guardrails to your agent: max 10 iterations limit, 2-minute timeout, error handling with retries (max 3 attempts), and graceful degradation when limits are hit. Test with tasks designed to trigger each guardrail.
+xp: 20
+```
+
+```task
+title: Build a Memory-Enhanced Agent
+description: Create an agent with three types of memory: short-term (current conversation), long-term (past conversation summaries in vector DB), and episodic (learned user preferences). Test by having multiple sessions where the agent remembers context from earlier conversations.
+xp: 30
 ```
 
 ## 📝 Module Project: Build an AI Research Assistant Agent

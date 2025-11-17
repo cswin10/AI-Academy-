@@ -106,6 +106,33 @@ graph TB
 **Loop Workflows** (Iterative)
 - Example: Daily trigger → Get all pending tasks → For each task → Send reminder email
 
+```quiz
+title: Workflow Design Patterns
+questions:
+- question: Which workflow pattern should you use when you need to do different actions based on a lead's score?
+  options: [Linear workflow, Branching workflow with conditional logic, Parallel workflow, Loop workflow]
+  correct: 1
+  explanation: Branching workflows use conditional logic (if/then) to route data down different paths based on values like lead scores. Linear workflows don't have conditions, parallel runs multiple actions simultaneously, and loops process lists of items.
+- question: What is the main advantage of parallel workflows over linear workflows?
+  options: [Parallel workflows are easier to build, Parallel workflows execute multiple actions simultaneously saving time, Parallel workflows use fewer operations, Parallel workflows are more reliable]
+  correct: 1
+  explanation: Parallel workflows run multiple actions at the same time (e.g., generating a summary AND creating social posts simultaneously), significantly reducing total execution time compared to linear workflows that run actions one after another.
+- question: When would you use a loop/iterator workflow?
+  options: [When you need to process each item in a list individually, When you need to make decisions based on data, When you need to run actions simultaneously, When you need to validate data before processing]
+  correct: 0
+  explanation: Loop/iterator workflows are designed to process lists of items one by one (e.g., sending an email to each customer in a list, processing each order). They're essential when you need to repeat the same action for multiple items.
+- question: What makes automation workflows different from just manually running tasks?
+  options: [Workflows are always faster than manual work, Workflows can run automatically based on triggers without human intervention, Workflows never make errors, Workflows are free to operate]
+  correct: 1
+  explanation: The key advantage of automation workflows is they run automatically when triggered by events (new form submission, scheduled time, webhook), eliminating the need for manual execution. They're not always faster for single items, can have errors, and have costs.
+```
+
+```task
+title: Map Out a Real Workflow
+description: Choose a repetitive task you currently do manually (e.g., processing form submissions, content creation, data entry). Map out the workflow using one of the patterns (linear, branching, parallel, or loop). Document: 1) Trigger, 2) Each step, 3) Decision points, 4) Final actions. Identify which automation tool would be best.
+xp: 10
+```
+
 ### Error Handling Philosophy
 
 ```mermaid
@@ -171,6 +198,37 @@ Idempotent: "Create customer record if email doesn't exist, otherwise update"
 - Run it twice → You get one customer record (good)
 
 Design workflows to be idempotent so retries don't cause problems.
+
+```quiz
+title: Error Handling and Reliability
+questions:
+- question: What are the three levels of error handling in professional automation?
+  options: [Detection, Response, Recovery, Prevention, Recovery, Notification, Logging, Alerting, Fixing, Testing, Deployment, Monitoring]
+  correct: 1
+  explanation: The three levels are 1) Prevention (validate data before processing), 2) Recovery (retry failed actions with exponential backoff), and 3) Notification (alert humans when intervention is needed). This creates a comprehensive safety net for workflows.
+- question: Why is exponential backoff important when retrying failed API calls?
+  options: [It makes retries happen faster, It prevents overwhelming the API with repeated requests and gives temporary issues time to resolve, It reduces costs by using fewer retries, It makes debugging easier]
+  correct: 1
+  explanation: Exponential backoff (waiting 2s, then 4s, then 8s, etc.) gives temporary issues time to resolve and prevents hammering an already-struggling API with rapid retry attempts. This is respectful to API providers and more likely to succeed.
+- question: What is a circuit breaker in automation workflows?
+  options: [A way to stop electrical overload, A mechanism that pauses workflows after too many failures to prevent cost spirals, A tool for debugging workflow errors, A feature that speeds up workflow execution]
+  correct: 1
+  explanation: Circuit breakers detect when a workflow is failing repeatedly (e.g., 10 failures in an hour) and automatically pause execution to prevent runaway costs and cascading failures. This requires human intervention to investigate and fix before resuming.
+- question: Why is idempotency critical for automation workflows?
+  options: [It makes workflows run faster, It ensures operations can be safely retried without creating duplicates or errors, It reduces the cost per operation, It simplifies workflow design]
+  correct: 1
+  explanation: Idempotent operations produce the same result whether run once or multiple times, making them safe for retries. For example, "upsert" (update or insert) is idempotent, while "insert" is not - running insert twice creates duplicates.
+- question: What should you do when a workflow fails after all retry attempts?
+  options: [Delete the workflow and start over, Log the error and send notifications to appropriate team members, Ignore it and hope it works next time, Immediately retry 10 more times]
+  correct: 1
+  explanation: After exhausting retries, log the detailed error information and notify the team so humans can investigate and fix the root cause. Simply retrying endlessly wastes resources, while ignoring failures leads to data loss or broken processes.
+```
+
+```task
+title: Design Error Handling Strategy
+description: For your workflow from the previous task, design a complete error handling strategy. Document: 1) Data validation steps, 2) Which steps need retry logic and how many attempts, 3) What errors should trigger notifications, 4) How you'd implement a circuit breaker. Create a flowchart showing error paths.
+xp: 15
+```
 
 ## 🛠️ Tools Deep Dive
 
@@ -251,6 +309,39 @@ Design workflows to be idempotent so retries don't cause problems.
 - Technical teams comfortable with deployment
 - When cost per operation matters most
 - Need to run custom code in workflows
+
+```quiz
+title: Choosing the Right Automation Tool
+questions:
+- question: When should you choose Make over Zapier for a project?
+  options: [When you need the simplest possible setup, When you need complex workflows with API calls and advanced logic at better value, When you need access to 7000+ pre-built integrations, When you have non-technical team members building workflows]
+  correct: 1
+  explanation: Make excels at complex workflows with advanced logic, API work, and visual workflow design, offering better value (more operations per dollar). Zapier is better for simplicity and pre-built connectors, while Make requires more technical knowledge but provides more control and better pricing.
+- question: What is the main advantage of self-hosting n8n over using Make or Zapier?
+  options: [It has more pre-built integrations, It's easier to use, It offers unlimited operations without per-operation costs, It has better documentation]
+  correct: 2
+  explanation: Self-hosted n8n allows unlimited operations since you're running it on your own infrastructure, eliminating per-operation costs. This is ideal for high-volume workflows. However, it requires technical setup and management, while Zapier/Make are easier to use with better pre-built integrations.
+- question: Which tool would be best for a simple Gmail to Slack notification workflow for a non-technical team?
+  options: [n8n because it's free, Make because of its visual interface, Zapier because of its simplicity and pre-built connectors, Custom code because it's more powerful]
+  correct: 2
+  explanation: Zapier is ideal for simple, standard integrations like Gmail → Slack, especially for non-technical users. It has the easiest learning curve and the most reliable pre-built connectors. Make and n8n would be overkill for this simple use case.
+- question: When processing 50,000 operations per month, which tool offers the best value?
+  options: [Zapier at $19.99/month for 750 tasks, Make at approximately $45/month for 50,000 operations, n8n self-hosted at $0 if you can manage the infrastructure, Free tiers only]
+  correct: 2
+  explanation: For 50,000 operations monthly, n8n self-hosted is most cost-effective (free if you manage the server), though it requires technical expertise. Make would cost around $45, while Zapier would be extremely expensive at that volume. The decision depends on whether you have the technical capability to self-host.
+```
+
+```task
+title: Compare Automation Tools
+description: Create a comparison matrix for Zapier, Make, and n8n. Test each platform by building the same simple workflow (e.g., form submission → save to database → send notification). Document: 1) Ease of setup, 2) Cost for 5,000 operations/month, 3) Which you prefer and why. Take screenshots of each workflow.
+xp: 15
+```
+
+```task
+title: Build Your First Multi-Step Workflow
+description: Choose one automation platform and build a workflow with at least 5 steps including: 1) A trigger, 2) Data transformation, 3) Conditional logic (router/branch), 4) API call or AI integration, 5) Final action. Test it with real data and document any errors you encounter and how you fixed them.
+xp: 20
+```
 
 ## 💡 Real Business Examples
 
@@ -534,6 +625,12 @@ Every workflow should log to analytics table:
 - Cost Estimate
 
 Weekly: Review aggregated metrics to find slow/expensive workflows
+```
+
+```task
+title: Implement Workflow Monitoring
+description: Set up monitoring for one of your workflows. Create a logging system that tracks: 1) Execution count per day, 2) Success/failure rate, 3) Average execution time, 4) Error messages. Build a simple dashboard (Google Sheets or Notion) that visualizes this data. Run the workflow 20 times and analyze the results.
+xp: 15
 ```
 
 ## 📝 Module Project: Build a Multi-Channel AI Content System

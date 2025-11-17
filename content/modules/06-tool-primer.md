@@ -109,6 +109,12 @@ Supabase's superpower is RLS—you can write rules like "users can only see rows
 - **PlanetScale**: MySQL database with branching
 - **Neon**: Serverless Postgres alternative
 
+```task
+title: Set Up Your First Supabase Project
+description: Create a free Supabase account and set up your first project. Create a simple table (e.g., "notes" with columns for id, title, content, created_at). Enable Row-Level Security and write a policy that allows users to see only their own notes. Test the database by inserting a few sample records through the Supabase interface.
+xp: 15
+```
+
 ## Automation: n8n
 
 ### What It Is
@@ -159,6 +165,33 @@ n8n is a workflow automation tool that connects different services together. It'
 ### Pricing
 - **Self-hosted**: Free (you pay for server)
 - **Cloud**: $20/month starter, scales up
+
+```quiz
+title: Backend and Automation Tools Quiz
+questions:
+- question: What is Supabase's key security feature that allows you to write rules like "users can only see their own data"?
+  options: [Database encryption, Row-Level Security (RLS), API keys, Firewall rules]
+  correct: 1
+  explanation: Row-Level Security (RLS) is Supabase's superpower, allowing you to write database-level security rules without complex backend code.
+- question: What is the main advantage of n8n over writing custom API integration code?
+  options: [It's always faster, Visual workflow builder eliminates the need to learn each service's API, It's completely free, It has better security]
+  correct: 1
+  explanation: n8n provides a visual workflow builder where you can connect services without learning each API, dramatically reducing integration development time.
+- question: Which scenario would be BEST suited for n8n automation?
+  options: [A simple static website, Multi-step workflow connecting form submission to GPT-4 to database to email, Running complex mathematical calculations, Hosting video files]
+  correct: 1
+  explanation: n8n excels at multi-step workflows that connect different services, making it perfect for automating processes like form → AI processing → database → notification.
+- question: What does Supabase provide out of the box?
+  options: [Only a database, Only authentication, Database, authentication, real-time subscriptions, storage, and edge functions, Only file storage]
+  correct: 2
+  explanation: Supabase is a complete backend-as-a-service providing PostgreSQL database, authentication, real-time subscriptions, file storage, and edge functions.
+```
+
+```task
+title: Design an Automation Workflow
+description: Choose a repetitive task you currently do manually (e.g., saving email attachments, posting to social media, generating reports). Map out how you could automate it using n8n. Create a written workflow diagram showing: (1) Trigger, (2) Processing steps, (3) Actions taken, (4) Services/tools involved. You don't need to build it yet—just design it on paper.
+xp: 10
+```
 
 ## Communication: Twilio
 
@@ -257,6 +290,31 @@ Stripe is a payment processing platform. It handles credit cards, subscriptions,
 
 **Recommendation**: Stripe for new applications (better API, better developer tools)
 
+```quiz
+title: Communication and Payments Quiz
+questions:
+- question: What problem does Twilio solve for application developers?
+  options: [Hosting websites, Providing database access, Enabling programmatic SMS and voice communication, Processing credit cards]
+  correct: 2
+  explanation: Twilio provides APIs for sending SMS, making phone calls, and WhatsApp messaging—capabilities that phone carriers don't directly provide to developers.
+- question: What is Stripe's fee structure for standard transactions?
+  options: [Flat $10/month, 2.9% + $0.30 per successful charge, 5% of all revenue, Free for the first year]
+  correct: 1
+  explanation: Stripe charges 2.9% + $0.30 per successful transaction with no monthly fees for the standard plan.
+- question: Which feature makes Stripe particularly good for SaaS applications?
+  options: [Cheapest fees, Native recurring billing and subscription management, Fastest processing, Most payment methods]
+  correct: 1
+  explanation: Stripe has native support for recurring billing, subscriptions, trials, upgrades/downgrades, and usage-based pricing, making it ideal for SaaS businesses.
+- question: In the AI appointment reminder example, what role does Twilio play?
+  options: [Generates the reminder message with AI, Stores the appointment data, Sends the SMS to the user's phone, Schedules the appointment]
+  correct: 2
+  explanation: Twilio's role is to send the SMS message to the user's phone. The AI (GPT-4) generates the message content, and n8n orchestrates the workflow.
+- question: What is a key advantage of Stripe over PayPal for developers?
+  options: [Lower fees, Better developer experience and API, More trusted by users, Faster payment processing]
+  correct: 1
+  explanation: While fees are similar, Stripe is recommended for its superior developer experience, better API, and native support for modern features like subscriptions.
+```
+
 ## Vector Databases: Pinecone
 
 ### What It Is
@@ -320,6 +378,37 @@ Good for learning, gets expensive at scale
 - Simple keyword search (use regular database)
 - Small datasets (<1000 items) (use in-memory search)
 - Exact matches (use SQL)
+
+```quiz
+title: Vector Databases and Semantic Search Quiz
+questions:
+- question: What is a vector database primarily used for in AI applications?
+  options: [Storing user passwords, Storing and searching embeddings for semantic similarity, Storing configuration files, Replacing traditional SQL databases]
+  correct: 1
+  explanation: Vector databases like Pinecone are specialized for storing embeddings (numeric representations of text/images) and finding semantically similar items, not just exact keyword matches.
+- question: Why would keyword search miss the connection between "How do I reset my password?" and "Forgot your login credentials?"
+  options: [The sentences are too long, They use different words despite having similar meaning, Keyword search doesn't work on questions, The database is too small]
+  correct: 1
+  explanation: Keyword search looks for exact word matches. Vector/semantic search finds similar meanings even when different words are used.
+- question: In the RAG (Retrieval-Augmented Generation) workflow, what is the vector database's role?
+  options: [Generate the AI response, Find the most relevant documents to provide as context to the AI, Store the user's questions, Replace the LLM]
+  correct: 1
+  explanation: In RAG, the vector database finds the most relevant documents based on semantic similarity, which are then provided as context to the LLM for more accurate, grounded responses.
+- question: What is the typical size of an OpenAI embedding vector?
+  options: [10 numbers, 100 numbers, 1536 numbers, 10000 numbers]
+  correct: 2
+  explanation: OpenAI's embedding models produce vectors with 1536 dimensions (numbers) for each piece of text.
+- question: When should you NOT use a vector database?
+  options: [Building a semantic search system, Creating a RAG chatbot, Simple exact keyword search, Recommendation engines]
+  correct: 2
+  explanation: For simple exact keyword searches, a regular database with full-text search is more appropriate and cost-effective than a vector database.
+```
+
+```task
+title: Understand Embeddings Conceptually
+description: Read about embeddings and semantic search. Then explain in your own words (in a document or note): (1) What an embedding is, (2) How semantic search differs from keyword search, (3) Give 2 real-world examples where semantic search would be better than keyword search. Include an example of when keyword search would actually be better.
+xp: 10
+```
 
 ## No-Code Databases: Airtable
 
@@ -419,6 +508,33 @@ Both do the same thing, but:
 - **Backblaze B2**: Cheap, good for backups
 - **DigitalOcean Spaces**: Simple, middle price
 
+```quiz
+title: Data Storage and No-Code Tools Quiz
+questions:
+- question: What is the key difference between Airtable and Google Sheets?
+  options: [Airtable is free, Google Sheets is paid, Airtable has database structure with relationships, Google Sheets is faster, Google Sheets has better formulas]
+  correct: 1
+  explanation: Airtable has true database structure with native relationships between tables, while Google Sheets is a spreadsheet requiring complex formulas to simulate relationships.
+- question: Why would you choose Cloudflare R2 over AWS S3?
+  options: [R2 has better file compression, R2 has zero egress fees making it cheaper for downloads, R2 is faster, R2 has more features]
+  correct: 1
+  explanation: R2's main advantage is zero egress (download) fees, while S3 charges $0.09/GB for data transfer out, making R2 much cheaper for applications where users download files frequently.
+- question: When should you use Airtable instead of Supabase?
+  options: [When you need the fastest possible performance, For rapid prototyping and non-technical team collaboration, When you need the cheapest solution, When you need to store millions of records]
+  correct: 1
+  explanation: Airtable is ideal for rapid prototyping, when non-technical team members need to view/edit data, and for simpler use cases. Supabase is better for production apps with complex requirements.
+- question: What is object storage (like R2/S3) primarily used for?
+  options: [Storing database records, Storing files like images, videos, and documents, Storing user passwords, Storing configuration settings]
+  correct: 1
+  explanation: Object storage is designed for storing files (images, videos, documents, backups) with fast, scalable delivery via CDN.
+```
+
+```task
+title: Compare Tool Costs for Your Use Case
+description: Choose a hypothetical project (e.g., AI content generator, customer support chatbot, or automated newsletter). Research and document the estimated monthly costs for: (1) Database (Supabase or Airtable), (2) AI API calls (estimate based on expected usage), (3) File storage if needed (R2/S3), (4) Any other services. Calculate total monthly operating costs at different usage levels (10 users, 100 users, 1000 users).
+xp: 15
+```
+
 ## AI Model APIs
 
 ### OpenAI API
@@ -481,6 +597,12 @@ graph LR
 4. **Airtable**: Team collaboration on editing
 5. **Cloudflare R2**: Stores generated images
 6. **(Future) Stripe**: Charge per post generated
+
+```task
+title: Map Your First AI Project Stack
+description: Design the tool stack for an AI project you want to build. For each layer, choose specific tools and explain why: (1) Interface layer (how users interact), (2) Automation layer (workflow orchestration), (3) AI layer (which models/APIs), (4) Data layer (where data is stored), (5) Communication layer (notifications, if needed). Create a simple diagram showing how data flows between these tools.
+xp: 20
+```
 
 ## Choosing the Right Tool for the Job
 
@@ -573,6 +695,37 @@ graph TD
 ### 5. Not Reading Documentation
 **Mistake**: Guessing how tools work instead of reading docs
 **Solution**: Spend 30 minutes reading official docs before using any tool. Worth it.
+
+```quiz
+title: Tool Selection and Best Practices Quiz
+questions:
+- question: According to the decision tree, what should you use if you need to store data with complex relationships?
+  options: [Google Sheets, Airtable, Supabase, n8n]
+  correct: 2
+  explanation: The decision tree shows that for complex relationships, you should use Supabase (a true relational database), while simpler needs can use Airtable or Sheets.
+- question: What is a common pitfall when starting with AI tools?
+  options: [Spending too much time reading documentation, Tool overload - trying to learn all tools at once, Using only free tiers, Starting with the simplest tool]
+  correct: 1
+  explanation: Tool overload is listed as a common pitfall. The solution is to start with Supabase + n8n and add others as needed.
+- question: What does the "free tier limits" table help you understand?
+  options: [Which tools are completely free, When you should upgrade from free to paid plans, How to avoid paying for tools, Which tools are the cheapest]
+  correct: 1
+  explanation: The table shows when each service's free tier becomes insufficient (e.g., "Supabase: 50+ daily users"), helping you plan when to upgrade.
+- question: In the recommended initial setup for Month 1, which tools are suggested?
+  options: [Every tool mentioned in the module, ChatGPT Plus, Claude Pro, Supabase, n8n, and Airtable, Only free tools, Only Supabase]
+  correct: 1
+  explanation: Month 1 setup recommends ChatGPT Plus, Claude Pro, Supabase (free tier), n8n (self-hosted or trial), and Airtable (free tier) for $40/month total.
+- question: What is the "single source of truth" principle?
+  options: [Only use one tool for everything, Each piece of data should have one authoritative source, Always tell the truth to users, Use only open-source tools]
+  correct: 1
+  explanation: The single source of truth principle means each data type should have ONE authoritative source (e.g., customer emails live in Airtable CRM, not scattered across multiple tools).
+```
+
+```task
+title: Create Your Learning Path Budget
+description: Based on the recommended setup guide in this module, create a 3-month budget plan for learning AI operations. Include: Month 1 (fundamentals), Month 2 (building projects), Month 3 (production systems). For each month, list which tools you'll use, which tier (free/paid), and total monthly cost. Identify which free tiers you can stay on while learning.
+xp: 10
+```
 
 ## Next Steps: Applying Your Tool Knowledge
 

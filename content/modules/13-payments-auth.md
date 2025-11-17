@@ -57,6 +57,12 @@ Authentication: User proves they're "john@example.com" by entering password
 Authorization: System checks if john@example.com has "premium" role
 ```
 
+```task
+title: Set Up Supabase Auth
+description: Create a Supabase project, configure email/password authentication, and build a simple signup/login page. Test the full flow: signup → email verification → login → view authenticated user data.
+xp: 15
+```
+
 ### Session Management
 
 ```mermaid
@@ -240,6 +246,37 @@ try {
 
 Never trust incoming webhook data without verification.
 
+```quiz
+title: Authentication and Payment Fundamentals
+questions:
+- question: What is the difference between authentication and authorization?
+  options: [They are the same thing, Authentication verifies identity while authorization determines permissions, Authorization happens before authentication, Authentication is only for payments]
+  correct: 1
+  explanation: Authentication answers "who are you?" by verifying identity (login). Authorization answers "what can you do?" by checking permissions and roles. They're related but distinct security concepts.
+- question: In session management, what is a JWT token?
+  options: [A database entry, A cryptographically signed stateless token containing user info, A cookie, A password hash]
+  correct: 1
+  explanation: JWT (JSON Web Token) is a stateless token signed with a secret key. It contains user information and doesn't require database lookups to validate, making it fast and scalable. Supabase uses JWTs by default.
+- question: Why must you verify webhook signatures from Stripe?
+  options: [To make processing faster, To prevent attackers from sending fake payment events to your system, To reduce database load, To comply with PCI requirements]
+  correct: 1
+  explanation: Without signature verification, anyone could send a POST request to your webhook endpoint claiming a payment succeeded. Verification ensures the event actually came from Stripe, not an attacker.
+- question: What happens in a one-time payment flow after the user completes payment on Stripe's checkout page?
+  options: [Payment is complete, user is upgraded immediately, Stripe sends a webhook to your server which then grants access, User manually requests access, Admin approves the payment]
+  correct: 1
+  explanation: The correct flow is: payment completes → Stripe sends webhook → your server verifies and processes it → you grant access. Never rely on redirect URLs alone as users can close their browser.
+- question: What is Row-Level Security (RLS) in Supabase?
+  options: [A way to encrypt passwords, Database-level access control that enforces permissions on every query, A frontend security feature, A Stripe security setting]
+  correct: 1
+  explanation: RLS runs at the database level, enforcing policies on every query. Even if someone bypasses your frontend, they can't access unauthorized data. It's Supabase's most powerful security feature.
+```
+
+```task
+title: Implement Row-Level Security Policies
+description: Create a table in Supabase for user-specific data (e.g., documents, notes). Enable RLS and create policies so users can only read/write their own data. Test by trying to access another user's data - it should be blocked at the database level.
+xp: 20
+```
+
 ## 🛠️ Tools Deep Dive
 
 ### Supabase Auth
@@ -340,6 +377,37 @@ const session = await stripe.billingPortal.sessions.create({
 });
 
 // Redirect user to session.url
+```
+
+```quiz
+title: Payment Tools and Integration
+questions:
+- question: What is Stripe's transaction fee for standard card payments?
+  options: [1.5% + $0.15, 2.9% + $0.30, 5% + $0.50, Free]
+  correct: 1
+  explanation: Stripe charges 2.9% + $0.30 per successful card charge. This is industry-standard pricing and covers payment processing, fraud prevention, and PCI compliance.
+- question: Why should you use Stripe Customer Portal instead of building your own subscription management UI?
+  options: [It's required by law, It's free and handles all subscription management automatically, It's faster than custom code, It has better design]
+  correct: 1
+  explanation: Customer Portal is free, zero-code, and handles payment method updates, cancellations, billing history, and more. It saves weeks of development and is automatically maintained by Stripe.
+- question: What is the main advantage of Supabase Auth over building your own authentication?
+  options: [It's cheaper, It handles security complexities like password hashing, JWT management, and email verification automatically, It works offline, It's faster]
+  correct: 1
+  explanation: Supabase Auth handles all the security complexities - password hashing, secure token generation, email verification, password reset flows, and more. Building this securely yourself takes weeks and is error-prone.
+- question: What is metered billing in Stripe?
+  options: [Charging by the hour, Charging based on actual usage like API calls or documents processed, Charging a flat monthly fee, Charging per user seat]
+  correct: 1
+  explanation: Metered billing charges based on usage - you report quantities (API calls, documents, etc.) to Stripe throughout the month, and they bill at the end. Perfect for pay-per-use models.
+- question: When implementing social login (Google, GitHub, etc.), what is the main benefit?
+  options: [It's cheaper, Conversion rates are 50-100% higher than email/password, It's more secure, It uses less code]
+  correct: 1
+  explanation: Social login has dramatically higher conversion rates because users don't need to create yet another password. The reduced friction often doubles signup rates compared to traditional email/password forms.
+```
+
+```task
+title: Set Up Stripe Test Mode
+description: Create a Stripe account, get test API keys, create a product and price in the dashboard, and implement a basic checkout flow. Test with Stripe test card (4242 4242 4242 4242) to complete a payment without real money.
+xp: 20
 ```
 
 ## 💡 Real Business Examples
@@ -665,6 +733,12 @@ app.post('/api/analyze-document', async (req, res) => {
 - Average revenue per user: $8.50/month
 - Some power users paying $100+/month
 
+```task
+title: Build a Tiered Pricing System
+description: Implement a free tier (limited features) and premium tier (unlimited). Store subscription_tier in user profile, check tier before allowing actions, and enforce limits for free users. Test both upgrade and downgrade flows.
+xp: 25
+```
+
 ### Example 3: Team Collaboration with Seat-Based Pricing
 
 **Problem:** AI project management tool. Want to charge per team member ($15/user/month).
@@ -718,6 +792,37 @@ app.post('/api/team/add-member', async (req, res) => {
 - Pro-rated charges for mid-month changes
 - Teams self-manage membership
 - Average team size: 4.2 members = $63/month per team
+
+```quiz
+title: Production Payment Systems
+questions:
+- question: In the AI writing tool example, why is subscription_tier stored in the user's profile table?
+  options: [To waste database space, So access control checks can be fast without calling Stripe API every time, To make the code more complex, Because Stripe requires it]
+  correct: 1
+  explanation: Storing tier locally allows instant access checks without slow API calls to Stripe on every request. Stripe is the source of truth (via webhooks), but local storage makes the app fast.
+- question: Why does the generation limit check happen before calling the OpenAI API in the tiered pricing example?
+  options: [To save OpenAI API costs by rejecting over-limit users before generation, To make the system slower, To increase complexity, Because OpenAI requires it]
+  correct: 0
+  explanation: Checking limits before calling OpenAI prevents wasting money generating content for users who've hit their free tier limit. This is cost optimization - don't spend on API calls that will be rejected anyway.
+- question: What is the purpose of the stripe_customer_id field in the user profile?
+  options: [To store credit card numbers, To link the user to their Stripe customer record for billing operations, To encrypt passwords, To improve performance]
+  correct: 1
+  explanation: stripe_customer_id links your database user to their Stripe customer record. This allows you to create checkouts, retrieve subscriptions, generate portal links, and sync billing information.
+- question: In the pay-per-use example, when should you report usage to Stripe?
+  options: [Once per month, Immediately after each billable action (document processed, API call, etc.), Never, Only when the user requests it]
+  correct: 1
+  explanation: Report usage to Stripe right after each billable action. Stripe accumulates the usage throughout the month and bills at period end. Real-time reporting ensures accurate billing.
+- question: Why does the seat-based pricing example use proration_behavior: 'always_invoice'?
+  options: [To avoid charging users, To immediately charge pro-rated amount when adding a seat mid-month, To delay billing, To reduce costs]
+  correct: 1
+  explanation: Proration ensures fair billing - if a team adds a member halfway through the month, they're charged only for the remaining days, not the full month. 'always_invoice' creates an immediate invoice for this amount.
+```
+
+```task
+title: Implement Stripe Webhooks
+description: Create a webhook endpoint that handles Stripe events: checkout.session.completed (upgrade user), customer.subscription.deleted (downgrade user), and invoice.payment_failed (notify user). Verify webhook signatures for security. Test using Stripe CLI.
+xp: 30
+```
 
 ## ⚠️ Common Pitfalls
 
@@ -883,6 +988,12 @@ Test every scenario:
 - Subscription renewal
 - Subscription cancellation
 - Payment method update
+
+```task
+title: Build an End-to-End SaaS Payment Flow
+description: Create a complete flow: user signup → login → use free tier (with limits) → upgrade to premium (Stripe checkout) → webhook upgrades account → unlimited access → user can manage subscription in Customer Portal. Test the entire journey.
+xp: 40
+```
 
 ## 📝 Module Project: Build a SaaS with Auth and Payments
 

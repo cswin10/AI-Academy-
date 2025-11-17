@@ -187,6 +187,43 @@ Distribution channels for AI tools:
 
 Plan distribution from day one, not after building.
 
+```quiz
+title: Product Fundamentals Quiz
+questions:
+- question: What does MVP (Minimum Viable Product) actually mean?
+  options: [A barely functional product, The smallest thing you can build that validates your riskiest assumption, A product with minimum features, A cheap version of your product]
+  correct: 1
+  explanation: MVP means the smallest thing you can build that validates your riskiest assumption. It's not about being cheap or barely functional, but about testing your core hypothesis as quickly as possible.
+- question: In the Build-Measure-Learn loop, how long should one complete cycle take?
+  options: [Months, Days, not months, Hours, Years]
+  correct: 1
+  explanation: The Build-Measure-Learn loop should take days, not months. Quick iteration is key to finding product-market fit. The faster you can complete loops, the faster you learn what works.
+- question: Which approach is more likely to succeed?
+  options: [Solution-first - Build RAG system then look for problems it solves, Problem-first - Observe sales teams spend 3hrs/day on emails then build simplest AI solution, Technology-first - Use the latest AI models, Feature-first - Build all features then launch]
+  correct: 1
+  explanation: Problem-first approaches usually succeed because you start with a validated pain point. Solution-first thinking often fails because you're looking for problems to fit your solution instead of solving real needs.
+- question: What is The Mom Test about?
+  options: [Getting your mom to test your product, Talking about their life and problems, not pitching your solution, Making products for parents, Testing with family members first]
+  correct: 1
+  explanation: The Mom Test is about talking about their life and problems, not pitching your solution. Ask about specific behaviors and pain points, not hypothetical questions like "would you use this?"
+- question: Which type of user feedback is MOST reliable?
+  options: [Hypothetical questions like "would you pay for this?", Direct asks from user interviews, Unsolicited feedback from paying users, Survey responses]
+  correct: 2
+  explanation: Usage data (what users actually do) is most reliable, followed by unsolicited feedback (users proactively telling you something). Hypothetical questions are least reliable because people say one thing but do another.
+```
+
+```task
+title: Validate a Product Idea
+description: Identify a problem through user research. Post on Twitter/LinkedIn asking about pain points, conduct 3 user interviews (15 minutes each), and document the problem with evidence that it's worth solving. Include who has it, how painful it is, current solutions, and willingness to pay.
+xp: 15
+```
+
+```task
+title: Build and Ship an MVP in One Week
+description: Build the simplest possible solution to a validated problem - single web page, one input form, AI processes input, shows result. Deploy it publicly and get at least 10 people to try it. Track what they do, not just what they say.
+xp: 20
+```
+
 ## 🛠️ Tools Deep Dive
 
 ### User Research Tools
@@ -391,6 +428,55 @@ Watch what users do. Original tool: One-and-done. New tool: Repeat usage. Repeat
 
 **Lesson:**
 Distribution is easier when people watch you build. They're invested in your success. They become early adopters.
+
+```quiz
+title: Product Strategy Quiz
+questions:
+- question: In Example 1 (100 Paying Users in 30 Days), what did they build FIRST after getting users?
+  options: [All the requested features, Payment system, Database and user accounts, Facebook post integration]
+  correct: 1
+  explanation: They added payment first (Stripe checkout, simple), then save history. They got 23 people to pay before building any of the features users requested. This validated real willingness to pay.
+- question: In Example 2 (When to Pivot), what was the key signal that indicated the pivot was successful?
+  options: [More signups, 420 out of 500 people used it multiple times, Better UI design, Lower costs]
+  correct: 1
+  explanation: Repeat usage is the key signal. Original tool had one-and-done usage. New tool had 84% of users coming back multiple times, showing they found real value. Repeat usage → real value → willingness to pay.
+- question: What was the distribution strategy in Example 3 (Building in Public)?
+  options: [Paid ads and SEO, Just building in public on Twitter and sharing progress daily, Cold email outreach, Product Hunt only]
+  correct: 1
+  explanation: The entire strategy was building in public on Twitter - sharing daily progress, metrics, and learnings. This built an audience of 2,000 followers who became early adopters on launch day.
+- question: According to the Concierge MVP pattern, what should you do before building automation?
+  options: [Build the full system first, Do the service manually for 20 customers to learn what they really need then automate, Write detailed requirements, Survey 100 potential customers]
+  correct: 1
+  explanation: The Concierge MVP means doing it manually first. User emails you, you manually process it, charge them, and learn. After 20 customers, you know exactly what to automate because you've done it yourself.
+- question: What is the Five Users Rule?
+  options: [Launch when you have 5 users, Only build features that 5 separate users have requested, Test with 5 beta users, Interview 5 users before building]
+  correct: 1
+  explanation: Before adding any feature, you need 5 separate users to request it. This prevents building one-off requests and ensures you're building features that multiple people actually want.
+```
+
+```task
+title: Implement Payment in Your MVP
+description: Add payment functionality to a project using Stripe. Implement a checkout flow for either a one-time payment ($10-50) or subscription ($5-20/month). Successfully process at least one real test payment. Document the integration and pricing strategy.
+xp: 15
+```
+
+```task
+title: Launch a Product Publicly
+description: Launch an MVP on at least 2 platforms (Product Hunt, Twitter, LinkedIn, Indie Hackers, or relevant subreddits). Create a launch post with demo video. Track signups and engagement. Aim for at least 50 visitors and collect feedback from at least 10 users.
+xp: 20
+```
+
+```task
+title: Conduct User Interviews
+description: Interview 5 potential users about their problems and workflows. Use The Mom Test approach - ask about their life and specific behaviors, not hypothetical questions. Document pain points, current solutions, and evidence of willingness to pay. Identify patterns across interviews.
+xp: 15
+```
+
+```task
+title: Build in Public for One Week
+description: Share daily updates on Twitter or LinkedIn for 7 consecutive days while building a project. Include progress updates, challenges faced, metrics, and learnings. Engage with comments and feedback. Track follower growth and engagement.
+xp: 10
+```
 
 ## ⚠️ Common Pitfalls
 

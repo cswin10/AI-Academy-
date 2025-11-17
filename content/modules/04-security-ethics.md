@@ -123,6 +123,37 @@ Layer 7: Monitoring and alerts
 
 If one layer fails, others still protect.
 
+```quiz
+title: Security Fundamentals - CIA Triad & Defense in Depth
+questions:
+- question: What does the CIA Triad stand for in information security?
+  options: [Central Intelligence Agency, Confidentiality, Integrity, and Availability, Cost, Implementation, and Architecture, Cryptography, Identity, and Authentication]
+  correct: 1
+  explanation: The CIA Triad represents the three pillars of information security - Confidentiality (who can access), Integrity (is it accurate), and Availability (is it accessible when needed). These are fundamental principles for securing any system.
+- question: Which security principle does encryption at rest and in transit primarily address?
+  options: [Availability, Integrity, Confidentiality, Authentication]
+  correct: 2
+  explanation: Encryption primarily addresses Confidentiality by ensuring only authorized parties can read the data. Even if someone intercepts encrypted data in transit or accesses storage, they can't read it without the decryption key.
+- question: What is the core principle of Defense in Depth?
+  options: [Use the strongest possible password, Rely on multiple layers of security so if one fails others still protect, Only allow access from secure locations, Use only open-source security tools]
+  correct: 1
+  explanation: Defense in Depth means layering multiple security measures (network, application, authentication, authorization, encryption, logging, monitoring) so that if one layer is compromised, others still provide protection. Never rely on a single security control.
+- question: In the security layers, what is the difference between authentication and authorization?
+  options: [There is no difference, Authentication is "who are you?" and Authorization is "what can you do?", Authorization is more secure than authentication, Authentication is only for APIs]
+  correct: 1
+  explanation: Authentication verifies identity (who are you? - login with password/token), while Authorization determines permissions (what can you do? - which resources can you access). Both are critical security layers but serve different purposes.
+- question: Which principle states you should give users or systems only the minimum access they need?
+  options: [Defense in Depth, Privacy by Design, Principle of Least Privilege, Zero Trust]
+  correct: 2
+  explanation: The Principle of Least Privilege means granting only the minimum access necessary to perform required tasks. For example, developers get read-only database access, not admin rights. This limits damage if credentials are compromised.
+```
+
+```task
+title: Audit Your Current Security Layers
+description: Choose a project you're working on and document which of the 7 defense-in-depth layers you have implemented (Network, Application, Authentication, Authorization, Data, Audit, Monitor). Identify gaps and prioritize which layer to implement next.
+xp: 15
+```
+
 ### Privacy by Design
 
 Build privacy into systems from the start, not as an afterthought:
@@ -218,6 +249,37 @@ const session = crypto.randomBytes(32).toString('hex')
 <div>{escapeHTML(userInput)}</div>
 ```
 
+```quiz
+title: Privacy, Ethics & Common Vulnerabilities
+questions:
+- question: What is the core principle of "Privacy by Design"?
+  options: [Add privacy features after building the product, Build privacy into systems from the start, not as an afterthought, Only collect data that is legally required, Use encryption for everything]
+  correct: 1
+  explanation: Privacy by Design means building privacy protections into the system architecture from the beginning, not adding them later. This includes data minimization (collect only what's needed), purpose limitation (use data only as stated), and storage limitation (delete when no longer needed).
+- question: Which of these follows the "Data Minimization" principle?
+  options: [Collecting birth date when you only need age range, Asking for age range directly instead of birth date, Storing all user activity forever, Collecting social security numbers for all users]
+  correct: 1
+  explanation: Data minimization means collecting only what you need. If you only need to know if someone is over 18, ask for age range (18-25, 25-34, etc.) rather than exact birth date. Less data collected = less data to protect and less privacy risk.
+- question: What makes this code vulnerable to SQL injection: db.query(`SELECT * FROM users WHERE email = '${userInput}'`)?
+  options: [It uses single quotes, It directly inserts user input into SQL query without parameterization, It's too slow, It doesn't use encryption]
+  correct: 1
+  explanation: This code is vulnerable because it directly inserts userInput into the SQL string. An attacker could input "'; DROP TABLE users; --" to execute arbitrary SQL. Always use parameterized queries to prevent SQL injection.
+- question: According to the ethical AI framework, what should you do when users interact with AI?
+  options: [Hide that it's AI to make it seem more natural, Always disclose that users are interacting with AI, Only tell users if they ask, Use AI only when humans aren't available]
+  correct: 1
+  explanation: Transparency is a core ethical principle. Users should always know when they're interacting with AI ("I'm an AI assistant...") rather than being deceived into thinking it's human. This builds trust and allows users to adjust expectations appropriately.
+- question: What's wrong with using production user data for testing?
+  options: [Nothing - it's the most realistic test data, It violates privacy principles and GDPR, may expose real customer PII, and creates security risks, It costs too much, It's too slow]
+  correct: 1
+  explanation: Using production data for testing exposes real customer information, violates privacy regulations (GDPR), and creates security risks if test environments are less secure. Always use synthetic test data or properly anonymized samples.
+```
+
+```task
+title: Implement API Key Environment Variables
+description: If you have a project with hardcoded API keys or secrets, move them to environment variables. Create a .env file, add it to .gitignore, update your code to use process.env, and test that it works. Document the before and after.
+xp: 15
+```
+
 ## 🛠️ Tools Deep Dive
 
 ### Secret Management
@@ -284,6 +346,12 @@ const decrypted = await decrypt(row.data, encryptionKey)
 - Continuous security monitoring
 - Finds vulnerabilities in code and dependencies
 - Integration with CI/CD
+
+```task
+title: Set Up Secret Scanning
+description: For a GitHub repository, enable secret scanning and Dependabot alerts. If you don't have a repo, create a test one, commit code with environment variables properly configured, and verify the security features are working.
+xp: 10
+```
 
 ### Compliance Tools
 
@@ -444,6 +512,37 @@ AI assists, doesn't decide
 - More diverse candidate pool
 - Avoided potential discrimination lawsuit
 - Better hiring outcomes (diverse teams perform better)
+
+```quiz
+title: Real-World Security & Ethics Cases
+questions:
+- question: In the GDPR fine example, what was the critical mistake that led to a $50K fine?
+  options: [Not having a privacy policy, Collecting too much data, Ignoring a user's data deletion request for 45 days, Using AI without disclosure]
+  correct: 2
+  explanation: The company received a GDPR deletion request via email but delayed responding for 45 days. GDPR requires responses within 30 days. The fine was preventable with a self-service deletion feature and proper request handling procedures.
+- question: What made the AI resume screener biased?
+  options: [The AI was programmed incorrectly, It was trained on 10 years of historically biased hiring data (90% male hires), It used the wrong model, It had too much training data]
+  correct: 1
+  explanation: The AI learned from historical data that was biased (90% male engineering hires). The AI amplified this bias, favoring male candidates and penalizing indicators associated with women. Historical bias in training data creates biased AI - garbage in, garbage out.
+- question: How should the resume screening AI bias be fixed?
+  options: [Just use a different AI model, Balance training data, remove biased features (names, colleges), regular audits, and human-in-the-loop review, Stop using AI entirely, Use higher temperature]
+  correct: 1
+  explanation: Fixing bias requires multiple approaches - balance the training data, remove features that proxy for protected characteristics (names, college names, zip codes), conduct regular bias audits with the "80% rule," and have humans make final decisions with AI as an assistant, not decision-maker.
+- question: In the API key exposure disaster, what happened?
+  options: [API key committed to GitHub, bots found it in minutes and racked up $847 in charges within 67 minutes, Someone guessed the API key, The API provider was hacked, The developer shared the key with a friend]
+  correct: 0
+  explanation: The developer committed code with an OpenAI API key to public GitHub. Automated bots scrape GitHub 24/7 for exposed keys and found it within a minute. They immediately used it to generate spam, costing $847 in just 67 minutes. OpenAI didn't refund because securing keys is the user's responsibility.
+- question: What's the most effective prevention for exposed API key disasters?
+  options: [Using longer API keys, Never commit secrets to Git, use environment variables, add .env to .gitignore, and set usage limits on keys, Checking GitHub daily, Using private repositories only]
+  correct: 1
+  explanation: Prevention requires multiple measures - never hardcode secrets, use environment variables, add .env to .gitignore, use pre-commit hooks to detect secrets, enable GitHub secret scanning, and set usage/cost limits on API keys. Private repos help but aren't sufficient alone.
+```
+
+```task
+title: Create Your Ethics Policy
+description: Write a one-page AI Ethics Policy for a real or hypothetical project. Include commitments to transparency, fairness, privacy, accountability, and safety. Document what you WILL and WON'T do with AI. Use the template from the module as a starting point.
+xp: 15
+```
 
 ### Example 3: API Key Exposure Disaster
 
@@ -609,6 +708,12 @@ Monthly checklist:
 
 30 minutes/month prevents disasters.
 
+```task
+title: Conduct a Bias Audit
+description: If you have an AI system, test it with diverse inputs (different names, demographics, scenarios) to check for bias. If you don't have one, use ChatGPT/Claude with a task like "evaluate this resume" and test with stereotypically different names. Document any disparities you find.
+xp: 15
+```
+
 ### Tip 7: Privacy Policy in Plain English
 
 Don't just copy a template. Explain clearly:
@@ -619,6 +724,37 @@ Good: "We use your email to send you AI-generated content and account updates. W
 
 Bad: "Data subject access requests pursuant to Article 15..."
 Good: "You can download or delete all your data at any time from Account Settings"
+```
+
+```quiz
+title: Security Best Practices & Incident Response
+questions:
+- question: What should you include in your .gitignore file?
+  options: [All JavaScript files, .env files, secrets, and credential files, All configuration files, Only large binary files, Nothing - commit everything]
+  correct: 1
+  explanation: Your .gitignore must include .env, .env.local, *.key, secrets.json, and any files containing sensitive credentials. This prevents accidentally committing secrets to version control. Committed secrets can be scraped by bots within minutes of being pushed.
+- question: Why should you use separate API keys for development and production?
+  options: [It's a legal requirement, To prevent accidentally charging real customers or racking up bills during development with usage limits appropriate to each environment, Development keys are faster, Production keys cost more]
+  correct: 1
+  explanation: Separate keys with different usage limits protect you. Development keys should have low limits ($10/month) so you can't accidentally rack up huge bills while testing. Production keys need higher limits but are protected. You also can't accidentally affect production data during development.
+- question: What is the "80% rule" in bias auditing?
+  options: [Your AI should be 80% accurate, If any demographic group's selection rate is less than 80% of the highest group's rate, it may indicate bias, 80% of users should be satisfied, Test with 80% of your data]
+  correct: 1
+  explanation: The 80% rule (also called the four-fifths rule) is used to detect bias. If any protected group's selection/recommendation rate is less than 80% of the highest group's rate, it may indicate discriminatory bias that needs investigation and correction.
+- question: In a security incident where an API key is exposed publicly, what should you do FIRST?
+  options: [Write an incident report, Notify all users, Revoke the compromised credentials immediately (0-15 minutes), Contact a lawyer]
+  correct: 2
+  explanation: The absolute first step is to revoke compromised credentials immediately to stop ongoing unauthorized access. This happens in the first 0-15 minutes. Everything else (assessing damage, notifying users, reports) comes after you've stopped the bleeding.
+- question: What makes a privacy policy user-friendly?
+  options: [Using complex legal terminology, Plain English explanations of what data you collect, why, and how users can control it, Making it as long as possible, Hiding it in fine print]
+  correct: 1
+  explanation: Good privacy policies use plain English, clearly explain what data you collect and why, avoid legal jargon, and make it easy for users to understand their rights. "We use your email for account updates, never sell your data" beats "We may process your data for legitimate business interests pursuant to GDPR Article 6(1)(f)."
+```
+
+```task
+title: Write an Incident Response Plan
+description: Create a security incident response plan for a project. Define P0/P1/P2 severity levels, document immediate response steps for each level (what to do in first 15 min, first 4 hours, first 48 hours), and create communication templates for users and team.
+xp: 15
 ```
 
 ## 📝 Module Project: Security Audit & Ethical Review
