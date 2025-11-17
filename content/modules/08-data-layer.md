@@ -76,6 +76,33 @@ Spreadsheets are like keeping papers in folders. Databases are like having a lib
 - You're building a product that users interact with directly
 - You need row-level security (users can only see their data)
 
+```quiz
+title: Databases vs Spreadsheets Understanding
+questions:
+- question: When would you choose a real database over Airtable for a project?
+  options: [You need to store 30K customer records with simple filtering, You're building a production app handling 200K+ records with complex queries, Your team of 5 needs to manually edit data collaboratively, You want a visual interface for non-technical team members]
+  correct: 1
+  explanation: Real databases like PostgreSQL/Supabase excel at handling large datasets (100K+ records) with complex queries and sub-second performance. Options A, C, and D are ideal use cases for Airtable/spreadsheets.
+- question: What is the main advantage of row-level security in databases like Supabase?
+  options: [It makes queries run faster, It allows users to only see and modify their own data, It reduces storage costs, It eliminates the need for API authentication]
+  correct: 1
+  explanation: Row-level security (RLS) policies ensure users can only access data they're authorized to see, making it essential for multi-tenant applications. It doesn't affect query speed, storage costs, or replace API authentication.
+- question: Which scenario indicates you've outgrown spreadsheets?
+  options: [You have 20K records and need team collaboration, Your queries are taking 5+ seconds and you need complex many-to-many relationships, You want to share data with external stakeholders, You need to create charts and visualizations]
+  correct: 1
+  explanation: Slow performance (5+ seconds) combined with complex relationships indicates you need a real database. The other scenarios can still be handled well by Airtable or Google Sheets.
+- question: What does transactional integrity mean in the context of databases?
+  options: [All transactions are logged for auditing, Multiple operations either all succeed or all fail together, Data is encrypted during transmission, Payments are processed securely]
+  correct: 1
+  explanation: Transactional integrity ensures that multiple related operations (like debiting one account and crediting another) either all complete successfully or all fail together, preventing inconsistent states. This is critical for payment systems and other scenarios requiring data consistency.
+```
+
+```task
+title: Evaluate Your Current Data Storage
+description: Take an existing project using Airtable or Google Sheets. Document: 1) Current record count, 2) Query performance issues (if any), 3) Data relationships, 4) Whether you need row-level security. Write a recommendation for whether to migrate to Supabase or stay with current solution.
+xp: 10
+```
+
 ### Understanding Supabase
 
 Supabase is "Firebase for PostgreSQL." Translation: It's a service that gives you a powerful PostgreSQL database with a beautiful dashboard, instant APIs, authentication, and real-time subscriptions - all without needing to be a database expert.
@@ -134,6 +161,12 @@ Example:
 
 Notice how the first two are numerically similar (because they mean the same thing), while the third is different. This is how AI can find relevant information even when you don't use the exact keywords.
 
+```task
+title: Generate Your First Embeddings
+description: Use the OpenAI API to generate embeddings for 3 different pieces of text (at least 100 words each). Compare the embedding vectors - do similar texts produce similar vectors? Document your findings and calculate the cosine similarity between them.
+xp: 15
+```
+
 ### Vector Stores: Databases for Meaning
 
 Regular databases search for exact matches or patterns. Vector stores search for similarity. This is the foundation of:
@@ -148,6 +181,37 @@ Popular vector stores:
 - **Chroma** - Open source, can run locally or in cloud
 - **Supabase pgvector** - Extension that adds vector search to PostgreSQL
 - **Weaviate** - Open source, more complex but very powerful
+
+```quiz
+title: Vector Embeddings and Semantic Search
+questions:
+- question: What is the primary purpose of converting text to vector embeddings?
+  options: [To compress text data to save storage space, To enable semantic similarity search by representing meaning as numbers, To encrypt sensitive information for security, To translate text between different languages]
+  correct: 1
+  explanation: Vector embeddings convert text into numerical representations that capture semantic meaning, allowing systems to find conceptually similar content even without matching keywords. This is the foundation of semantic search and RAG systems.
+- question: In a RAG system, when should embeddings be generated?
+  options: [Every time a user makes a search query and for each document when it's first added, Only when the user performs a search, Only for documents when they're added to the knowledge base, At the end of each day in a batch process]
+  correct: 0
+  explanation: RAG systems pre-compute embeddings for all documents when they're added (stored in the vector database), and generate one embedding in real-time for each user query. This approach is efficient since you only generate one embedding per search instead of re-embedding your entire knowledge base.
+- question: What makes vector search different from traditional keyword search?
+  options: [Vector search is faster than keyword search, Vector search finds semantically similar content even without exact keyword matches, Vector search only works with numerical data, Vector search requires less storage space]
+  correct: 1
+  explanation: Vector search finds results based on semantic similarity - meaning you can search for "affordable car" and find documents about "budget vehicle" even though the keywords don't match. This is the key advantage over traditional keyword/exact-match search.
+- question: Why would you use Pinecone instead of Supabase pgvector for a project?
+  options: [Pinecone is always cheaper than pgvector, Pinecone is better optimized for large-scale vector search with millions of vectors, Pinecone can also store regular relational data, Pinecone doesn't require any technical setup]
+  correct: 1
+  explanation: Pinecone is purpose-built for vector search at scale and performs better with millions of vectors. pgvector is great for small-to-medium projects where you want vectors and regular data in one place, but Pinecone excels at high-volume vector operations.
+- question: What is a common chunk size for embedding article content?
+  options: [10-50 words per chunk, 300-500 words per chunk, 5000+ words per chunk, One sentence per chunk]
+  correct: 1
+  explanation: 300-500 words is a sweet spot for most article content - large enough to contain meaningful context, but small enough to remain focused on specific topics. Too small (sentences) loses context, too large (full 5000-word articles) dilutes relevance.
+```
+
+```task
+title: Compare Vector Store Options
+description: Research and create a comparison table for Pinecone, Chroma, and Supabase pgvector. Include: pricing for 100K vectors, ease of setup, performance characteristics, and when to use each. Choose which one you'd use for a specific project and justify your decision.
+xp: 10
+```
 
 ### Data Modeling for AI Workflows
 
@@ -395,6 +459,39 @@ graph TD
 ❌ Letting your frontend app connect directly to database with full access
 ✅ Use Row-Level Security policies in Supabase, or create a backend API that validates requests
 
+```quiz
+title: RAG Systems and Best Practices
+questions:
+- question: What is the correct order of steps in a RAG (Retrieval Augmented Generation) system?
+  options: [Generate answer → Search vectors → Embed query → Retrieve documents, Embed query → Search vectors → Retrieve documents → Generate answer, Search vectors → Embed query → Generate answer → Retrieve documents, Retrieve documents → Embed query → Search vectors → Generate answer]
+  correct: 1
+  explanation: The correct RAG flow is 1) Convert user query to embedding, 2) Search vector store for similar embeddings, 3) Retrieve full content from database using the matched IDs, 4) Generate answer using retrieved context. This ensures the AI has relevant information before generating a response.
+- question: Why should you store metadata alongside vector embeddings in Pinecone?
+  options: [To make embeddings more accurate, To enable filtering results before performing similarity search, To reduce storage costs, To improve embedding generation speed]
+  correct: 1
+  explanation: Metadata filtering allows you to narrow search scope before computing similarity (e.g., only search documents from a specific category or date range). This makes searches more relevant, faster, and more efficient.
+- question: What is the idempotency principle when updating embeddings?
+  options: [Embeddings should never be updated once created, The same document should always produce the same embedding, Operations should be safe to run multiple times without creating duplicates, Embeddings should be encrypted for security]
+  correct: 2
+  explanation: Idempotency means operations can be run multiple times safely. For embeddings, this means using "upsert" (update if exists, insert if not) instead of always inserting, preventing duplicate embeddings if a workflow runs twice.
+- question: When should you re-generate embeddings for existing documents?
+  options: [Every time a user performs a search, Never - embeddings are permanent, When the document content is modified or updated, At the end of each business day]
+  correct: 2
+  explanation: Embeddings must be regenerated whenever document content changes, otherwise search will return outdated information. Pre-computed embeddings are only valid as long as the source content remains unchanged.
+```
+
+```task
+title: Design a Data Model for AI Workflows
+description: Choose a real-world scenario (e.g., customer support, content management, e-commerce). Design a database schema that includes: 1) Source data tables, 2) AI-generated content tables, 3) Audit trail fields, 4) Embedding storage strategy. Document why you made each design decision.
+xp: 15
+```
+
+```task
+title: Set Up Your First Supabase Database
+description: Create a free Supabase account and project. Build a simple database with at least 2 tables and a relationship between them. Practice CRUD operations using the Supabase dashboard. Document the table structure and insert 10 sample records.
+xp: 10
+```
+
 ## ✨ Pro Tips
 
 ### Tip 1: Use Hybrid Search
@@ -494,6 +591,12 @@ This lets you test without breaking everything.
 For learning and small projects (< 50,000 vectors), use Supabase's pgvector extension. Everything in one place, simpler.
 
 When you need to scale or it gets slow, migrate to Pinecone. The concepts are the same, just different endpoints.
+
+```task
+title: Build a Mini RAG System
+description: Complete the module project or build your own simplified version. Must include: 1) Storage for at least 10 documents in Supabase, 2) Vector embeddings in Pinecone or Chroma, 3) Search functionality that retrieves relevant documents, 4) AI-generated answers with source citations. Test with 5 different queries and document results.
+xp: 25
+```
 
 ## 📝 Module Project: Build a Personal Knowledge Base with RAG
 

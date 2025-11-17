@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -17,6 +17,15 @@ export function DashboardClient() {
   const { user, loading: authLoading } = useSupabase();
   const { profile, loading: profileLoading } = useUserProfile();
   const { progress } = useModuleProgress();
+  const [totalModules, setTotalModules] = useState(17); // Default fallback
+
+  useEffect(() => {
+    // Fetch total module count dynamically
+    fetch('/api/modules/count')
+      .then(res => res.json())
+      .then(data => setTotalModules(data.count))
+      .catch(() => setTotalModules(17)); // Fallback on error
+  }, []);
 
   if (authLoading || profileLoading) {
     return (
@@ -76,7 +85,6 @@ export function DashboardClient() {
   // Calculate stats
   const completedModules = progress.filter(p => p.completed_at).length;
   const startedModules = progress.filter(p => !p.completed_at).length;
-  const totalModules = 17; // Update based on actual count
 
   return (
     <div className="min-h-screen pb-20">

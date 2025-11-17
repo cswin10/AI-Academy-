@@ -181,7 +181,7 @@ export function ModulePageClient({
                     {/* Quiz for this section */}
                     {section.quiz && (
                       <div className="mt-4">
-                        <SectionQuizComponent quiz={section.quiz} />
+                        <SectionQuizComponent quiz={section.quiz} moduleId={moduleId} />
                       </div>
                     )}
                   </div>
@@ -204,7 +204,10 @@ export function ModulePageClient({
                 {/* Final Module Quiz */}
                 {finalQuiz && (
                   <div className="mt-8">
-                    <SectionQuizComponent quiz={{...finalQuiz, title: 'Final Module Quiz'}} />
+                    <SectionQuizComponent
+                      quiz={{...finalQuiz, title: 'Final Module Quiz'}}
+                      moduleId={moduleId}
+                    />
                   </div>
                 )}
               </div>

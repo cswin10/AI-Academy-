@@ -75,6 +75,12 @@ graph TB
 
 The difference is enormous in production environments.
 
+```task
+title: Set Up Your First RAG Environment
+description: Install LlamaIndex or LangChain, set up a vector database (Pinecone or Weaviate), and create a simple embedding pipeline. Test it with a small document collection to understand the basic flow.
+xp: 15
+```
+
 ### The Chunking Problem
 
 How you split documents matters enormously:
@@ -140,6 +146,37 @@ graph TB
     style H fill:#10B981,stroke:#059669,color:#fff
     style J fill:#10B981,stroke:#059669,color:#fff
     style K fill:#EF4444,stroke:#DC2626,color:#fff
+```
+
+```quiz
+title: RAG Architecture Fundamentals
+questions:
+- question: What is the main difference between basic RAG (70% accuracy) and production RAG (95% accuracy)?
+  options: [Production RAG uses more expensive AI models, Production RAG includes query enhancement and reranking steps, Production RAG requires more storage space, Production RAG only works with larger datasets]
+  correct: 1
+  explanation: Production RAG achieves higher accuracy by adding query enhancement, hybrid search, reranking, and quality checks - not just better models. The multi-step approach dramatically improves retrieval quality.
+- question: What is the recommended chunk size for semantic chunking in production RAG systems?
+  options: [50-100 tokens, 300-500 tokens, 1000-2000 tokens, 5000+ tokens]
+  correct: 1
+  explanation: 300-500 tokens is the sweet spot - large enough to maintain context but small enough to be precise. This size breaks on logical boundaries and includes overlap with adjacent chunks.
+- question: Why is chunking by semantic meaning better than chunking by character count?
+  options: [It uses less storage space, It maintains logical context and doesn't split concepts mid-thought, It creates more chunks for better search, It works faster than character-based chunking]
+  correct: 1
+  explanation: Semantic chunking preserves meaning by breaking at logical boundaries (paragraphs, sections) rather than arbitrary character limits, which could split important concepts in the middle.
+- question: In the production RAG pipeline, what happens during the reranking step?
+  options: [Documents are re-embedded with a different model, AI scores each retrieved result for relevance to the original question, Documents are sorted alphabetically, The user query is rewritten]
+  correct: 1
+  explanation: Reranking uses AI (often Claude or GPT-4) to score each retrieved document's relevance to the original question on a scale like 1-10, then keeps only the top results. This dramatically improves answer quality.
+- question: What is the purpose of including metadata when storing chunks in a vector database?
+  options: [To make searches faster, To reduce storage costs, To enable filtering and provide source citations, To improve embedding quality]
+  correct: 2
+  explanation: Metadata (source, date, section, author) enables filtering during search and provides crucial information for citations in the final answer. It's essential for production systems that need to cite sources.
+```
+
+```task
+title: Implement Semantic Chunking
+description: Take a long document (5+ pages) and implement semantic chunking with overlap. Break it into 300-500 token chunks at logical boundaries (paragraphs/sections) with 50-100 token overlap. Store each chunk with metadata (source, section, page number).
+xp: 20
 ```
 
 ## 🛠️ Tools Deep Dive
@@ -245,6 +282,33 @@ await openai.beta.threads.messages.create(thread.id, {
 const run = await openai.beta.threads.runs.create(thread.id, {
   assistant_id: assistant.id
 })
+```
+
+```quiz
+title: RAG Tools and Platforms
+questions:
+- question: When should you choose LlamaIndex over LangChain for a RAG project?
+  options: [When you need agent capabilities, When RAG is your primary use case and you want optimized retrieval, When you need the largest community support, When building complex multi-step workflows]
+  correct: 1
+  explanation: LlamaIndex is specifically optimized for RAG systems with better chunking strategies and data connectors out-of-the-box. LangChain is more general-purpose and better for complex workflows beyond RAG.
+- question: What is the main advantage of using OpenAI Assistants API for RAG?
+  options: [It's cheaper than other solutions, It gives you more control over retrieval, It's a managed service where OpenAI handles infrastructure, It works with any AI model]
+  correct: 2
+  explanation: OpenAI Assistants API is a managed service - OpenAI handles the vector store, retrieval, and infrastructure. You don't manage databases or embeddings yourself, though you sacrifice some control.
+- question: Which tool would be best for building a RAG system that also needs agent capabilities and 100+ integrations?
+  options: [LlamaIndex, OpenAI Assistants API, LangChain, Pinecone only]
+  correct: 2
+  explanation: LangChain provides both RAG capabilities and extensive agent features with 100+ integrations. It's the most flexible for complex workflows that go beyond pure RAG.
+- question: What is a key disadvantage of OpenAI Assistants API compared to self-hosted solutions?
+  options: [Harder to implement, No file search capabilities, Locked to OpenAI models and slower than self-hosted, Requires more code]
+  correct: 2
+  explanation: With Assistants API, you're locked into OpenAI's ecosystem and it's typically slower than self-hosted solutions. You also have less control over the retrieval process, though it's easier to implement.
+```
+
+```task
+title: Build a Multi-Query RAG System
+description: Implement query enhancement that generates 3-5 variations of each user query (rephrased, keyword-focused, expanded). Use these variants to search your vector database and combine the results. Compare accuracy vs. single-query approach.
+xp: 25
 ```
 
 ## 💡 Real Business Example: Customer Support RAG System
@@ -367,6 +431,37 @@ async def answer_support_question(question):
 - Automated 60% of tier-1 support tickets
 - Cost: $800/month in AI APIs, saved $15K/month in support labor
 
+```quiz
+title: Production RAG Implementation
+questions:
+- question: In the customer support RAG example, why is hybrid search (vector + keyword) better than vector search alone?
+  options: [It's faster, It catches both semantic matches and exact keyword matches that vector search might miss, It uses less API calls, It requires less storage]
+  correct: 1
+  explanation: Hybrid search combines semantic understanding (vector) with exact matching (keyword). Some queries need exact terms like product names or error codes that semantic search might miss.
+- question: What is the purpose of the confidence scoring step in production RAG?
+  options: [To make responses faster, To determine if the AI should answer or escalate to a human, To reduce API costs, To improve embedding quality]
+  correct: 1
+  explanation: Confidence scoring helps the system know when it's uncertain. Low-confidence answers should be escalated to humans rather than providing potentially incorrect information to users.
+- question: Why does the production RAG example use different AI models for different tasks?
+  options: [To confuse attackers, To reduce costs by using cheaper models for simpler tasks, To increase complexity, To comply with regulations]
+  correct: 1
+  explanation: Using gpt-4o-mini for query enhancement and claude-haiku for ranking saves money while reserving expensive models like gpt-4o for the final answer where quality matters most. This is cost optimization.
+- question: What is the main benefit of implementing reranking after initial retrieval?
+  options: [Faster search results, More accurate relevance scoring that improves from 15 candidates to top 5, Lower API costs, Simpler code]
+  correct: 1
+  explanation: Reranking uses AI to score all retrieved candidates and select the most relevant ones. This dramatically improves answer quality by filtering out less relevant results that passed the initial search.
+- question: In the production example, why are source citations included in the answer?
+  options: [To make answers longer, To allow users to verify information and build trust, To reduce API costs, To make the system slower]
+  correct: 1
+  explanation: Citations allow users to verify the AI's claims against source documents, building trust. In professional settings, being able to trace answers back to sources is crucial for accountability.
+```
+
+```task
+title: Implement Hybrid Search
+description: Set up both vector search (using Pinecone/Weaviate) and keyword search (using PostgreSQL full-text search or similar) for the same document set. Combine results, deduplicate, and compare retrieval quality vs. vector-only search.
+xp: 30
+```
+
 ## ⚠️ Common Pitfalls
 
 ### 1. **Treating RAG as Just Vector Search**
@@ -476,6 +571,18 @@ async def answer_with_feedback(question):
 
     # Periodically review low-scoring answers
     # Identify patterns, improve prompts/retrieval
+```
+
+```task
+title: Build a Complete RAG Pipeline with Reranking
+description: Create an end-to-end RAG system: ingest documents → chunk semantically → embed → store in vector DB → implement query enhancement → retrieve candidates → rerank with AI → generate answer with citations. Test with 10+ questions and measure accuracy.
+xp: 40
+```
+
+```task
+title: Implement Confidence Scoring and Hallucination Detection
+description: Add a confidence scoring mechanism to your RAG system. Have the AI rate its confidence 1-10 for each answer. Set a threshold (e.g., 7+) for automatic responses vs. human escalation. Test with edge cases where the system should admit uncertainty.
+xp: 25
 ```
 
 ## 📝 Module Project: Build a Production RAG System

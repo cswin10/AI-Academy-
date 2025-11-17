@@ -101,6 +101,12 @@ Different models excel at different tasks:
 - Source citations needed
 - Quick lookups
 
+```task
+title: Compare LLM Providers
+description: Choose a specific task (e.g., "explain a technical concept" or "write marketing copy") and test it with GPT-4, Claude, and one other model. Document response quality, style, speed, and which model you'd choose for this task type.
+xp: 15
+```
+
 ## How LLMs Actually Work (Conceptual)
 
 ### The Prediction Engine
@@ -193,6 +199,37 @@ LLMs sometimes generate plausible-sounding but incorrect information.
 5. **Lower temperature** (reduces creativity-based errors)
 
 **Critical Rule**: Never use LLM outputs as final truth for important decisions without verification.
+
+```quiz
+title: LLM Fundamentals & How They Work
+questions:
+- question: What is the fundamental mechanism behind how LLMs generate text?
+  options: [They search the internet for answers, They predict the next token based on patterns in training data, They have a database of pre-written responses, They understand meaning like humans do]
+  correct: 1
+  explanation: LLMs predict the next token (word or word piece) based on all previous tokens, using patterns learned from training data. They don't search the internet, don't have a database of answers, and don't "understand" in the human sense—they predict likely continuations.
+- question: How many tokens are approximately in "Hello world"?
+  options: [1 token, 2 tokens, 5 tokens, 10 tokens]
+  correct: 1
+  explanation: "Hello world" is approximately 2 tokens. Roughly 0.75 words equal 1 token in English. Understanding tokens is critical for calculating costs and understanding context limits.
+- question: What temperature setting should you use for factual data extraction?
+  options: [0.0-0.3 (deterministic), 0.5-0.8 (balanced), 1.0-1.5 (creative), 2.0+ (highly creative)]
+  correct: 0
+  explanation: Low temperature (0.0-0.3) makes the model deterministic and always picks the most likely tokens. This is ideal for factual tasks, code generation, and data extraction where you want consistency, not creativity.
+- question: Why do LLMs sometimes hallucinate?
+  options: [They are intentionally deceptive, They predict what sounds right, not what is right, based on training patterns, They don't have enough training data, They are poorly programmed]
+  correct: 1
+  explanation: Hallucinations occur because LLMs predict plausible-sounding continuations based on training patterns. They have no access to "truth"—only patterns. When they encounter gaps in knowledge, they fill them with plausible guesses rather than admitting uncertainty.
+- question: What is the main advantage of Claude's 200K token context window?
+  options: [It generates responses faster, It can analyze much longer documents than most models, It costs less per token, It's more accurate than other models]
+  correct: 1
+  explanation: Claude's 200K token context window (~150K words) allows it to analyze entire books, long reports, or massive documentation in a single request. This is significantly larger than GPT-3.5 (16K tokens) and useful for document analysis tasks.
+```
+
+```task
+title: Temperature Experimentation
+description: Take a single prompt (e.g., "Write a tagline for an eco-friendly water bottle") and run it with temperatures 0, 0.5, 1.0, and 1.5. Document how the outputs differ in creativity, consistency, and quality.
+xp: 10
+```
 
 ## Effective Prompting Fundamentals
 
@@ -311,6 +348,37 @@ Include one specific example."
 Analyze trends and identify the 3 best-performing days."
 ```
 
+```quiz
+title: Effective Prompting Techniques
+questions:
+- question: What are the four key components of a well-structured prompt?
+  options: [Length + Detail + Examples + Temperature, Context + Task + Format + Constraints, Model + Temperature + Tokens + Cost, Introduction + Body + Conclusion + Summary]
+  correct: 1
+  explanation: A good prompt structure includes Context (background/role), Task (what to do), Format (how to present it), and Constraints (limitations or requirements). This structure ensures the model has all necessary information to generate quality outputs.
+- question: What is few-shot learning in prompting?
+  options: [Using very short prompts, Giving the model examples of what you want before asking it to perform the task, Testing multiple models, Using low temperature settings]
+  correct: 1
+  explanation: Few-shot learning means providing examples of the desired input-output pattern before asking the model to process new input. This teaches the model the exact format and style you want without lengthy explanations.
+- question: When should you use chain-of-thought prompting?
+  options: [For simple factual questions, For creative writing, For complex reasoning or multi-step problems, For data extraction]
+  correct: 2
+  explanation: Chain-of-thought prompting (asking the model to "think step-by-step") is best for complex reasoning, calculations, or multi-step problems. It improves accuracy by making the model show its work rather than jumping to conclusions.
+- question: What is the main purpose of role assignment in prompts?
+  options: [To make prompts longer, To give the model a specific perspective and expertise level for better responses, To confuse the model, To reduce costs]
+  correct: 1
+  explanation: Role assignment ("You are a senior software architect...") gives the model a specific perspective, expertise level, and focus. This helps generate responses that match the appropriate tone, depth, and viewpoint for your needs.
+- question: What makes this prompt ineffective: "Write about AI"?
+  options: [It's too short, It lacks context, specific task definition, format requirements, and constraints, It should specify a model, It needs a higher temperature]
+  correct: 1
+  explanation: "Write about AI" is too vague. It lacks context (who is this for?), specific task definition (what aspect of AI?), format (blog post? tweet? essay?), and constraints (length, tone, audience). Good prompts are specific and structured.
+```
+
+```task
+title: Build a Prompt Library
+description: Create a document with 5 prompt templates for tasks you do regularly (e.g., summarization, content generation, data analysis). Use proper structure with Context + Task + Format + Constraints for each.
+xp: 15
+```
+
 ## Advanced Prompting Techniques
 
 ### System Prompts vs. User Prompts
@@ -372,6 +440,33 @@ Based on this policy, answer: Can customers return opened software?
 ```
 
 This eliminates hallucination for company-specific information.
+
+```quiz
+title: Advanced Prompting & RAG
+questions:
+- question: What's the difference between system prompts and user prompts?
+  options: [System prompts are for errors; user prompts are for tasks, System prompts set behavior for entire conversation; user prompts are specific requests, There is no difference, System prompts cost less than user prompts]
+  correct: 1
+  explanation: System prompts set the overall behavior, personality, and rules for the entire conversation (e.g., "You are a helpful assistant that always cites sources"). User prompts are individual requests within that context. System prompts persist across turns.
+- question: Why is prompt chaining more effective than single complex prompts?
+  options: [It costs less, It breaks complex tasks into focused steps where each builds on previous outputs, resulting in better quality, It uses multiple models, It's faster]
+  correct: 1
+  explanation: Prompt chaining breaks complex tasks into sequential steps, where each prompt focuses on one thing and builds on previous outputs. This produces better results than asking the model to "research, write, and create social posts" all in one overwhelming prompt.
+- question: What is Retrieval-Augmented Generation (RAG)?
+  options: [Using multiple models together, Giving the model specific information to work with to prevent hallucinations, Increasing the temperature, Chaining multiple prompts]
+  correct: 1
+  explanation: RAG means providing the model with specific, correct information in the prompt (e.g., company policies, product docs) so it works from that instead of relying on potentially incorrect training data. This eliminates hallucinations for domain-specific information.
+- question: For which task would RAG be most critical?
+  options: [Creative story writing, Answering questions about your company's return policy, General brainstorming, Writing poetry]
+  correct: 1
+  explanation: RAG is critical when you need factually accurate, domain-specific information. For company return policies, you must provide the actual policy in the prompt so the model doesn't hallucinate incorrect terms. Creative tasks don't need RAG since accuracy to specific facts isn't required.
+```
+
+```task
+title: Implement Prompt Chaining
+description: Take a complex task like "research a topic, create an outline, write content, and generate social posts." Break it into 4 separate prompts where each uses the output from the previous one. Execute the chain and compare results to doing it all in one prompt.
+xp: 15
+```
 
 ## Prompt Engineering for Different Tasks
 
@@ -445,6 +540,12 @@ Audience: [specific role]
 Focus on: [specific aspect]
 ```
 
+```task
+title: Test Hallucination Mitigation
+description: Create a prompt that's likely to cause hallucinations (ask about future events or very specific obscure facts). Then rewrite it using RAG or other mitigation strategies. Document the difference in output quality.
+xp: 10
+```
+
 ## LLM Limitations and Workarounds
 
 ### Current Limitations
@@ -482,6 +583,37 @@ LLMs reflect biases in training data.
 - Use diverse test cases
 - Specify inclusive language in prompts
 - Have multiple people review sensitive content
+
+```quiz
+title: LLM Limitations, Costs & Best Practices
+questions:
+- question: What's the best workaround for LLMs lacking real-time data?
+  options: [Use higher temperature, Use Perplexity or provide current data in the prompt, Use longer prompts, Use multiple models]
+  correct: 1
+  explanation: LLMs' training data has a cutoff date. For current information, either use Perplexity (which searches the web) or provide up-to-date data directly in your prompt via RAG. You can't make a model magically know information it wasn't trained on.
+- question: How do you calculate the cost of an LLM API call?
+  options: [Based on prompt length only, (Input tokens + Output tokens) × Model price per token, Based on response time, Fixed price per call]
+  correct: 1
+  explanation: Cost = (Input tokens + Output tokens) × Model's price per token. Both input (your prompt) and output (model's response) count toward cost. Different models have different per-token prices, with GPT-4 typically 10-30x more expensive than GPT-3.5.
+- question: For summarizing 10 customer reviews (500 words each), what's the most cost-effective approach?
+  options: [One GPT-4 prompt with all reviews, Summarize each individually with GPT-3.5 then combine summaries, Use highest temperature, Don't use AI at all]
+  correct: 1
+  explanation: Summarizing individually with GPT-3.5 and combining is 17x cheaper according to the module example. GPT-3.5 is 10-30x cheaper than GPT-4, and simple summarization doesn't need GPT-4's advanced reasoning. Use expensive models only when necessary.
+- question: Which LLM limitation requires you to set temperature to 0 or use structured outputs?
+  options: [No real-time data, Poor mathematical reasoning, Lack of determinism needed for some tasks, Context window limits]
+  correct: 2
+  explanation: LLMs are non-deterministic by default (same prompt can give different outputs). For tasks requiring consistency (data extraction, code generation, API responses), set temperature to 0 for deterministic behavior or use structured output formats.
+- question: What's the best way to handle bias in LLM outputs?
+  options: [Ignore it - bias can't be fixed, Review outputs carefully, use diverse test cases, specify inclusive language in prompts, and have multiple reviewers, Use higher temperature, Only use open-source models]
+  correct: 1
+  explanation: Mitigating bias requires multiple strategies: carefully review outputs, test with diverse scenarios, explicitly request inclusive language in prompts, and have multiple people (ideally from diverse backgrounds) review sensitive content. No single solution eliminates all bias.
+```
+
+```task
+title: Cost Optimization Analysis
+description: Choose a task you want to automate with AI. Calculate the cost using GPT-4 vs GPT-3.5 vs Claude for processing 1,000 requests per month. Consider token counts for your typical input/output. Document which model gives the best value for your specific use case.
+xp: 15
+```
 
 ## Practical Exercises
 

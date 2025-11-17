@@ -252,7 +252,7 @@ export const getProgressStats = (totalModules: number, totalChecklistItems: numb
     overallPercentage: userProgress.overallPercentage,
     totalChecklistItems,
     completedChecklistItems: userProgress.completedChecklistItems,
-    streak: 0, // TODO: Implement streak calculation
+    streak: 0, // Streak is stored in database (profiles.streak_count), not localStorage
     lastActivity: userProgress.lastActivityDate,
   };
 };

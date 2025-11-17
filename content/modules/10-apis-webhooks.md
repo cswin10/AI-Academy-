@@ -124,6 +124,33 @@ DELETE https://api.example.com/users/123
 Response: {success: true}
 ```
 
+```quiz
+title: REST API Fundamentals
+questions:
+- question: Which HTTP method should you use to update an existing user's email address?
+  options: [GET, POST, PUT or PATCH, DELETE]
+  correct: 2
+  explanation: PUT or PATCH methods are used to update existing resources. GET retrieves data, POST creates new resources, and DELETE removes resources. PUT typically replaces the entire resource, while PATCH updates specific fields.
+- question: What does a 401 HTTP status code indicate?
+  options: [The request was successful, The requested resource was not found, Authentication is missing or invalid, The server encountered an error]
+  correct: 2
+  explanation: 401 Unauthorized means authentication credentials are missing, invalid, or expired. This is different from 403 (Forbidden - authenticated but not authorized) and 404 (Not Found - resource doesn't exist).
+- question: Why is it important to check HTTP status codes in API responses?
+  options: [To make the code run faster, To know if the request succeeded and handle errors appropriately, To reduce API costs, To improve security]
+  correct: 1
+  explanation: Status codes tell you whether your request succeeded (2xx), if you made an error (4xx), or if the server had an issue (5xx). Checking these codes allows you to handle errors gracefully, retry when appropriate, and provide meaningful feedback.
+- question: What is the purpose of the Content-Type header in API requests?
+  options: [To specify which API version to use, To tell the server what format the request body is in, To authenticate the request, To set the response timeout]
+  correct: 1
+  explanation: Content-Type header tells the server what format your request body uses (e.g., application/json, application/xml). This is essential for the server to correctly parse your data. It's different from authentication headers and doesn't affect API versioning or timeouts.
+```
+
+```task
+title: Explore an API with Postman
+description: Choose a public API (OpenAI, Airtable, or any API you use). Install Postman and make at least 5 different API calls including GET, POST, and one with authentication. Document the endpoint URLs, required headers, request bodies, and responses. Save these as a Postman collection.
+xp: 15
+```
+
 ### API Authentication Methods
 
 APIs need to know who's making requests. Common methods:
@@ -202,6 +229,37 @@ Example webhook flow:
 2. Event happens (e.g., payment received)
 3. Service sends POST request to your URL with event data
 4. Your app receives and processes data
+```
+
+```quiz
+title: Webhooks and Authentication
+questions:
+- question: What is the main advantage of webhooks over polling APIs every few minutes?
+  options: [Webhooks are easier to set up, Webhooks provide real-time notifications without wasting API calls, Webhooks are more secure, Webhooks work with any API]
+  correct: 1
+  explanation: Webhooks push data to your application instantly when events occur, eliminating the need for constant polling that wastes API calls and rate limits. They're event-driven and efficient, though not necessarily easier to set up or more secure by default.
+- question: Which authentication method requires users to authorize your app through a redirect flow?
+  options: [API Key, Bearer Token, OAuth 2.0, Basic Auth]
+  correct: 2
+  explanation: OAuth 2.0 uses a multi-step authorization flow where users are redirected to the service to grant permissions, then your app receives a token. API keys and bearer tokens are simpler direct authentication, while basic auth uses username/password.
+- question: What should you do to verify a webhook is actually from the service and not a malicious source?
+  options: [Only accept webhooks from known IP addresses, Verify the webhook signature using the service's secret key, Check if the data looks valid, Rate limit webhook requests]
+  correct: 1
+  explanation: Services like Stripe and Shopify sign webhook payloads with a secret key. Verifying this signature ensures the webhook truly came from that service and wasn't tampered with. IP filtering alone isn't secure enough as IPs can change or be spoofed.
+- question: When would you use an API key instead of OAuth 2.0?
+  options: [When building server-to-server integrations where you control both sides, When users need to authorize access to their data, When you need the most secure authentication, When building public-facing applications]
+  correct: 0
+  explanation: API keys are ideal for server-to-server integrations and automation scripts where you control the authentication. OAuth 2.0 is necessary when users need to authorize your app to access their data (like connecting to their Google Drive).
+- question: What is the purpose of rate limiting in APIs?
+  options: [To make APIs run faster, To prevent abuse and ensure fair usage across all clients, To reduce server costs, To improve data accuracy]
+  correct: 1
+  explanation: Rate limits prevent any single client from overwhelming the API with too many requests, ensuring the service remains available and responsive for all users. When you hit a rate limit (429 status), you need to slow down your requests or implement retry logic.
+```
+
+```task
+title: Test Webhooks with Webhook.site
+description: Go to webhook.site and get a unique webhook URL. Set up a webhook from any service (Typeform, Airtable, or a test service). Trigger the webhook and examine the incoming data structure. Document: 1) The full request headers, 2) The JSON payload structure, 3) What information is included, 4) How you would parse this in a real application.
+xp: 10
 ```
 
 ### Reading API Documentation
@@ -579,6 +637,43 @@ async function handleApprove(token) {
 ❌ Trying out API calls with real customer data
 ✅ Use test/sandbox environments, create test accounts
 
+```quiz
+title: API Best Practices and Error Handling
+questions:
+- question: What is pagination in API responses and why is it important?
+  options: [A way to organize API documentation, A method to split large datasets into smaller pages to avoid timeouts and memory issues, A security feature to protect data, A way to speed up API responses]
+  correct: 1
+  explanation: Pagination splits large result sets into manageable pages (e.g., 100 records per request). Without it, requesting 10,000 records at once could timeout or overwhelm your system. You need to loop through pages to get all data.
+- question: Why should you never hardcode API keys directly in your code?
+  options: [It makes the code harder to read, API keys committed to version control can be discovered and abused by anyone with access, It makes the code run slower, It prevents the code from working in production]
+  correct: 1
+  explanation: Hardcoded API keys in code often get committed to Git repositories (sometimes public), exposing your credentials. Anyone finding these keys could abuse your API quotas or access sensitive data. Always use environment variables or secure secrets management.
+- question: What should you do when you receive a 429 (Too Many Requests) status code?
+  options: [Immediately retry the request, Switch to a different API endpoint, Implement exponential backoff and wait before retrying, Cancel all pending requests]
+  correct: 2
+  explanation: A 429 status means you've hit the rate limit. You should wait before retrying, ideally implementing exponential backoff (wait 2s, then 4s, then 8s). Many APIs include a Retry-After header telling you exactly how long to wait.
+- question: Why is it important to use batch API endpoints when available?
+  options: [Batch endpoints are more secure, Batch endpoints let you process multiple items in one request, saving API calls and time, Batch endpoints are easier to implement, Batch endpoints never fail]
+  correct: 1
+  explanation: Batch endpoints allow you to create/update/delete multiple records in a single API call instead of making hundreds of individual calls. This is faster, uses fewer API quota, and reduces the risk of hitting rate limits.
+- question: What is the purpose of environment variables for API configuration?
+  options: [To make code run faster, To store sensitive credentials and configuration separately from code, To enable API caching, To improve error handling]
+  correct: 1
+  explanation: Environment variables keep sensitive data (API keys, database URLs) out of your codebase and allow different configurations for dev/staging/production without changing code. This is essential for security and deployment flexibility.
+```
+
+```task
+title: Implement Retry Logic with Exponential Backoff
+description: Write or configure a workflow that makes API calls with proper error handling. Implement: 1) Retry logic with exponential backoff (3 attempts with increasing delays), 2) Different handling for 4xx vs 5xx errors, 3) Logging of all attempts and outcomes. Test by intentionally causing failures and documenting how your error handling responds.
+xp: 15
+```
+
+```task
+title: Build a Webhook Receiver
+description: Create a simple webhook receiver using Supabase Edge Functions, Make's webhook module, or another platform. The receiver should: 1) Accept POST requests, 2) Validate incoming data, 3) Store the data in a database, 4) Send a confirmation notification. Test it with at least 10 webhook deliveries and handle at least one error case.
+xp: 20
+```
+
 ## ✨ Pro Tips
 
 ### Tip 1: Always Test in Postman First
@@ -676,6 +771,12 @@ But never log:
 - Passwords
 - Customer credit card data
 - Auth tokens
+
+```task
+title: Document an API Integration
+description: Choose an API you want to integrate with (Stripe, Twilio, SendGrid, etc.). Read the documentation and create a comprehensive integration guide including: 1) Authentication method and setup, 2) At least 3 useful endpoints with examples, 3) Rate limits and how to handle them, 4) Error codes and responses, 5) A working example in Postman or code.
+xp: 15
+```
 
 ## 📝 Module Project: Build a Multi-Service Integration Hub
 

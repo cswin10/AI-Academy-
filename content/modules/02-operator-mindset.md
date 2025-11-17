@@ -99,6 +99,12 @@ Where small changes create big impact.
 
 Always ask: "Is this high leverage?"
 
+```task
+title: Identify Your Leverage Points
+description: Map out your current workflow and identify 3 high-leverage points where small changes could create big impact. Document what makes each one high-leverage.
+xp: 10
+```
+
 ### Decision Making Under Uncertainty
 
 You rarely have complete information. Develop frameworks:
@@ -124,6 +130,33 @@ Hard to reverse (decide carefully):
 "Which option will I regret least at the end of my life?"
 
 Helps with: Build product vs. stable job, ship imperfect vs. wait for perfect, specialize vs. generalize.
+
+```quiz
+title: Systems Thinking & Decision Making
+questions:
+- question: A content generation workflow spends 2 hours on topic selection, 10 minutes on AI generation, 4 hours on human review, and 2 hours on editing. Where is the bottleneck?
+  options: [AI generation (too slow), Human review (4 hours), Topic selection (manual process), Editing (needs improvement)]
+  correct: 1
+  explanation: The human review takes 4 hours and is the longest step in the workflow. Systems thinking means identifying the actual bottleneck, not just optimizing what seems obvious. The AI generation is already fast.
+- question: According to the Pareto Principle, what should you focus on when building a new product?
+  options: [Build all features equally, Focus on the 20% of features that deliver 80% of value, Perfect the UI before functionality, Optimize costs from day one]
+  correct: 1
+  explanation: The 80/20 rule states that 80% of results come from 20% of efforts. You should identify and build the 20% of features that will deliver 80% of the value first, rather than trying to build everything equally.
+- question: Which of these is a "two-way door" decision that should be made quickly?
+  options: [Hiring a full-time employee, Choosing your database architecture, Testing a new AI model, Signing a 3-year contract]
+  correct: 2
+  explanation: A two-way door decision is easily reversible. Testing a new AI model can be done quickly and reversed if it doesn't work. Hiring, architecture choices, and long-term contracts are hard to reverse and require more careful consideration.
+- question: What defines a high-leverage activity?
+  options: [Takes the most time to complete, Makes individual tasks slightly faster, Small changes create big impact, Requires the most technical skill]
+  correct: 2
+  explanation: High-leverage activities are where small changes create disproportionately large impact. Examples include automating repetitive work, improving conversion rates, or building reusable templates that benefit you repeatedly.
+```
+
+```task
+title: Practice Systems Thinking
+description: Take a workflow you currently do manually and map out ALL the steps with time estimates. Identify the true bottleneck and propose a solution that addresses the system, not just one component.
+xp: 15
+```
 
 ### Build vs. Buy Framework
 
@@ -181,6 +214,12 @@ When to build custom vs. use existing tool:
 
 Rule of thumb: Build what makes you unique. Buy everything else.
 
+```task
+title: Build vs Buy Analysis
+description: Choose a feature or tool you're considering for a project. Use the Build vs Buy framework to make a decision. Document your reasoning with specific criteria (time, cost, differentiation, expertise).
+xp: 10
+```
+
 ### Staying Current Without Drowning
 
 AI moves fast. How to keep up without burning out:
@@ -229,6 +268,37 @@ Design differently for 10 users vs. 10,000 users.
 - Costs matter
 
 Don't prematurely optimize for scale you don't have. But know when to transition.
+
+```quiz
+title: Build vs Buy & Strategic Thinking
+questions:
+- question: When should you build a custom solution instead of using an existing tool?
+  options: [When you want to save money, When it's your core differentiator, When you have extra time, When existing tools cost anything at all]
+  correct: 1
+  explanation: You should build custom solutions when they represent your core differentiator—your secret sauce that makes you unique. Buy commodity services (payments, auth, infrastructure) and build what makes you special.
+- question: Which approach helps you stay current with AI without burning out?
+  options: [Follow 50+ AI influencers on Twitter, Try every new AI tool that launches, Read AI papers daily, Spend 30 min/week on curated newsletters and try tools only when they solve current problems]
+  correct: 3
+  explanation: Sustainable learning means focusing on signal over noise. Pick 2-3 quality sources, spend limited time weekly on AI news, and only try new tools when they solve a problem you currently have. Focus on principles over specifics.
+- question: What's the main difference between designing for 10 users vs 10,000 users?
+  options: [10 users need better UI design, 10,000 users require you to automate yourself out of bottlenecks and build self-serve systems, 10 users need more features, There's no significant difference]
+  correct: 1
+  explanation: At 10 users you can do things that don't scale (manual onboarding, custom solutions). At 10,000 users you must automate, build self-serve systems, implement caching, and eliminate yourself as a bottleneck.
+- question: What's considered "signal" vs "noise" in AI news?
+  options: [Signal: Startup raises $50M; Noise: New capability that wasn't possible before, Signal: New model 2% better on benchmark; Noise: Major price drop, Signal: Major price/performance shift; Noise: "10 AI tools you must try", Signal: New capability that wasn't possible before; Noise: Model slightly better on benchmark]
+  correct: 3
+  explanation: Signal is information that materially changes what's possible or economically viable (new capabilities, major price drops, paradigm shifts). Noise is incremental improvements, hype, and marginal gains that don't change your approach.
+- question: According to the RICE framework, which feature should you build first?
+  options: [Reach: 10, Impact: 3x, Confidence: 80%, Effort: 4 weeks (RICE=6), Reach: 1000, Impact: 0.5x, Confidence: 90%, Effort: 2 weeks (RICE=225), Reach: 100, Impact: 2x, Confidence: 50%, Effort: 1 week (RICE=100), Reach: 50, Impact: 1x, Confidence: 100%, Effort: 3 weeks (RICE=16.7)]
+  correct: 1
+  explanation: RICE = (Reach × Impact × Confidence) / Effort. Option B has the highest score at 225. It reaches many users (1000), has 90% confidence, and only takes 2 weeks despite lower per-user impact. Always build highest RICE scores first.
+```
+
+```task
+title: Create Your Learning System
+description: Set up your personal AI learning routine. Choose 2-3 newsletters to follow, decide on your weekly time allocation (30 min recommended), and commit to the schedule for one month. Document what you'll read and when.
+xp: 10
+```
 
 ## 🛠️ Tools Deep Dive
 
@@ -467,6 +537,33 @@ Result: Exhausted, distracted, built nothing of value.
 **Lesson:**
 Staying current is about signal detection, not information consumption.
 
+```quiz
+title: Real-World Application & Decision Frameworks
+questions:
+- question: In the Build vs Buy case study, why was using Supabase Auth the right decision?
+  options: [It was free, Auth is not a core differentiator and saved 2.5 weeks to focus on actual value, It had better security than they could build, It was easier to use]
+  correct: 1
+  explanation: While all options have some truth, the key reason is that auth is NOT your differentiator. The 2.5 weeks saved could be spent building AI features that make the product unique. Build what makes you unique, buy everything else.
+- question: In the social media workflow example, what was the key insight from systems thinking?
+  options: [AI generation was too slow, The entire manual process needed automation not just one step, They needed better content writers, Scheduling took too long]
+  correct: 1
+  explanation: The bottleneck wasn't just generation speed—it was the entire manual process. Automating the whole system (topic selection, generation, images, scheduling, tracking) reduced time from 20 hours to 4 hours (80%), versus optimizing just generation which gave only 25% improvement.
+- question: In the consulting vs product decision, what framework helped override short-term thinking?
+  options: [RICE scoring and Regret Minimization Framework, Cost-benefit analysis only, Asking friends for advice, Flipping a coin]
+  correct: 0
+  explanation: The decision used both RICE scoring (product scored 40 vs consulting's 0.32) and the Regret Minimization Framework ("In 5 years, which will I regret not doing?"). These frameworks helped see beyond immediate $15K to long-term recurring revenue potential.
+- question: What made the "good approach" to staying current actually work?
+  options: [Following more influencers, Reading more content daily, Focusing on signal detection and trying only tools that solve current problems, Attending every AI conference]
+  correct: 2
+  explanation: The successful approach was sustainable and signal-focused: 30 min weekly on curated sources, trying one new tool monthly only when it solves a current problem, and ignoring noise (hype, benchmarks, incremental improvements). This allowed building actual products instead of just consuming content.
+```
+
+```task
+title: Apply a Decision Framework
+description: Use the Regret Minimization Framework or RICE scoring on a real decision you're facing. Document your analysis with specific numbers and criteria, then make and commit to your decision.
+xp: 15
+```
+
 ## ⚠️ Common Pitfalls
 
 ### 1. **Premature Optimization**
@@ -536,6 +633,12 @@ Career level: "Is this the right direction?"
 ```
 
 Check in weekly: Am I working on the right things at all levels?
+
+```task
+title: Weekly Time Audit
+description: Track one full work week using the activity log format from the module project. Calculate what percentage of your time is high-value vs low-value work. Identify your top 3 time sinks and propose automation or elimination strategies.
+xp: 15
+```
 
 ### Tip 4: Document Your Decision-Making
 

@@ -219,6 +219,43 @@ Don't alert on everything:
 
 Rule: Only alert on things that require immediate human action.
 
+```quiz
+title: Observability Fundamentals Quiz
+questions:
+- question: What are the three pillars of observability?
+  options: [Logs, Metrics, and Traces, Errors, Warnings, and Info, Frontend, Backend, and Database, Sentry, PostHog, and Grafana]
+  correct: 0
+  explanation: The three pillars of observability are Logs (what happened), Metrics (how much/how often), and Traces (how it flows). Together they help you understand what broke, how bad it is, and where the bottleneck is.
+- question: Which error level should trigger immediate alerts and page the on-call engineer?
+  options: [ERROR, WARN, CRITICAL, DEBUG]
+  correct: 2
+  explanation: CRITICAL errors indicate the system is broken and all requests are failing, requiring immediate action. ERROR level indicates failures but with recovery, WARN is unusual but not broken, and DEBUG is just developer information.
+- question: What is structured logging and why is it important?
+  options: [Logging in alphabetical order, Logging with consistent formatting and searchable key-value pairs, Logging only errors, Logging to multiple files]
+  correct: 1
+  explanation: Structured logging uses consistent formatting with key-value pairs that can be searched, filtered, and aggregated. Plain text logs cannot be easily analyzed at scale.
+- question: What is the main rule for setting up alerts to avoid alert fatigue?
+  options: [Alert on every error, Alert once per day maximum, Only alert on things that require immediate human action, Alert only during business hours]
+  correct: 2
+  explanation: Only alert on things that require immediate human action. Too many alerts lead to alert fatigue where teams ignore all alerts, including critical ones.
+- question: Which metrics are most important for tracking AI operations?
+  options: [Only response time, Usage metrics, performance metrics, cost metrics, and quality metrics, Just error counts, Only user satisfaction scores]
+  correct: 1
+  explanation: AI operations require tracking multiple metric types - usage (active users, generations), performance (response time, success rate), cost (token usage, API costs), and quality (satisfaction, retry rates).
+```
+
+```task
+title: Set Up Error Tracking with Sentry
+description: Create a Sentry account and integrate it into an AI project. Capture at least one error with context (user ID, feature tag, and extra data). Verify the error appears in your Sentry dashboard with proper grouping.
+xp: 15
+```
+
+```task
+title: Implement Analytics with PostHog
+description: Set up PostHog in a project and track at least 3 different events (e.g., content_generated, feature_used, ai_call_completed). Include relevant properties like user_id, model used, and tokens consumed. Verify events appear in PostHog dashboard.
+xp: 15
+```
+
 ## 🛠️ Tools Deep Dive
 
 ### Sentry
@@ -333,6 +370,33 @@ posthog.identify(userId, {
 **Cons:**
 - Limited compared to enterprise tools
 - Not as feature-rich as DataDog/Splunk
+
+```quiz
+title: Monitoring Tools Quiz
+questions:
+- question: What is Sentry best used for?
+  options: [Product analytics and A/B testing, Error tracking and crash reporting, Log aggregation and searching, Infrastructure monitoring]
+  correct: 1
+  explanation: Sentry is specifically designed for error tracking and crash reporting. It automatically captures errors with stack traces, groups similar errors, and tracks releases.
+- question: Which tool offers session replay to watch user interactions?
+  options: [Sentry, Better Stack, Grafana, PostHog]
+  correct: 3
+  explanation: PostHog offers session replay as part of its product analytics suite, allowing you to watch recordings of user sessions to understand behavior and debug issues.
+- question: What is a key advantage of PostHog being open source?
+  options: [It's always free, You can self-host it, It has no limitations, It doesn't require setup]
+  correct: 1
+  explanation: Being open source, PostHog can be self-hosted on your own infrastructure, giving you complete control over your data and avoiding vendor lock-in.
+- question: What should you set the tracesSampleRate to in Sentry for a high-traffic production app?
+  options: [1.0 (100%), 0.5 (50%), 0.1 (10%), 0 (0%)]
+  correct: 2
+  explanation: For high-traffic apps, sample 10% or less of transactions to avoid overwhelming Sentry and incurring high costs. You'll still get enough data for performance monitoring while keeping costs manageable.
+```
+
+```task
+title: Create a Custom Monitoring Dashboard
+description: Build a dashboard that shows key metrics for an AI application - track API calls per hour, average response time, error rate, and daily token costs. Use PostHog, Grafana, or build a custom solution. Include at least 4 different visualizations.
+xp: 20
+```
 
 ## 💡 Real Business Examples
 
@@ -593,6 +657,49 @@ Feature Quality (save rate):
 - Removed 2 unused features (saved maintenance time)
 - Improved satisfaction score: 3.2 → 4.1
 - Reduced churn: 8% → 5% monthly
+
+```quiz
+title: Monitoring in Practice Quiz
+questions:
+- question: In Example 1 (Payment Webhook Failures), what was the key benefit of adding Sentry error tracking?
+  options: [Lower hosting costs, Webhook failures caught within 1 minute instead of going unnoticed, Better UI design, Faster webhook processing]
+  correct: 1
+  explanation: The key benefit was catching webhook failures within 1 minute with immediate SMS alerts to on-call engineers, reducing lost revenue from $3K/month to $0 and resolution time from 4 hours to 15 minutes.
+- question: In Example 2 (AI Cost Tracking), what was the most valuable outcome of tracking AI costs per feature?
+  options: [Found one user costing $150/day and switched features to GPT-4o-mini, reducing overall costs from $12K to $4.5K/month, Improved response times, Better error handling, More users signed up]
+  correct: 0
+  explanation: Tracking costs revealed a bot user costing $150/day, inefficient prompts, and opportunities to use cheaper models, resulting in a 62.5% cost reduction from $12K to $4.5K/month.
+- question: What does a 3% feature adoption rate with 22% save rate indicate?
+  options: [The feature is working perfectly, The feature should be improved with better prompts, The feature should be deprecated as users neither use it nor find it valuable, The feature needs more marketing]
+  correct: 2
+  explanation: Very low adoption (3%) combined with very low quality (22% save rate) means users don't want the feature and when they try it, they don't like the results. This feature should be deprecated to focus on what users actually want.
+- question: What is the Correlation ID pattern and why is it useful?
+  options: [A way to link related database records, A unique ID for each request that's included in all logs for that request, allowing you to trace the entire request flow, A method for connecting to APIs, A user identification system]
+  correct: 1
+  explanation: The Correlation ID pattern generates a unique ID for each request and includes it in all logs. This makes it easy to search for all logs related to a single request and trace the entire flow through your system.
+- question: What is the recommended approach for sampling high-volume events?
+  options: [Log 100% of all events, Sample 10% of successful operations but 100% of failures, Only log errors, Log nothing to save costs]
+  correct: 1
+  explanation: For high-volume applications, sample a small percentage (like 10%) of successful operations to reduce noise and costs, but always log 100% of failures since those are what you need to debug and fix.
+```
+
+```task
+title: Implement Cost Monitoring for AI Calls
+description: Create a system that tracks and logs the cost of every AI API call. Calculate costs based on input/output tokens and model pricing. Set up an alert that triggers when daily costs exceed a budget threshold (e.g., $50). Store cost data in a database for historical analysis.
+xp: 20
+```
+
+```task
+title: Set Up Critical Alert System
+description: Configure alerts for critical failures in an AI application - set up notifications for webhook failures, error rate > 5% for 5 minutes, and daily costs exceeding budget by 50%. Use Sentry alerts, PostHog, or custom webhooks to Slack/email. Test each alert to ensure it works.
+xp: 15
+```
+
+```task
+title: Build a Daily Metrics Report
+description: Create an automated daily report that sends key metrics to Slack or email every morning. Include total users, AI calls made, total cost, revenue (if applicable), error count, and average response time. Use a cron job or scheduled function to automate it.
+xp: 10
+```
 
 ## ⚠️ Common Pitfalls
 

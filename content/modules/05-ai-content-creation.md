@@ -78,6 +78,33 @@ graph TB
 
 **Key Difference**: AI handles first draft, humans focus on quality and strategy.
 
+```quiz
+title: Content Strategy Fundamentals Quiz
+questions:
+- question: What is the primary advantage of the AI-Enhanced Pipeline over the Traditional Pipeline?
+  options: [AI completely replaces human workers, AI handles first drafts allowing humans to focus on quality and strategy, AI is cheaper than hiring writers, AI creates better content than humans]
+  correct: 1
+  explanation: The key advantage is that AI handles the time-consuming first draft creation, freeing humans to focus on strategic elements like quality control, brand consistency, and strategic direction.
+- question: Which content type would typically require the longest context window from an AI model?
+  options: [Social media posts, Email campaigns, Long-form articles and documentation, Product descriptions]
+  correct: 2
+  explanation: Long-form articles and documentation require models with large context windows (like Claude's 200K) to maintain consistency and reference throughout lengthy content.
+- question: In the AI-Enhanced content pipeline, what role do humans primarily play?
+  options: [Writing all content from scratch, Only publishing content, Refinement and quality control after AI generation, Managing the AI servers]
+  correct: 2
+  explanation: In the AI-Enhanced pipeline, humans focus on refining AI-generated content and ensuring it meets quality standards, brand voice, and strategic goals.
+- question: Which of the following is NOT listed as a visual content type in this module?
+  options: [Marketing images, Product mockups, 3D animations, Social media graphics]
+  correct: 2
+  explanation: While 3D animations exist, this module specifically lists marketing images, illustrations, product mockups, social media graphics, and presentations as visual content types.
+```
+
+```task
+title: Map Your Content Types
+description: Create a spreadsheet or document listing all content types your organization or personal brand creates (or plans to create). Categorize each as Written, Visual, Audio, or Video. For each type, note the current creation time and estimate potential time savings with AI assistance.
+xp: 10
+```
+
 ## AI Writing Systems
 
 ### Tools and Platforms
@@ -264,6 +291,43 @@ Constraints:
 Generate → Review → Provide Feedback → Regenerate Sections → Final Review
 ```
 
+```quiz
+title: AI Writing Systems Quiz
+questions:
+- question: What is the MOST important factor determining the quality of AI-generated content?
+  options: [The AI model version used, The quality of the content brief provided, The length of the output, The number of regenerations]
+  correct: 1
+  explanation: The quality of AI content depends heavily on brief quality. A well-structured brief with clear audience, tone, key points, and requirements produces significantly better results than a vague request.
+- question: Which AI writing tool is best suited for long-form content requiring large context windows?
+  options: [Copy.ai, Jasper, Claude (200K context), Notion AI]
+  correct: 2
+  explanation: Claude with its 200K context window is specifically mentioned as ideal for long-form content, allowing it to maintain consistency across lengthy documents.
+- question: In the content brief template, which element helps ensure the AI matches your brand's communication style?
+  options: [Word Count, SEO Keywords, Tone and Style Reference, Call-to-Action]
+  correct: 2
+  explanation: The Tone and Style Reference fields in the brief guide the AI to match your brand's specific communication style and voice.
+- question: What should be included in the human review checklist for AI-generated content?
+  options: [Only grammar and spelling, Only factual accuracy, Factual accuracy, brand voice, logical flow, and no hallucinations, Only keyword density]
+  correct: 2
+  explanation: Human review must be comprehensive, checking factual accuracy, brand voice consistency, logical flow, audience appropriateness, goal alignment, and ensuring no hallucinated information.
+- question: For SEO-focused content creation, which combination of tools is recommended?
+  options: [ChatGPT + Copy.ai, Surfer SEO + AI or Clearscope, Jasper + Notion AI, Sudowrite + GPT-4]
+  correct: 1
+  explanation: The module specifically lists Surfer SEO + AI, Clearscope, and Frase as tools designed for SEO content creation.
+```
+
+```task
+title: Create Your Content Brief Template
+description: Using the template provided in this section, create a customized content brief template for your specific needs. Test it by creating a brief for one piece of content, then use it to generate content with ChatGPT or Claude. Compare the results to content generated without a detailed brief.
+xp: 15
+```
+
+```task
+title: Build a Prompt Library
+description: Create a collection of at least 5 reusable prompt templates for different content types you frequently create (e.g., blog posts, social media, emails). Store them in a document or tool where you can easily copy and customize them for future use.
+xp: 10
+```
+
 ## AI Image Generation
 
 ### Image AI Platforms
@@ -364,6 +428,37 @@ Style: Corporate stock photography, bright and clean
 2. Upload real product photo
 3. Use AI to blend and match lighting
 4. Enhance and refine
+```
+
+```quiz
+title: AI Image Generation Quiz
+questions:
+- question: Which image AI platform is recommended for commercial/enterprise projects requiring copyright safety?
+  options: [Midjourney, Stable Diffusion, Adobe Firefly, Leonardo.ai]
+  correct: 2
+  explanation: Adobe Firefly is specifically mentioned as commercial-safe and designed for enterprise/commercial projects requiring legal safety.
+- question: What is the basic formula for effective image prompting?
+  options: [Subject + Color + Size, Subject + Style + Composition + Lighting + Details, Just describe what you want, Model name + Subject + Quality]
+  correct: 1
+  explanation: The module teaches the formula: [Subject] + [Style] + [Composition] + [Lighting] + [Details] for comprehensive image prompts.
+- question: Which technique is NOT mentioned for maintaining consistency across multiple AI-generated images?
+  options: [Detailed descriptions saved and reused, Seed values, Using the same computer, Style reference images]
+  correct: 2
+  explanation: The module mentions detailed descriptions, seed values, style reference images, ControlNet, and custom training - but not using the same computer.
+- question: What does the '--ar 16:9' parameter in a Midjourney prompt control?
+  options: [Image quality, Aspect ratio, Art style, Animation rate]
+  correct: 1
+  explanation: The --ar parameter controls aspect ratio. 16:9 creates a widescreen rectangular image.
+- question: Which tool is best for removing backgrounds from AI-generated images?
+  options: [Midjourney, Remove.bg, DALL-E, Canva AI]
+  correct: 1
+  explanation: Remove.bg is specifically mentioned as the tool for background removal in the editing workflows section.
+```
+
+```task
+title: Practice Image Prompting
+description: Generate 3 images using Midjourney, DALL-E, or another AI image tool. For each image, write a detailed prompt following the formula (Subject + Style + Composition + Lighting + Details). Document your prompts and results, noting which prompt elements had the biggest impact on the output.
+xp: 15
 ```
 
 ## Voice and Audio AI
@@ -469,6 +564,12 @@ Process:
 5. Deploy multi-language versions
 ```
 
+```task
+title: Create an AI Voiceover
+description: Write a 1-2 minute script for a voiceover (for a video intro, podcast intro, or audio article). Use ElevenLabs, PlayHT, or OpenAI TTS to generate the audio. Experiment with at least 2 different voice settings and compare the results. Document which settings worked best for your use case.
+xp: 15
+```
+
 ## Video AI Systems
 
 ### Video Generation Tools
@@ -547,6 +648,33 @@ Tasks:
 - Fast iteration
 - Automatic enhancement
 - Accessibility (transcripts)
+
+```quiz
+title: Voice and Video AI Quiz
+questions:
+- question: Which voice AI platform is highlighted for its voice cloning capabilities?
+  options: [Murf.ai, PlayHT, ElevenLabs, OpenAI TTS]
+  correct: 2
+  explanation: ElevenLabs is specifically mentioned as offering the most natural voices and voice cloning capabilities.
+- question: What is an essential ethical consideration when using voice cloning technology?
+  options: [Always use the fastest generation speed, Only clone voices you have permission for and disclose AI generation, Use the cheapest service available, Clone as many voices as possible for variety]
+  correct: 1
+  explanation: The module emphasizes only cloning voices with permission, clearly disclosing AI-generated voices, avoiding misleading content, and respecting privacy and consent.
+- question: For video creation with talking head avatars, which platforms are recommended?
+  options: [Midjourney and DALL-E, Runway and Pika Labs, Synthesia and D-ID, Remove.bg and Canva]
+  correct: 2
+  explanation: Synthesia and D-ID are specifically mentioned for avatar-based talking head videos.
+- question: What is Descript's unique editing feature?
+  options: [Editing video by editing the transcript text, Fastest rendering speed, Cheapest pricing, Best video quality]
+  correct: 0
+  explanation: Descript allows you to edit video by editing the automatically generated transcript text, making video editing accessible to non-technical users.
+```
+
+```task
+title: Design a Multi-Format Content Piece
+description: Choose one piece of content (a blog post topic or key message). Create versions for 3 different formats: (1) A written social media post, (2) A script for a 30-second video with voiceover, (3) An image with text overlay. Use AI tools to generate at least one of these formats. Document your process and the tools used.
+xp: 20
+```
 
 ## Building Content Systems at Scale
 
@@ -762,6 +890,43 @@ Schedule distribution
 - All with higher consistency
 
 **ROI**: 67% cost reduction, 5x efficiency increase
+
+```quiz
+title: Content Systems at Scale Quiz
+questions:
+- question: In the Content Factory Model, what is the feedback loop's primary purpose?
+  options: [To reduce costs, To improve future content based on performance analytics, To speed up production, To eliminate human review]
+  correct: 1
+  explanation: The feedback loop from analytics back to content briefs ensures that performance data informs future content strategy and improves the system over time.
+- question: According to the case study, what was the primary cost savings driver in the AI-Enhanced approach?
+  options: [Eliminating all human workers, Reducing the hours required from 200 to 40 per month, Using free AI tools only, Cutting quality standards]
+  correct: 1
+  explanation: The case study shows a reduction from 200 hours/month to 40 hours/month while maintaining or improving quality, resulting in 67% cost reduction.
+- question: What percentage should you sample-review after your content system is proven?
+  options: [0% - full automation, 10% - spot-check always, 50% - half of all content, 100% - review everything]
+  correct: 1
+  explanation: The module recommends reviewing 100% at start, 50% after 10 pieces, then 10% after the system is proven, with spot-checks always continuing.
+- question: In multi-platform content adaptation, what is the 'Source Content' in the example?
+  options: [A tweet, A long-form blog post, An Instagram post, A video script]
+  correct: 1
+  explanation: The example uses a long-form blog post (1500 words) as the source content that gets adapted to multiple platforms.
+- question: What is a key component of maintaining quality at scale?
+  options: [Generating as much content as possible, Template standardization with proven prompt templates, Using different prompts for every piece, Avoiding feedback loops]
+  correct: 1
+  explanation: Template standardization with proven prompt templates, consistent briefs, and style guides helps maintain quality when scaling content production.
+```
+
+```task
+title: Plan a Content Workflow
+description: Design a complete workflow for one type of content you create regularly. Map out: (1) Input/brief stage, (2) AI generation stage (which tools), (3) Quality control stage, (4) Distribution stage, (5) Analytics/feedback stage. Create a visual diagram or written process document. Identify which steps are automated vs. manual.
+xp: 20
+```
+
+```task
+title: Multi-Platform Content Adaptation
+description: Take one piece of existing long-form content (blog post, article, or create one with AI). Use AI to adapt it into at least 3 different formats for different platforms (e.g., LinkedIn article, Twitter thread, email newsletter, Instagram caption). Compare how the AI adapted tone, length, and style for each platform.
+xp: 20
+```
 
 ## Completion Checklist
 
