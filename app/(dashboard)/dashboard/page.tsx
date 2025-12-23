@@ -11,45 +11,45 @@ export default async function DashboardPage() {
     redirect('/login')
   }
 
-  // Fetch profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  // Fetch tracks with modules
-  const { data: tracks } = await supabase
-    .from('tracks')
-    .select(`
-      *,
-      modules:modules(*)
-    `)
-    .eq('is_active', true)
-    .order('order_index')
-
-  // Fetch user's section progress
-  const { data: sectionProgress } = await supabase
-    .from('user_section_progress')
-    .select('*')
-    .eq('user_id', user.id)
-
-  // Fetch user's module progress
-  const { data: moduleProgress } = await supabase
-    .from('user_module_progress')
-    .select('*')
-    .eq('user_id', user.id)
-
-  // Fetch user's recent achievements
-  const { data: recentAchievements } = await supabase
-    .from('user_achievements')
-    .select(`
-      *,
-      achievement:achievements(*)
-    `)
-    .eq('user_id', user.id)
-    .order('earned_at', { ascending: false })
-    .limit(3)
+  // Run all queries in parallel for better performance
+  const [
+    { data: profile },
+    { data: tracks },
+    { data: sectionProgress },
+    { data: moduleProgress },
+    { data: recentAchievements },
+  ] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single(),
+    supabase
+      .from('tracks')
+      .select(`
+        *,
+        modules:modules(*)
+      `)
+      .eq('is_active', true)
+      .order('order_index'),
+    supabase
+      .from('user_section_progress')
+      .select('*')
+      .eq('user_id', user.id),
+    supabase
+      .from('user_module_progress')
+      .select('*')
+      .eq('user_id', user.id),
+    supabase
+      .from('user_achievements')
+      .select(`
+        *,
+        achievement:achievements(*)
+      `)
+      .eq('user_id', user.id)
+      .order('earned_at', { ascending: false })
+      .limit(3),
+  ])
 
   // Get last accessed section with module and track info
   const lastAccessedProgress = sectionProgress?.length

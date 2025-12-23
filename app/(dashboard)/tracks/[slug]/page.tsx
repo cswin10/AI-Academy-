@@ -22,7 +22,7 @@ export default async function TrackDetailPage({ params }: PageProps) {
     redirect('/login')
   }
 
-  // Fetch track with modules
+  // Fetch track with modules first
   const { data: track } = await supabase
     .from('tracks')
     .select(`
@@ -39,19 +39,20 @@ export default async function TrackDetailPage({ params }: PageProps) {
 
   // Sort modules by order_index
   const modules = (track.modules || []).sort((a: any, b: any) => a.order_index - b.order_index)
+  const moduleIds = modules.map((m: any) => m.id)
 
-  // Fetch user's module progress
-  const { data: moduleProgress } = await supabase
-    .from('user_module_progress')
-    .select('*')
-    .eq('user_id', user.id)
-    .in('module_id', modules.map((m: any) => m.id))
-
-  // Fetch section counts for each module
-  const { data: sections } = await supabase
-    .from('sections')
-    .select('module_id')
-    .in('module_id', modules.map((m: any) => m.id))
+  // Run remaining queries in parallel
+  const [{ data: moduleProgress }, { data: sections }] = await Promise.all([
+    supabase
+      .from('user_module_progress')
+      .select('*')
+      .eq('user_id', user.id)
+      .in('module_id', moduleIds),
+    supabase
+      .from('sections')
+      .select('module_id')
+      .in('module_id', moduleIds),
+  ])
 
   const sectionCountByModule: Record<string, number> = {}
   sections?.forEach((s) => {
