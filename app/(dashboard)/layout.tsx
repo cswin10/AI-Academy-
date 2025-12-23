@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { Header } from '@/components/dashboard/header'
 import { createClient } from '@/lib/supabase/client'
@@ -13,35 +14,44 @@ export default function DashboardLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [profile, setProfile] = useState<Profile | null>(null)
+  const [userId, setUserId] = useState<string | null>(null)
   const supabase = createClient()
+  const pathname = usePathname()
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single()
+  const fetchProfile = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      setUserId(user.id)
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single()
 
-        if (data) {
-          setProfile(data as Profile)
-        }
+      if (data) {
+        setProfile(data as Profile)
       }
     }
+  }, [supabase])
 
+  // Fetch profile on mount and when pathname changes (to catch XP updates)
+  useEffect(() => {
     fetchProfile()
+  }, [fetchProfile, pathname])
 
-    // Subscribe to profile changes
+  // Subscribe to realtime profile changes for this user only
+  useEffect(() => {
+    if (!userId) return
+
     const channel = supabase
-      .channel('profile-changes')
+      .channel(`profile-${userId}`)
       .on(
         'postgres_changes',
         {
-          event: '*',
+          event: 'UPDATE',
           schema: 'public',
           table: 'profiles',
+          filter: `id=eq.${userId}`,
         },
         (payload) => {
           if (payload.new) {
@@ -54,7 +64,7 @@ export default function DashboardLayout({
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase])
+  }, [supabase, userId])
 
   return (
     <div className="min-h-screen bg-background">
