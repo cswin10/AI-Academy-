@@ -22,7 +22,7 @@ export default async function ModuleDetailPage({ params }: PageProps) {
     redirect('/login')
   }
 
-  // Fetch module with track
+  // Fetch module with track first
   const { data: module } = await supabase
     .from('modules')
     .select(`
@@ -37,30 +37,32 @@ export default async function ModuleDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  // Fetch sections for this module
-  const { data: sections } = await supabase
-    .from('sections')
-    .select(`
-      *,
-      quiz:quizzes(*)
-    `)
-    .eq('module_id', module.id)
-    .order('order_index')
+  // Run remaining queries in parallel
+  const [{ data: sections }, { data: sectionProgress }] = await Promise.all([
+    supabase
+      .from('sections')
+      .select(`
+        *,
+        quiz:quizzes(*)
+      `)
+      .eq('module_id', module.id)
+      .order('order_index'),
+    supabase
+      .from('user_section_progress')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('module_id', module.id),
+  ])
 
-  // Fetch user's section progress
-  const { data: sectionProgress } = await supabase
-    .from('user_section_progress')
-    .select('*')
-    .eq('user_id', user.id)
-    .eq('module_id', module.id)
-
-  // Fetch quiz attempts for sections in this module
+  // Fetch quiz attempts (depends on sections)
   const sectionIds = sections?.map((s) => s.id) || []
-  const { data: quizAttempts } = await supabase
-    .from('quiz_attempts')
-    .select('*')
-    .eq('user_id', user.id)
-    .in('section_id', sectionIds)
+  const { data: quizAttempts } = sectionIds.length > 0
+    ? await supabase
+        .from('quiz_attempts')
+        .select('*')
+        .eq('user_id', user.id)
+        .in('section_id', sectionIds)
+    : { data: [] }
 
   const completedSections = sectionProgress?.filter((sp) => sp.is_completed).length || 0
   const totalSections = sections?.length || 0

@@ -11,44 +11,45 @@ export default async function ProfilePage() {
     redirect('/login')
   }
 
-  // Fetch profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  // Fetch user's achievements
-  const { data: userAchievements } = await supabase
-    .from('user_achievements')
-    .select(`
-      *,
-      achievement:achievements(*)
-    `)
-    .eq('user_id', user.id)
-    .order('earned_at', { ascending: false })
-
-  // Fetch all achievements for progress display
-  const { data: allAchievements } = await supabase
-    .from('achievements')
-    .select('*')
-    .eq('is_active', true)
-    .order('category')
-
-  // Fetch track progress
-  const { data: tracks } = await supabase
-    .from('tracks')
-    .select(`
-      *,
-      modules:modules(id)
-    `)
-    .eq('is_active', true)
-    .order('order_index')
-
-  const { data: moduleProgress } = await supabase
-    .from('user_module_progress')
-    .select('*')
-    .eq('user_id', user.id)
+  // Run all queries in parallel for better performance
+  const [
+    { data: profile },
+    { data: userAchievements },
+    { data: allAchievements },
+    { data: tracks },
+    { data: moduleProgress },
+  ] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single(),
+    supabase
+      .from('user_achievements')
+      .select(`
+        *,
+        achievement:achievements(*)
+      `)
+      .eq('user_id', user.id)
+      .order('earned_at', { ascending: false }),
+    supabase
+      .from('achievements')
+      .select('*')
+      .eq('is_active', true)
+      .order('category'),
+    supabase
+      .from('tracks')
+      .select(`
+        *,
+        modules:modules(id)
+      `)
+      .eq('is_active', true)
+      .order('order_index'),
+    supabase
+      .from('user_module_progress')
+      .select('*')
+      .eq('user_id', user.id),
+  ])
 
   return (
     <ProfileContent

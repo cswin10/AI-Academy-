@@ -15,21 +15,21 @@ export default async function TracksPage() {
     redirect('/login')
   }
 
-  // Fetch tracks with modules
-  const { data: tracks } = await supabase
-    .from('tracks')
-    .select(`
-      *,
-      modules:modules(*)
-    `)
-    .eq('is_active', true)
-    .order('order_index')
-
-  // Fetch user's module progress
-  const { data: moduleProgress } = await supabase
-    .from('user_module_progress')
-    .select('*')
-    .eq('user_id', user.id)
+  // Run queries in parallel for better performance
+  const [{ data: tracks }, { data: moduleProgress }] = await Promise.all([
+    supabase
+      .from('tracks')
+      .select(`
+        *,
+        modules:modules(*)
+      `)
+      .eq('is_active', true)
+      .order('order_index'),
+    supabase
+      .from('user_module_progress')
+      .select('*')
+      .eq('user_id', user.id),
+  ])
 
   return (
     <div className="space-y-8">

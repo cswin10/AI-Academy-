@@ -27,18 +27,18 @@ export default async function AchievementsPage() {
     redirect('/login')
   }
 
-  // Fetch all achievements
-  const { data: allAchievements } = await supabase
-    .from('achievements')
-    .select('*')
-    .eq('is_active', true)
-    .order('rarity')
-
-  // Fetch user's achievements
-  const { data: userAchievements } = await supabase
-    .from('user_achievements')
-    .select('*')
-    .eq('user_id', user.id)
+  // Run queries in parallel for better performance
+  const [{ data: allAchievements }, { data: userAchievements }] = await Promise.all([
+    supabase
+      .from('achievements')
+      .select('*')
+      .eq('is_active', true)
+      .order('rarity'),
+    supabase
+      .from('user_achievements')
+      .select('*')
+      .eq('user_id', user.id),
+  ])
 
   const earnedAchievementIds = new Set(userAchievements?.map((ua) => ua.achievement_id) || [])
   const userAchievementMap = new Map(userAchievements?.map((ua) => [ua.achievement_id, ua]) || [])
