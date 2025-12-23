@@ -5,7 +5,11 @@
 -- TRACKS
 -- ============================================
 INSERT INTO tracks (slug, name, description, icon, color, order_index, estimated_hours, is_required, is_active) VALUES
-('core-foundation', 'Core Foundation', 'Master the fundamentals of AI operations, systems thinking, and the tools that power modern automation. Required for all learners.', '🎯', '#7c3aed', 1, 25, true, true);
+('core-foundation', 'Core Foundation', 'Master the fundamentals of AI operations, systems thinking, and the tools that power modern automation. Required for all learners.', '🎯', '#7c3aed', 1, 25, true, true),
+('builder-track', 'Builder Track', 'Deep dive into no-code automation platforms and workflow design. Build hands-on projects with Zapier, Make, n8n, and more.', '🛠️', '#3b82f6', 2, 30, false, true),
+('business-track', 'Business Track', 'Apply AI operations to real business challenges. Learn client management, pricing, proposals, and entrepreneurship.', '💼', '#10b981', 3, 28, false, true),
+('creator-track', 'Creator Track', 'Build AI-powered content workflows. From writing assistance to multimedia production and distribution.', '🎨', '#f59e0b', 4, 18, false, true),
+('infrastructure-track', 'Infrastructure Track', 'Set up robust systems infrastructure. Databases, APIs, deployment, monitoring, and scaling strategies.', '🏗️', '#ef4444', 5, 25, false, true);
 
 -- ============================================
 -- ACHIEVEMENTS
@@ -272,3 +276,105 @@ SELECT
   2,
   'Documentation should evolve with your systems. Update it as you build and modify things, not after the fact.'
 FROM quizzes WHERE title = 'Documentation & Communication';
+
+-- ============================================
+-- CORE FOUNDATION: Modules 2-8 (Placeholders)
+-- ============================================
+
+-- Module 2: The AI Operator Toolkit
+INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
+SELECT
+  id,
+  'ai-operator-toolkit',
+  'The AI Operator Toolkit',
+  'Survey the essential tools in an AI operator''s toolkit: automation platforms, databases, AI services, and integration tools.',
+  2,
+  3,
+  'Beginner',
+  50,
+  true
+FROM tracks WHERE slug = 'core-foundation';
+
+-- Module 3: Data Fundamentals
+INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
+SELECT
+  id,
+  'data-fundamentals',
+  'Data Fundamentals',
+  'Understand data types, structures, and storage. Learn to work with spreadsheets, databases, and APIs.',
+  3,
+  4,
+  'Beginner',
+  50,
+  true
+FROM tracks WHERE slug = 'core-foundation';
+
+-- Module 4: Prompt Engineering Foundations
+INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
+SELECT
+  id,
+  'prompt-engineering',
+  'Prompt Engineering Foundations',
+  'Master the art of writing effective prompts. Learn techniques for reliable, consistent AI outputs.',
+  4,
+  4,
+  'Beginner',
+  50,
+  true
+FROM tracks WHERE slug = 'core-foundation';
+
+-- Module 5: Workflow Design Principles
+INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
+SELECT
+  id,
+  'workflow-design',
+  'Workflow Design Principles',
+  'Learn to design efficient, maintainable workflows. Understand triggers, conditions, loops, and error handling.',
+  5,
+  3,
+  'Intermediate',
+  75,
+  true
+FROM tracks WHERE slug = 'core-foundation';
+
+-- Module 6: Building Your First Automation
+INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
+SELECT
+  id,
+  'first-automation',
+  'Building Your First Automation',
+  'Put theory into practice by building a complete automation from scratch. Step-by-step guided project.',
+  6,
+  3,
+  'Intermediate',
+  75,
+  true
+FROM tracks WHERE slug = 'core-foundation';
+
+-- Module 7: Testing & Debugging
+INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
+SELECT
+  id,
+  'testing-debugging',
+  'Testing & Debugging',
+  'Learn systematic approaches to testing automations and debugging when things go wrong.',
+  7,
+  2,
+  'Intermediate',
+  75,
+  true
+FROM tracks WHERE slug = 'core-foundation';
+
+-- Module 8: Deployment & Maintenance
+INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
+SELECT
+  id,
+  'deployment-maintenance',
+  'Deployment & Maintenance',
+  'Take your automations to production. Learn monitoring, maintenance, and iteration strategies.',
+  8,
+  2,
+  'Intermediate',
+  75,
+  true
+FROM tracks WHERE slug = 'core-foundation';

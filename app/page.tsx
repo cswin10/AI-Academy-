@@ -39,33 +39,41 @@ const tracks = [
   {
     icon: '🎯',
     name: 'Core Foundation',
-    description: 'Master the fundamentals of AI operations and systems thinking.',
-    modules: 6,
+    description: 'Master the fundamentals of AI operations, systems thinking, and operator mindset.',
+    modules: 8,
     hours: 25,
     required: true,
   },
   {
-    icon: '⚙️',
-    name: 'Automation Mastery',
-    description: 'Deep dive into no-code automation platforms and workflow design.',
-    modules: 5,
-    hours: 20,
+    icon: '🛠️',
+    name: 'Builder Track',
+    description: 'Deep dive into no-code automation platforms and workflow design with hands-on projects.',
+    modules: 7,
+    hours: 30,
     required: false,
   },
   {
-    icon: '🤖',
-    name: 'AI & LLMs',
-    description: 'Learn to integrate and leverage AI models in your systems.',
-    modules: 6,
-    hours: 24,
+    icon: '💼',
+    name: 'Business Track',
+    description: 'Apply AI operations to real business challenges, from client work to entrepreneurship.',
+    modules: 7,
+    hours: 28,
     required: false,
   },
   {
-    icon: '📊',
-    name: 'Data & Analytics',
-    description: 'Build dashboards, reports, and data-driven decision systems.',
+    icon: '🎨',
+    name: 'Creator Track',
+    description: 'Build AI-powered content workflows, from writing to multimedia production.',
     modules: 4,
-    hours: 16,
+    hours: 18,
+    required: false,
+  },
+  {
+    icon: '🏗️',
+    name: 'Infrastructure Track',
+    description: 'Set up robust systems, databases, APIs, and deployment infrastructure.',
+    modules: 4,
+    hours: 25,
     required: false,
   },
 ]
@@ -80,21 +88,27 @@ const benefits = [
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 gradient-mesh pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/20 rounded-full blur-[120px] -translate-y-1/2 pointer-events-none" />
+
       {/* Navigation */}
-      <nav className="border-b border-border">
+      <nav className="relative border-b border-white/10 backdrop-blur-lg bg-background/50 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold">AI Operator Academy</span>
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-primary to-secondary">
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-xl font-bold gradient-text">AI Operator Academy</span>
             </div>
             <div className="flex items-center gap-4">
               <Link href="/login">
                 <Button variant="ghost">Sign in</Button>
               </Link>
               <Link href="/signup">
-                <Button>Get Started</Button>
+                <Button variant="glow">Get Started</Button>
               </Link>
             </div>
           </div>
@@ -102,27 +116,27 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
+      <section className="relative py-24 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm mb-8">
-            <Sparkles className="h-4 w-4" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm mb-8 backdrop-blur-sm animate-fadeIn">
+            <Sparkles className="h-4 w-4 animate-pulse" />
             <span>The complete AI operator curriculum</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
             Become an{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+            <span className="gradient-text">
               AI Operator
             </span>
           </h1>
-          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
             Master systems thinking, no-code automation, and AI integration.
             Build real solutions for real businesses.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/signup">
-              <Button size="xl" className="gap-2">
+              <Button size="xl" variant="glow" className="gap-2 group">
                 Start Learning Free
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
             <Link href="#tracks">
@@ -130,6 +144,22 @@ export default function LandingPage() {
                 View Curriculum
               </Button>
             </Link>
+          </div>
+
+          {/* Stats row */}
+          <div className="mt-16 flex flex-wrap justify-center gap-8 text-center">
+            <div className="px-6">
+              <div className="text-3xl font-bold gradient-text">30+</div>
+              <div className="text-sm text-muted-foreground">Modules</div>
+            </div>
+            <div className="px-6 border-l border-white/10">
+              <div className="text-3xl font-bold gradient-text">126+</div>
+              <div className="text-sm text-muted-foreground">Hours of Content</div>
+            </div>
+            <div className="px-6 border-l border-white/10">
+              <div className="text-3xl font-bold gradient-text">5</div>
+              <div className="text-sm text-muted-foreground">Learning Tracks</div>
+            </div>
           </div>
         </div>
       </section>
@@ -162,40 +192,80 @@ export default function LandingPage() {
       </section>
 
       {/* Tracks Section */}
-      <section id="tracks" className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
+      <section id="tracks" className="relative py-20 px-4">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
+        <div className="max-w-6xl mx-auto relative">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Learning Tracks</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="gradient-text">Learning Tracks</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
               Structured learning paths to guide your journey from fundamentals to mastery.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {tracks.map((track) => (
-              <Card key={track.name} className="border-border bg-card card-hover">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
+
+          {/* Core Foundation - Featured */}
+          <Card className="mb-8 border-primary/30 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-secondary/10 opacity-50" />
+            <CardHeader className="relative">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="text-4xl p-3 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 group-hover:scale-110 transition-transform">
+                    🎯
+                  </div>
+                  <div>
                     <div className="flex items-center gap-3">
-                      <span className="text-3xl">{track.icon}</span>
-                      <div>
-                        <CardTitle className="text-xl">{track.name}</CardTitle>
-                        {track.required && (
-                          <span className="text-xs text-primary">Required</span>
-                        )}
-                      </div>
+                      <CardTitle className="text-2xl">Core Foundation</CardTitle>
+                      <span className="px-3 py-1 text-xs font-semibold bg-primary/20 text-primary rounded-full border border-primary/30">
+                        Required
+                      </span>
+                    </div>
+                    <CardDescription className="mt-1">
+                      Master the fundamentals of AI operations, systems thinking, and operator mindset.
+                    </CardDescription>
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="relative">
+              <div className="flex items-center gap-8 text-sm">
+                <span className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5">
+                  <BookOpen className="h-4 w-4 text-primary" />
+                  <span className="font-medium">8 modules</span>
+                </span>
+                <span className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5">
+                  <Zap className="h-4 w-4 text-secondary" />
+                  <span className="font-medium">~25 hours</span>
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Other Tracks Grid */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {tracks.filter(t => !t.required).map((track, index) => (
+              <Card key={track.name} className="card-hover group overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                <CardHeader className="relative">
+                  <div className="flex items-center gap-4">
+                    <div className="text-3xl p-2.5 rounded-xl bg-white/5 group-hover:bg-white/10 group-hover:scale-110 transition-all">
+                      {track.icon}
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl group-hover:text-primary transition-colors">{track.name}</CardTitle>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <CardDescription>{track.description}</CardDescription>
-                  <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
+                <CardContent className="space-y-4 relative">
+                  <CardDescription className="line-clamp-2">{track.description}</CardDescription>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
                       <BookOpen className="h-4 w-4" />
                       {track.modules} modules
                     </span>
-                    <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-1.5">
                       <Zap className="h-4 w-4" />
-                      {track.hours} hours
+                      ~{track.hours} hours
                     </span>
                   </div>
                 </CardContent>
