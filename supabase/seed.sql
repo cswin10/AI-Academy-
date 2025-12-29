@@ -278,22 +278,9 @@ SELECT
 FROM quizzes WHERE title = 'Documentation & Communication';
 
 -- ============================================
--- CORE FOUNDATION: Modules 2-8 (Placeholders)
+-- CORE FOUNDATION: Modules 3-8 (Placeholders)
+-- Module 2 (LLM Mastery) is in seed-module-2.sql
 -- ============================================
-
--- Module 2: The AI Operator Toolkit
-INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
-SELECT
-  id,
-  'ai-operator-toolkit',
-  'The AI Operator Toolkit',
-  'Survey the essential tools in an AI operator''s toolkit: automation platforms, databases, AI services, and integration tools.',
-  2,
-  3,
-  'Beginner',
-  50,
-  true
-FROM tracks WHERE slug = 'core-foundation';
 
 -- Module 3: Data Fundamentals
 INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
