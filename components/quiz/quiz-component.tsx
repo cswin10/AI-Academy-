@@ -273,6 +273,11 @@ export function QuizComponent({
         questionResults,
       })
       setShowResults(true)
+
+      // Refresh the page data to update sidebar XP
+      if (passed) {
+        router.refresh()
+      }
     } catch (error) {
       console.error('Error submitting quiz:', error)
     } finally {
