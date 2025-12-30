@@ -6,7 +6,12 @@
 -- and connection to compute allocation concepts from 2.1
 -- ============================================================================
 
--- First, update the section title and content
+-- First, rename the quiz
+UPDATE quizzes
+SET title = 'Structured Reasoning & Verification Quiz'
+WHERE title = 'Chain-of-Thought Quiz';
+
+-- Update the section title and content
 UPDATE sections
 SET
   title = 'Structured Reasoning & Verification Patterns',
@@ -18,11 +23,17 @@ The quality of AI outputs depends on how you structure the reasoning process. Th
 
 Every reasoning step uses tokens. More tokens = more compute = higher cost and latency.
 
-```
-Simple classification:    ~50 tokens   → $0.00015 (Haiku)
-With reasoning steps:    ~500 tokens   → $0.0015  (10x cost)
-With deep verification: ~2000 tokens   → $0.006   (40x cost)
-```
+### Reasoning Budget Costs
+
+More reasoning steps usually means more tokens, higher latency, higher cost.
+
+**Exact costs vary by provider and model—check current pricing before you productionize.**
+
+| Task Type | Token Usage | Relative Cost |
+|-----------|-------------|---------------|
+| Simple extraction | Low (~50 tokens) | Baseline |
+| Structured reasoning | Medium (~500 tokens) | ~10x baseline |
+| Deep verification | High (~2000+ tokens) | ~40x baseline |
 
 **The question isn''t "should I use reasoning?"—it''s "does this task justify the reasoning budget?"**
 
@@ -65,6 +76,8 @@ Result: Visible reasoning you can verify at each step
 ```
 
 **Key principle:** Decomposition makes reasoning auditable.
+
+> Auditable does not mean correct—it means you can inspect and catch errors.
 
 ## Verification Patterns
 
@@ -120,11 +133,30 @@ After responding, verify:
 ☑ Timeline promises: [none/found: X]
 ```
 
-## Few-Shot: Teaching by Example
+### Pattern 4: Independent Cross-Check
 
-Provide examples to establish patterns. This is about input-output specification, not "prompting tricks."
+Self-verification can fail in correlated ways. For high-stakes decisions, use independent verification:
 
-### Effective Few-Shot Structure
+```
+Run the same task through:
+- A second model (e.g., GPT vs Claude)
+- A second template with different framing
+  (one: "explain your assumptions", another: "attack this proposal")
+
+Compare outputs:
+- If they agree → higher confidence
+- If they disagree → route to human review
+```
+
+This connects to the fallback patterns from Section 2.1 and confidence gates from Section 2.2.
+
+## Example-Driven Specifications
+
+Provide examples to establish patterns. This is about input-output specification, not tricks.
+
+(This technique is sometimes called "few-shot" in ML literature.)
+
+### Effective Structure
 
 ```
 Task: Classify customer messages
@@ -153,7 +185,7 @@ Input: "[new message]"
 
 **Why this works:** You''re defining the transformation, not hoping the model figures it out.
 
-### Few-Shot Failure Modes
+### Failure Modes
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
@@ -195,27 +227,36 @@ For each option, score 1-5 on each criterion:
 
 Recommendation: [Option] with confidence [H/M/L]
 Key risks: [What could make this wrong?]
+
+---
+REQUIRED CHECKS:
+
+Unknowns: What information would most change these scores?
+[List the key unknowns]
+
+Sensitivity check: If you change the top 1-2 weights by ±10%, does the winner change?
+[Yes/No - if Yes, note which weights are critical]
 ```
 
 **This isn''t optional for significant decisions.** Unstructured "recommendations" can''t be verified.
 
-## Connecting to Extended Thinking
+## Connecting to Extended Compute Modes
 
-From Section 2.1: Deep Reasoning tier models (Claude Opus 4, o1/o3) support extended thinking—allocating extra compute budget before responding.
+Some models offer modes that spend more compute before responding (sometimes called "extended thinking," "reasoning mode," or similar).
 
-### When to Use Extended Thinking
+**Use them when complexity and stakes justify it:**
 
-| Scenario | Extended Thinking? | Why |
-|----------|-------------------|-----|
+| Scenario | Extra Compute? | Why |
+|----------|----------------|-----|
 | Simple classification | No | Overhead not justified |
 | Code generation | Sometimes | Complex logic benefits |
 | Multi-step debugging | Yes | Need to trace through possibilities |
 | Architecture decisions | Yes | Many interacting tradeoffs |
 | Irreversible actions | Yes | Verification critical |
 
-### Extended Thinking ≠ Magic
+### Extra Compute ≠ Magic
 
-Extended thinking allocates more compute. It''s not "making the AI think harder"—it''s running more reasoning steps.
+Allocating more compute runs more reasoning steps. It''s not "making the AI think harder."
 
 **Still required:**
 - Clear task structure
@@ -223,7 +264,7 @@ Extended thinking allocates more compute. It''s not "making the AI think harder"
 - Defined output format
 - Constraint specification
 
-Extended thinking without structure = expensive rambling.
+Extra compute without structure = expensive rambling.
 
 ## Reasoning for Confidence Calibration
 
@@ -246,6 +287,11 @@ If confidence < 60%:
   → Note: What additional information is needed?
 ```
 
+**Thresholds are risk-dependent.** Higher risk requires higher confidence—and often a human gate even at high confidence:
+
+- Auto-tagging internal tickets: 75% threshold may be fine
+- Customer communications or money: always review, even at 95%+
+
 This connects reasoning to the execution boundaries from Section 2.2.
 
 ## Phased Reasoning for Complex Projects
@@ -259,21 +305,25 @@ PHASE 1: Understand
 - What problem are we solving?
 - Who is affected?
 - What''s the current state?
+→ Done when: Problem and stakeholders are clearly defined
 
 PHASE 2: Define
 - What does success look like?
 - What are the constraints?
 - What''s out of scope?
+→ Done when: Success metrics and constraints are written
 
 PHASE 3: Design
 - What are the options?
 - Trade-off analysis
 - Recommendation
+→ Done when: Options scored and recommendation exists
 
 PHASE 4: Validate
 - What could go wrong?
 - How do we verify?
 - What''s the rollback plan?
+→ Done when: Failure modes and rollback are defined
 ```
 
 Each phase completes before the next begins. No "god prompts" trying to do everything.
@@ -310,15 +360,36 @@ Unverified reasoning can be confidently wrong.
 
 Structure the reasoning or you get unstructured output.
 
+### Copy-Pasting Hidden Assumptions
+
+```
+❌ Bad: Trusting default assumptions (budget, team size, tooling)
+   "Design an automation system" → AI assumes enterprise budget, large team
+
+✓ Good: Require explicit "Assumptions" field and confirm unknowns before final recommendation
+
+ASSUMPTIONS (confirm these):
+- Budget: [stated or unknown?]
+- Team size: [stated or unknown?]
+- Technical skills: [stated or unknown?]
+- Timeline: [stated or unknown?]
+
+If any are unknown, ask before proceeding.
+```
+
+This pairs with the self-check verification pattern.
+
 ## Key Takeaways
 
 1. **Reasoning has a cost** - Budget it like you budget compute
 2. **Match reasoning to stakes** - Simple tasks don''t need deep analysis
-3. **Decomposition enables verification** - Can''t verify black-box outputs
+3. **Decomposition enables verification** - But auditable ≠ correct
 4. **Verification is not optional** - Build it into the task template
-5. **Few-shot defines the transformation** - Examples are specifications
-6. **Extended thinking needs structure** - More compute without direction = waste
-7. **Connect to execution boundaries** - Confidence determines action path',
+5. **Use independent cross-checks** - Self-verification can fail in correlated ways
+6. **Example-driven specs define transformations** - Examples are specifications
+7. **Extra compute needs structure** - More tokens without direction = waste
+8. **Connect to execution boundaries** - Confidence determines action path
+9. **Thresholds depend on risk** - Higher stakes = higher bar',
 
   exercise_markdown = '## Exercise: Structured Reasoning in Practice
 
@@ -328,50 +399,56 @@ WHERE slug = 'chain-of-thought';
 
 -- Update quiz questions
 DELETE FROM quiz_questions
-WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Chain-of-Thought Quiz');
+WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz');
 
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
-((SELECT id FROM quizzes WHERE title = 'Chain-of-Thought Quiz'), 1,
+((SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz'), 1,
 'When should you allocate significant "reasoning budget" to a task?',
 '["Always - more reasoning is always better", "When the cost of being wrong is high", "Only for math problems", "Never - reasoning is a waste of tokens"]',
 1,
 'Reasoning budget should match the cost of being wrong. High-stakes decisions justify the extra compute cost.'),
 
-((SELECT id FROM quizzes WHERE title = 'Chain-of-Thought Quiz'), 2,
+((SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz'), 2,
 'What is the primary purpose of decomposing tasks into steps?',
 '["To make prompts longer", "To make reasoning auditable and verifiable", "To slow down the AI", "To use more expensive models"]',
 1,
-'Decomposition makes each reasoning step visible, allowing you to verify the logic and catch errors.'),
+'Decomposition makes each reasoning step visible, allowing you to verify the logic and catch errors. But remember: auditable does not mean correct.'),
 
-((SELECT id FROM quizzes WHERE title = 'Chain-of-Thought Quiz'), 3,
+((SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz'), 3,
 'Which verification pattern asks the model to critique its own output?',
-'["Self-Check", "Adversarial Review", "Constraint Verification", "Few-Shot"]',
+'["Self-Check", "Adversarial Review", "Constraint Verification", "Independent Cross-Check"]',
 1,
 'Adversarial Review asks the model to critique its own answer as a skeptical expert, finding weaknesses.'),
 
-((SELECT id FROM quizzes WHERE title = 'Chain-of-Thought Quiz'), 4,
-'What is few-shot prompting really about?',
+((SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz'), 4,
+'What is example-driven specification (few-shot) really about?',
 '["Using very few words", "Defining the input-output transformation through examples", "Making prompts shorter", "Using cheap models"]',
 1,
-'Few-shot examples are specifications of the transformation you want. They define the pattern, not "trick" the model.'),
+'Examples are specifications of the transformation you want. They define the pattern explicitly.'),
 
-((SELECT id FROM quizzes WHERE title = 'Chain-of-Thought Quiz'), 5,
-'When does extended thinking (Deep Reasoning tier) make sense?',
-'["For all tasks to get better quality", "When the task has many interacting tradeoffs or is irreversible", "Only for coding tasks", "Never - it is too expensive"]',
+((SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz'), 5,
+'Why might self-verification (patterns 1-3) not be enough for high-stakes decisions?',
+'["It takes too long", "Self-verification can fail in correlated ways - use independent cross-checks", "Models cannot verify themselves", "It is too expensive"]',
 1,
-'Extended thinking is worth it for complex decisions with tradeoffs or irreversible actions where verification is critical.'),
+'Self-verification can have blind spots. Independent cross-checks (different model or different framing) catch errors that self-review misses.'),
 
-((SELECT id FROM quizzes WHERE title = 'Chain-of-Thought Quiz'), 6,
+((SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz'), 6,
 'What is wrong with this request: "Think step by step about whether this email has an order number"?',
 '["Nothing, it is perfect", "Over-reasoning a simple extraction task", "Not enough steps", "Wrong model choice"]',
 1,
 'Simple extraction does not need reasoning overhead. A direct extraction task would be faster and cheaper.'),
 
-((SELECT id FROM quizzes WHERE title = 'Chain-of-Thought Quiz'), 7,
-'How should reasoning output connect to execution boundaries?',
-'["It should not - they are unrelated", "Confidence level determines whether to auto-execute, review, or halt", "Higher reasoning always means auto-execute", "Only humans should read reasoning output"]',
+((SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz'), 7,
+'What two checks should follow every decision matrix?',
+'["Spell check and grammar check", "Unknowns (what would change scores) and Sensitivity check (do weights matter)", "Cost check and time check", "Manager approval and legal review"]',
 1,
-'Confidence from reasoning determines action: high confidence can auto-execute, medium needs review, low should halt.');
+'Unknowns identify missing information that could change the decision. Sensitivity checks reveal if the recommendation is fragile to weight changes.'),
+
+((SELECT id FROM quizzes WHERE title = 'Structured Reasoning & Verification Quiz'), 8,
+'How should confidence thresholds connect to risk?',
+'["Higher risk means lower threshold", "Higher risk requires higher confidence AND often a human gate", "Risk and confidence are unrelated", "Always use 85% regardless of risk"]',
+1,
+'Thresholds are risk-dependent. Customer communications or money decisions need review even at 95%+ confidence.');
 
 -- Update exercise schema
 UPDATE sections
@@ -385,7 +462,7 @@ SET exercise_schema = '{
         {
           "id": "task_classification",
           "type": "checkbox_group",
-          "label": "Which tasks justify HIGH reasoning budget (extended thinking)? Select all that apply:",
+          "label": "Which tasks justify HIGH reasoning budget? Select all that apply:",
           "required": true,
           "options": [
             "Extracting order numbers from emails",
@@ -429,17 +506,17 @@ SET exercise_schema = '{
         {
           "id": "verification_step",
           "type": "textarea",
-          "label": "Add a verification step: How will you check if the reasoning is sound?",
-          "placeholder": "Verification:\\n□ Did I consider all major options?\\n□ Are my criteria weighted appropriately?\\n□ What am I assuming?\\n□ What would a skeptic challenge?",
+          "label": "Add a verification step. Remember: auditable ≠ correct. How will you check if the reasoning is sound?",
+          "placeholder": "Verification:\\n□ Did I consider all major options?\\n□ Are my criteria weighted appropriately?\\n□ What am I assuming?\\n□ What would a skeptic challenge?\\n□ Would an independent cross-check (different model/framing) agree?",
           "required": true,
-          "rows": 5
+          "rows": 6
         }
       ]
     },
     {
       "id": "part3",
-      "title": "Part 3: Few-Shot Specification",
-      "description": "Create a few-shot template that defines a transformation.",
+      "title": "Part 3: Example-Driven Specification",
+      "description": "Create examples that define a transformation.",
       "fields": [
         {
           "id": "transformation_goal",
@@ -469,7 +546,7 @@ SET exercise_schema = '{
     {
       "id": "part4",
       "title": "Part 4: Trade-Off Decision Matrix",
-      "description": "Create a structured trade-off analysis.",
+      "description": "Create a structured trade-off analysis with required checks.",
       "fields": [
         {
           "id": "decision_context",
@@ -503,9 +580,25 @@ SET exercise_schema = '{
           "rows": 8
         },
         {
+          "id": "unknowns_check",
+          "type": "textarea",
+          "label": "UNKNOWNS: What information would most change these scores?",
+          "placeholder": "1. We don''t know the actual migration cost for Option B\\n2. Team expertise with Option C is assumed, not tested\\n3. ...",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "sensitivity_check",
+          "type": "textarea",
+          "label": "SENSITIVITY CHECK: If you change the top 1-2 weights by ±10%, does the winner change?",
+          "placeholder": "If Ease of use drops from 30% to 20%, Option C ties with Option A.\\nConclusion: The recommendation is [robust/fragile] because...",
+          "required": true,
+          "rows": 3
+        },
+        {
           "id": "recommendation",
           "type": "textarea",
-          "label": "Recommendation with confidence level and key risks:",
+          "label": "Final recommendation with confidence level and key risks:",
           "placeholder": "Recommendation: [Option X]\\nConfidence: [High/Medium/Low]\\nKey risks that could change this decision:\\n1. ...\\n2. ...",
           "required": true,
           "rows": 4
@@ -514,13 +607,13 @@ SET exercise_schema = '{
     },
     {
       "id": "part5",
-      "title": "Part 5: Adversarial Review",
-      "description": "Practice critiquing AI output.",
+      "title": "Part 5: Verification Patterns",
+      "description": "Practice multiple verification approaches.",
       "fields": [
         {
           "id": "sample_output",
           "type": "textarea",
-          "label": "Paste an AI-generated output you want to critique (code, analysis, recommendation, etc.):",
+          "label": "Paste an AI-generated output you want to verify (code, analysis, recommendation, etc.):",
           "placeholder": "Paste any AI output here that you want to review critically...",
           "required": true,
           "rows": 6
@@ -528,10 +621,18 @@ SET exercise_schema = '{
         {
           "id": "adversarial_critique",
           "type": "textarea",
-          "label": "Review as a skeptical expert: What could be wrong? What was not considered?",
-          "placeholder": "Potential issues:\\n1. ...\\n2. ...\\n\\nNot considered:\\n1. ...\\n2. ...\\n\\nAssumptions made:\\n1. ...",
+          "label": "Adversarial Review: What could be wrong? What assumptions were made?",
+          "placeholder": "Potential issues:\\n1. ...\\n2. ...\\n\\nHidden assumptions:\\n1. ...\\n2. ...",
           "required": true,
-          "rows": 6
+          "rows": 5
+        },
+        {
+          "id": "cross_check_design",
+          "type": "textarea",
+          "label": "Independent Cross-Check: How would you verify this with a different approach?",
+          "placeholder": "Option 1: Run through different model (e.g., Claude vs GPT)\\nOption 2: Use different framing (e.g., ''attack this proposal'' vs ''explain assumptions'')\\nWhat I would compare: ...",
+          "required": true,
+          "rows": 4
         },
         {
           "id": "robustness_score",
@@ -560,16 +661,16 @@ SET exercise_schema = '{
   "deliverables": [
     "Correctly identified tasks requiring high vs low reasoning budget",
     "Decomposed a complex task into verifiable steps",
-    "Created few-shot examples that define a transformation",
-    "Built a decision matrix with weighted criteria",
-    "Critically reviewed AI output and identified improvements"
+    "Created example-driven specifications for a transformation",
+    "Built a decision matrix with unknowns and sensitivity checks",
+    "Applied multiple verification patterns including cross-checks"
   ],
   "success_criteria": [
     "You can match reasoning budget to task stakes",
-    "You can break complex problems into auditable steps",
-    "You can write few-shot examples including edge cases",
-    "You can structure trade-off analysis systematically",
-    "You can critique AI outputs and identify weaknesses"
+    "You understand auditable ≠ correct",
+    "You can write examples including edge cases",
+    "You can structure trade-off analysis with robustness checks",
+    "You can design independent cross-checks for verification"
   ]
 }'::jsonb
 WHERE slug = 'chain-of-thought';
