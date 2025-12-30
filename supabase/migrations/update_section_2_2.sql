@@ -5,35 +5,40 @@
 -- Reframes "prompt patterns" as "task templates" for consistency with Module 1
 -- ============================================================================
 
--- First, delete old quiz questions for this quiz and re-insert
-DELETE FROM quiz_questions WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Prompt Patterns Quiz');
+-- First, rename the quiz
+UPDATE quizzes
+SET title = 'Task Templates Quiz'
+WHERE title = 'Prompt Patterns Quiz';
+
+-- Delete old quiz questions and re-insert
+DELETE FROM quiz_questions WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Task Templates Quiz');
 
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
-((SELECT id FROM quizzes WHERE title = 'Prompt Patterns Quiz'), 1,
+((SELECT id FROM quizzes WHERE title = 'Task Templates Quiz'), 1,
 'What is the main benefit of building reusable task templates?',
 '["They sound more professional", "They produce consistent, testable, and improvable outputs", "They impress clients", "They make instructions longer"]',
 1,
 'Reusable templates create consistency, enable testing, and allow systematic improvement over time.'),
 
-((SELECT id FROM quizzes WHERE title = 'Prompt Patterns Quiz'), 2,
+((SELECT id FROM quizzes WHERE title = 'Task Templates Quiz'), 2,
 'What are the five components of a well-structured task template?',
 '["Role, Goal, Context, Constraints, Format", "Introduction, Body, Conclusion, References, Appendix", "Who, What, When, Where, Why", "Input, Process, Output, Error, Log"]',
 0,
 'Effective task templates have: Role (who the AI is), Goal (what success looks like), Context (what it needs to know), Constraints (limits), and Format (output structure).'),
 
-((SELECT id FROM quizzes WHERE title = 'Prompt Patterns Quiz'), 3,
+((SELECT id FROM quizzes WHERE title = 'Task Templates Quiz'), 3,
 'What is an "execution boundary" in the context of AI task templates?',
 '["The maximum length of a prompt", "Whether AI output is informational, draft-only, or safe to auto-execute", "How many times you can run a template", "The edge of the context window"]',
 1,
 'Execution boundaries define what AI is allowed to do: informational only, draft requiring approval, safe to auto-execute, or never auto-execute. This prevents unsafe automation.'),
 
-((SELECT id FROM quizzes WHERE title = 'Prompt Patterns Quiz'), 4,
+((SELECT id FROM quizzes WHERE title = 'Task Templates Quiz'), 4,
 'Why should you separate "thinking templates" from "execution templates"?',
 '["To make more templates", "To prevent god prompts that try to analyze, decide, and act in one step", "AI cannot think and execute", "It is required by all APIs"]',
 1,
 'Separating thinking (analyze, recommend) from doing (execute, send) prevents dangerous god prompts and keeps humans in control of decisions.'),
 
-((SELECT id FROM quizzes WHERE title = 'Prompt Patterns Quiz'), 5,
+((SELECT id FROM quizzes WHERE title = 'Task Templates Quiz'), 5,
 'What should you do when a template produces inconsistent results?',
 '["Abandon it and write a new one", "Add relevant constraints, examples, or context to reduce ambiguity", "Use a more expensive model", "Make the template shorter"]',
 1,
@@ -59,6 +64,20 @@ Random one-off instructions produce random results. Operators build **task templ
 | Can''t measure quality | Testable with clear criteria |
 | Start from scratch each time | Build on proven patterns |
 | Hard to improve | Systematic iteration |
+| Knowledge stays in your head | Documented and shareable |
+
+### When Templates Work Best
+
+Templates work best when:
+- The task repeats
+- Success can be defined
+- Output can be checked
+- You can provide consistent context
+
+**Avoid templating:**
+- One-off strategy decisions
+- Novel creative direction with no criteria
+- High-risk decisions without a human gate
 
 ---
 
@@ -78,6 +97,8 @@ When designing a template, think:
 - **What inputs does the AI need?**
 - **What transformation should it perform?**
 - **What output format do I need?**
+
+**If you can''t clearly write the I→T→O for a task, you are not ready to template it yet.**
 
 ---
 
@@ -128,7 +149,7 @@ CONSTRAINTS:
 - No enterprise-priced solutions
 ```
 
-> **Put the most important constraints first.** LLMs respect early constraints more reliably.
+> **Put the most important constraints first.** LLMs are more likely to follow constraints when they appear early and are written explicitly.
 
 More relevant constraints reduce ambiguity and error rates.
 
@@ -159,6 +180,7 @@ FORMAT:
 |----------|---------|---------|
 | **Informational only** | Output is for human reading | Analysis reports, explanations |
 | **Draft (approval required)** | Human must approve before action | Email drafts, response suggestions |
+| **Auto-execute with guardrails** | System can act within safe limits | Auto-tag tickets, but never close them |
 | **Safe to auto-execute** | System can act on output directly | Classification tags, data extraction |
 | **Never auto-execute** | Always requires human decision | Financial changes, customer deletions |
 
@@ -172,6 +194,10 @@ Execution Boundary: DRAFT ONLY
 Template: Lead Classifier
 Execution Boundary: SAFE TO AUTO-EXECUTE
 → System can tag leads automatically
+
+Template: Support Ticket Router
+Execution Boundary: AUTO-EXECUTE WITH GUARDRAILS
+→ Auto-assign team and priority, never auto-send the response
 
 Template: Refund Recommender
 Execution Boundary: NEVER AUTO-EXECUTE
@@ -231,6 +257,7 @@ EVALUATION CRITERIA:
 □ All constraints were respected
 □ Recommendations are specific (tools named)
 □ Reasoning is provided for each suggestion
+□ Output includes specific next steps (not just suggestions)
 ```
 
 This lets you:
@@ -250,6 +277,7 @@ Track how templates perform over time:
 | **Constraint Compliance** | Follows all rules | 100% |
 | **Format Accuracy** | Matches expected structure | > 95% |
 | **Revision Rate** | Needs human editing | < 20% |
+| **False Positive Rate** | Wrong confident outputs that slip through | < 5% |
 
 If metrics drop, the template needs improvement.
 
@@ -271,6 +299,10 @@ Use confidence for execution decisions:
 - **High confidence (>85%):** Safe to auto-execute
 - **Medium confidence (60-85%):** Queue for review
 - **Low confidence (<60%):** Fallback or manual
+
+**Thresholds depend on risk.** The higher the risk, the higher the confidence required:
+- Tagging leads: 0.75 might be fine
+- Auto-emailing customers: even 0.95 may not be enough without review
 
 This connects directly to the confidence thresholds from Section 2.1.
 
@@ -390,8 +422,8 @@ Complete the interactive exercise below to create and test your first production
         {
           "id": "execution_boundaries",
           "type": "textarea",
-          "label": "For each of these tasks, define the appropriate execution boundary (informational, draft, auto-execute, never auto-execute):",
-          "placeholder": "1. Lead classification → [boundary] because...\n2. Customer email response → [boundary] because...\n3. Process analysis report → [boundary] because...\n4. Refund approval → [boundary] because...",
+          "label": "For each of these tasks, define the appropriate execution boundary (informational, draft, auto-execute with guardrails, auto-execute, never auto-execute):",
+          "placeholder": "1. Lead classification → [boundary] because...\n2. Customer email response → [boundary] because...\n3. Support ticket routing → [boundary] because...\n4. Refund approval → [boundary] because...",
           "required": true,
           "rows": 6
         },
@@ -438,6 +470,7 @@ Complete the interactive exercise below to create and test your first production
           "options": [
             "Informational only - output is for human reading",
             "Draft - requires human approval before action",
+            "Auto-execute with guardrails - system can act within safe limits",
             "Safe to auto-execute - system can act directly",
             "Never auto-execute - always requires human decision"
           ]
@@ -477,10 +510,10 @@ Complete the interactive exercise below to create and test your first production
         {
           "id": "template_evaluation",
           "type": "textarea",
-          "label": "Write EVALUATION CRITERIA (at least 4 checkboxes):",
-          "placeholder": "EVALUATION CRITERIA:\n□ Output follows exact format\n□ All constraints respected\n□ [Specific quality check]\n□ [Specific quality check]",
+          "label": "Write EVALUATION CRITERIA (at least 5 checkboxes, including specific next steps):",
+          "placeholder": "EVALUATION CRITERIA:\n□ Output follows exact format\n□ All constraints respected\n□ [Specific quality check]\n□ [Specific quality check]\n□ Output includes specific next steps",
           "required": true,
-          "rows": 5
+          "rows": 6
         },
         {
           "id": "confidence_output",
@@ -520,9 +553,9 @@ Complete the interactive exercise below to create and test your first production
           "id": "metrics",
           "type": "textarea",
           "label": "Estimate your template''s current metrics:",
-          "placeholder": "Consistency Rate: [X]% (same quality each time)\nConstraint Compliance: [X]% (follows all rules)\nFormat Accuracy: [X]% (matches structure)\nRevision Rate: [X]% (needs human editing)",
+          "placeholder": "Consistency Rate: [X]% (same quality each time)\nConstraint Compliance: [X]% (follows all rules)\nFormat Accuracy: [X]% (matches structure)\nRevision Rate: [X]% (needs human editing)\nFalse Positive Rate: [X]% (wrong outputs that passed)",
           "required": true,
-          "rows": 5
+          "rows": 6
         },
         {
           "id": "v2_changes",
@@ -543,7 +576,7 @@ Complete the interactive exercise below to create and test your first production
           "id": "template_2",
           "type": "textarea",
           "label": "Template #2 Summary (different category from Template #1):",
-          "placeholder": "Name: [Template Name]\nCategory: [Process/Technical/Content/Classification]\nExecution Boundary: [informational/draft/auto-execute/never]\nPurpose: [What it does]\nKey Constraints: [2-3 main ones]",
+          "placeholder": "Name: [Template Name]\nCategory: [Process/Technical/Content/Classification]\nExecution Boundary: [informational/draft/guardrails/auto-execute/never]\nPurpose: [What it does]\nKey Constraints: [2-3 main ones]",
           "required": true,
           "rows": 7
         },
@@ -559,7 +592,7 @@ Complete the interactive exercise below to create and test your first production
           "id": "thinking_vs_doing",
           "type": "textarea",
           "label": "For a complex workflow in your domain, show how you would separate thinking templates from execution templates:",
-          "placeholder": "Workflow: [Describe the workflow]\n\nThinking Template: [What it analyzes]\n→ Execution Boundary: Informational\n\nHuman Decision: [What human decides]\n\nExecution Template: [What it does]\n→ Execution Boundary: [Draft/Auto-execute]",
+          "placeholder": "Workflow: [Describe the workflow]\n\nThinking Template: [What it analyzes]\n→ Execution Boundary: Informational\n\nHuman Decision: [What human decides]\n\nExecution Template: [What it does]\n→ Execution Boundary: [Draft/Guardrails/Auto-execute]",
           "required": true,
           "rows": 8
         }
