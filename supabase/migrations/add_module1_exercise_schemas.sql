@@ -394,6 +394,14 @@ SET exercise_schema = '{
           "rows": 3
         },
         {
+          "id": "automation_observability",
+          "type": "textarea",
+          "label": "AUTOMATION: How do you observe and debug this system?",
+          "placeholder": "Where are logs? Who gets alerts when it fails? How do you retry failed runs?",
+          "required": true,
+          "rows": 3
+        },
+        {
           "id": "data_storage",
           "type": "textarea",
           "label": "DATA: Where is information stored in this system?",
@@ -410,6 +418,14 @@ SET exercise_schema = '{
           "rows": 3
         },
         {
+          "id": "data_permissions",
+          "type": "textarea",
+          "label": "DATA: What permissions exist and what data is sensitive?",
+          "placeholder": "Who can read/write/export? Where do secrets live? What needs extra protection?",
+          "required": true,
+          "rows": 3
+        },
+        {
           "id": "ai_current",
           "type": "textarea",
           "label": "AI: Is AI currently used in this system? If yes, how?",
@@ -422,6 +438,14 @@ SET exercise_schema = '{
           "type": "textarea",
           "label": "AI: Where COULD AI add value to this system?",
           "placeholder": "Classification, content generation, analysis, predictions, etc.",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "ai_override",
+          "type": "textarea",
+          "label": "AI: What is the human override and review path?",
+          "placeholder": "How would someone correct AI errors? What happens after correction? Is there a manual fallback?",
           "required": true,
           "rows": 3
         }
@@ -457,6 +481,14 @@ SET exercise_schema = '{
           "rows": 4
         },
         {
+          "id": "new_system_observability",
+          "type": "textarea",
+          "label": "AUTOMATION DESIGN: How will you observe and debug?",
+          "placeholder": "Where will logs live? Who gets alerted on failures? How will you retry?",
+          "required": true,
+          "rows": 3
+        },
+        {
           "id": "new_system_data",
           "type": "textarea",
           "label": "DATA DESIGN: What data will you store and where?",
@@ -465,10 +497,26 @@ SET exercise_schema = '{
           "rows": 4
         },
         {
+          "id": "new_system_permissions",
+          "type": "textarea",
+          "label": "DATA DESIGN: What permissions and protections are needed?",
+          "placeholder": "Who can read/write/export? What is sensitive? Where do secrets live?",
+          "required": true,
+          "rows": 3
+        },
+        {
           "id": "new_system_ai",
           "type": "textarea",
           "label": "AI DESIGN: Where will AI add value (if anywhere)?",
           "placeholder": "AI capabilities and their purpose, or None if not needed...",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "new_system_ai_override",
+          "type": "textarea",
+          "label": "AI DESIGN: What is the human override and accuracy plan?",
+          "placeholder": "How will humans correct errors? How will you measure accuracy over time?",
           "required": true,
           "rows": 3
         }
@@ -477,13 +525,13 @@ SET exercise_schema = '{
   ],
   "deliverables": [
     "Correctly identified layers for all 6 scenarios",
-    "Broken down an existing system into all 4 layers",
-    "Designed a new system using the 4-layer framework"
+    "Broken down an existing system into all 4 layers (including observability, permissions, AI override)",
+    "Designed a new system using the 4-layer framework with modern best practices"
   ],
   "success_criteria": [
     "You can quickly identify which layer any component belongs to",
     "You can analyze existing systems using the framework",
-    "You can design new systems with clear layer separation"
+    "You consider observability, permissions, and human override in every design"
   ]
 }'::jsonb
 WHERE slug = 'four-layer-system-model';
