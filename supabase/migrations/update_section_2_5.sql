@@ -39,7 +39,7 @@ From Section 2.1, we use **capability tiers** instead of specific model names. M
 
 ## The Cost Equation
 
-LLM APIs charge per token (roughly 4 characters = 1 token).
+LLM APIs charge per token. Tokens are chunks of text, roughly 3 to 4 characters in English on average.
 
 ```
 Total Cost = (Input Tokens x Input Price) + (Output Tokens x Output Price)
@@ -64,7 +64,7 @@ Your actual bill is often higher than napkin math suggests. Watch for:
 - **Large system prompts repeated on every call** (use caching)
 - **Retry logic on failures** (each retry costs tokens)
 - **Long-tail edge cases escalating to higher tiers** (monitor escalation rate)
-- **Streaming vs non-streaming responses** (same tokens, different pricing on some providers)
+- **Streaming vs non-streaming** (affects latency and UX, and on some platforms can affect billing mechanics, check your provider)
 - **Development and testing calls** (they add up)
 
 Build these into your cost estimates.
@@ -111,6 +111,8 @@ For each task:
 - Using Deep Reasoning for simple drafting
 - Using any LLM for regex-possible extraction
 
+**Default to deterministic methods (regex, parsers, rules) when possible.** Use LLMs when ambiguity or language variability is the core problem, not for tasks where a deterministic parser works.
+
 ### 2. Optimize Input Length
 
 Shorter inputs = lower costs. But structure matters more than compression.
@@ -146,15 +148,12 @@ Same accuracy, ~80% fewer tokens.
 
 ### 3. Optimize Output Length
 
-Set `max_tokens` to prevent runaway generation:
+Set output token limits to prevent runaway generation.
 
-```javascript
-{
-  model: "balanced-tier-model",
-  max_tokens: 100,  // Classification needs ~20 tokens
-  messages: [...]
-}
-```
+**Example settings:**
+- Classification: max 20 tokens (label + brief reason)
+- Drafting: max 100-200 tokens (paragraph)
+- Summarization: max 300 tokens (key points)
 
 For classification, you need the label and maybe one sentence. Not 500 words.
 
@@ -409,14 +408,15 @@ Model selection integrates with everything:
 Memorise this. Apply it to every system.
 
 ```
-1. Start everything on Fast/Cheap tier
-2. Add confidence scoring to outputs
-3. Escalate only on low confidence (not by default)
-4. Cache everything static (prompts and responses)
-5. Cap output tokens aggressively
-6. Set escalation circuit breakers (max 2 escalations)
-7. Review costs monthly by task type
-8. Only use Deep Reasoning when error cost > model cost
+1. Instrument first, optimise second (you cannot reduce costs you cannot see)
+2. Start everything on Fast/Cheap tier
+3. Add confidence scoring to outputs
+4. Escalate only on low confidence (not by default)
+5. Cache everything static (prompts and responses)
+6. Cap output tokens aggressively
+7. Set escalation circuit breakers (max 2 escalations)
+8. Review costs monthly by task type
+9. Only use Deep Reasoning when error cost > model cost
 ```
 
 Most systems can run 80%+ of requests on Fast/Cheap tier if you build proper routing and caching.
@@ -616,7 +616,7 @@ SET exercise_schema = '{
           "id": "playbook_application",
           "type": "textarea",
           "label": "Take a system you are building or planning. Apply each step of the 80/20 playbook:",
-          "placeholder": "System: [description]\\n\\n1. Start on Fast/Cheap: [how this applies]\\n2. Add confidence scoring: [implementation plan]\\n3. Escalate only on low confidence: [threshold and logic]\\n4. Cache everything static: [what to cache]\\n5. Cap output tokens: [max_tokens setting]\\n6. Escalation circuit breaker: [max escalations before human]\\n7. Monthly review plan: [what to check]\\n8. Deep Reasoning criteria: [when error cost > model cost]",
+          "placeholder": "System: [description]\\n\\n1. Instrument first: [what to measure before optimising]\\n2. Start on Fast/Cheap: [how this applies]\\n3. Add confidence scoring: [implementation plan]\\n4. Escalate only on low confidence: [threshold and logic]\\n5. Cache everything static: [what to cache]\\n6. Cap output tokens: [max_tokens setting]\\n7. Escalation circuit breaker: [max escalations before human]\\n8. Monthly review plan: [what to check]\\n9. Deep Reasoning criteria: [when error cost > model cost]",
           "required": true,
           "rows": 16
         },
