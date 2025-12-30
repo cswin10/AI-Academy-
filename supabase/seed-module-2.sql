@@ -34,25 +34,31 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 'For an AI operator, which of these is the most accurate description of an LLM?',
 '["A tool for generating random text", "A multi-purpose collaborator that can explain, plan, code, and write", "A database of facts", "A graphics engine"]',
 1,
-'LLMs are versatile tools that can assist with many aspects of an operator''s work - explanation, planning, coding, writing, and more.'),
+'LLMs are versatile collaborators that assist with explanation, planning, coding, writing, and more - not random generators or fact databases.'),
 
 ((SELECT id FROM quizzes WHERE title = 'What LLMs Are Quiz'), 2,
-'Which model is generally better for code, debugging, and long-context architecture?',
-'["GPT", "Claude", "Gemini", "None of them"]',
+'Which model tier should you use for high-volume lead classification (10,000+ per month)?',
+'["Claude Opus 4 for best quality", "Claude Haiku or GPT-4o-mini for cost efficiency", "Always use the most expensive model", "It does not matter which model you use"]',
 1,
-'Claude excels at code-related tasks, debugging, and handling long contexts for architectural discussions.'),
+'Simple, repetitive tasks like classification should use fast, cheap models like Haiku or GPT-4o-mini. Save expensive models for complex reasoning.'),
 
 ((SELECT id FROM quizzes WHERE title = 'What LLMs Are Quiz'), 3,
-'Which model is generally better for structured workflows, JSON schemas, and tool integration guidance?',
-'["GPT", "Claude", "Ollama", "None of them"]',
-0,
-'GPT-4 is particularly strong at structured outputs, JSON generation, and providing guidance on tool integrations.'),
+'What is "model routing" in the context of LLM operations?',
+'["Sending requests to random models", "Directing different task types to appropriate models based on complexity", "Using only one model for everything", "Routing network traffic"]',
+1,
+'Model routing means matching tasks to the right model - simple tasks to cheap/fast models, complex tasks to powerful models. This optimizes cost and quality.'),
 
 ((SELECT id FROM quizzes WHERE title = 'What LLMs Are Quiz'), 4,
-'Which of the following is NOT a good use of LLMs?',
-'["Explaining a concept you don''t understand", "Designing a draft workflow end-to-end", "Generating code and then testing it", "Blindly trusting any answer without checking it"]',
-3,
-'Always verify LLM outputs. They can be wrong, hallucinate, or miss important context. Use them as collaborators, not oracles.');
+'Which of these is a REQUIRED practice for production LLM systems?',
+'["Using only the newest models", "Having fallbacks, human override, and observability", "Avoiding structured outputs", "Never logging LLM responses"]',
+1,
+'Production LLM systems must have fallbacks (for failures), human override (for corrections), and observability (logging/monitoring). These are non-negotiable.'),
+
+((SELECT id FROM quizzes WHERE title = 'What LLMs Are Quiz'), 5,
+'Why should you use structured outputs (JSON) instead of free-form text in automation?',
+'["JSON looks more professional", "Structured outputs can be reliably parsed and used by downstream systems", "Free-form text is never useful", "It is required by all APIs"]',
+1,
+'Structured outputs like JSON can be reliably parsed by code. Free-form text is unpredictable and hard to use in automation workflows.');
 
 INSERT INTO sections (module_id, slug, title, order_index, level, content_markdown, exercise_markdown, estimated_minutes, is_required, quiz_id)
 SELECT
@@ -63,149 +69,253 @@ SELECT
   'Beginner',
   '# What LLMs Are and How They Help Operators
 
-Large Language Models (LLMs) like GPT and Claude are your most important tools as an AI operator.
+Large Language Models (LLMs) like GPT and Claude are your most important tools as an AI operator. Understanding what they are, what they''re good at, and how to use them effectively will 10x your productivity.
 
-Technically, they''re probability machines trained to predict the next token in text. Practically, they''re:
+## What LLMs Actually Are
 
-- **A teacher** who explains any concept
-- **A co-designer** who helps plan systems
-- **A copywriter** who creates content
-- **A junior engineer** who writes code
-- **A debugger** who finds issues
-- **A research assistant** who synthesizes information
+Technically, LLMs are neural networks trained to predict the next token (word piece) in text. They''ve learned patterns from massive amounts of human writing, code, and knowledge.
 
-## What LLMs Can Do For You
+**Practically, they''re your multi-purpose collaborators:**
 
-Instead of spending 2 hours reading Zapier documentation, you ask: "Explain Zapier webhooks with an example." Done in 2 minutes.
+| Role | What They Do | Example |
+|------|--------------|---------|
+| **Teacher** | Explain any concept at your level | "Explain webhooks like I''m 10" |
+| **Architect** | Design systems and workflows | "Design a lead routing system" |
+| **Engineer** | Write and debug code | "Write a Python script to parse this CSV" |
+| **Writer** | Create documentation and content | "Write user-facing docs for this API" |
+| **Analyst** | Synthesize information and find patterns | "Analyze these support tickets for trends" |
+| **Debugger** | Find and fix issues | "Why is this Zapier workflow failing?" |
 
-Instead of staring at broken code for an hour, you paste it and say: "Find the bug and fix it." Problem solved.
+## The 2024/2025 Model Landscape
 
-Instead of designing a system from scratch, you describe the problem and say: "Design this using the 4-layer model." You get three options to choose from.
+The model landscape has evolved significantly. Here''s what you need to know:
 
-LLMs don''t replace your thinking—they accelerate it. They handle the boring, time-consuming parts so you can focus on strategy and decision-making.
+### Claude Models (Anthropic)
 
-## GPT vs Claude: When to Use Each
+| Model | Best For | Context | Speed | Cost |
+|-------|----------|---------|-------|------|
+| **Claude Sonnet 4** | Daily driver - code, analysis, writing | 200K tokens | Fast | Medium |
+| **Claude Opus 4** | Complex reasoning, architecture, hard problems | 200K tokens | Slower | Higher |
+| **Claude Haiku** | Classification, extraction, high-volume tasks | 200K tokens | Very Fast | Low |
 
-**Use Claude for:**
-- Code generation and debugging
-- Long-context reasoning (very long documents)
-- Architecture design
-- Refactoring existing code
+### OpenAI Models
 
-**Use GPT for:**
-- Structured outputs (JSON, schemas)
-- Tool integration guidance
-- Multi-step logic workflows
-- Function calling
+| Model | Best For | Context | Speed | Cost |
+|-------|----------|---------|-------|------|
+| **GPT-4.1** | Structured outputs, tool use, JSON | 128K tokens | Fast | Medium |
+| **o1 / o3** | Complex reasoning, math, logic puzzles | 200K tokens | Slow | High |
+| **GPT-4o-mini** | Simple tasks, classification, high volume | 128K tokens | Very Fast | Very Low |
 
-**Both are great for:**
-- Explaining concepts
-- Writing copy
-- Brainstorming ideas
-- Learning new tools
+### When to Use Which
 
-## How to Think About LLMs
+**Use Claude Sonnet 4 for:**
+- Code generation and refactoring
+- Long document analysis (contracts, specs)
+- System architecture design
+- Detailed explanations
+- Most everyday operator work
+
+**Use Claude Opus 4 / o1 for:**
+- Complex multi-step reasoning
+- Difficult debugging
+- Strategic planning
+- Problems that require "thinking hard"
+
+**Use Haiku / GPT-4o-mini for:**
+- Lead classification (hot/warm/cold)
+- Data extraction (pull email from text)
+- Format conversion (CSV to JSON)
+- Any high-volume, simple task
+
+## Model Routing: A Key Operator Skill
+
+Smart operators don''t use one model for everything. They **route tasks to the right model**:
+
+```
+Simple classification → Haiku ($0.25/1M tokens)
+Standard code task → Sonnet 4 ($3/1M tokens)
+Complex architecture → Opus 4 ($15/1M tokens)
+```
+
+**Example routing logic:**
+```
+IF task is classification or extraction:
+    use Haiku
+ELSE IF task requires deep reasoning:
+    use Opus 4 with extended thinking
+ELSE:
+    use Sonnet 4 (default)
+```
+
+This approach can reduce costs by 80% while maintaining quality where it matters.
+
+## Model Fallbacks: Build Resilient Systems
+
+Production systems need fallbacks. Models have outages, rate limits, and failures.
+
+**Pattern: Primary → Fallback → Manual**
+```
+1. Try Claude Sonnet 4
+2. If fails → Try GPT-4.1
+3. If fails → Queue for human review
+```
+
+Never build systems that depend on a single model with no backup plan.
+
+## API vs Chat Interface
+
+As an operator, you''ll use LLMs two ways:
+
+### Chat Interface (ChatGPT, Claude.ai)
+- **Best for:** Learning, exploration, one-off tasks
+- **How it works:** You type, AI responds, back and forth
+- **Limitation:** Manual, doesn''t scale
+
+### API (Programmatic Access)
+- **Best for:** Production systems, automation, integration
+- **How it works:** Your code sends requests, gets responses
+- **Advantage:** Scales infinitely, integrates with workflows
+
+**You need both.** Start with chat to learn and prototype. Move to API when you need automation.
+
+## Structured Outputs: Get Predictable Results
+
+Modern LLMs can output structured data (JSON) reliably. This is critical for automation.
+
+**Without structured output:**
+```
+"The lead seems warm, probably medium priority,
+maybe follow up next week..."
+```
+
+**With structured output:**
+```json
+{
+  "classification": "warm",
+  "priority": "medium",
+  "next_action": "follow_up",
+  "follow_up_date": "2025-01-06"
+}
+```
+
+The second version can be parsed and used by your automation. Always request structured output when building systems.
+
+## Extended Thinking for Hard Problems
+
+Claude Opus 4 and o1/o3 support "extended thinking" - they can reason through complex problems step by step before answering.
+
+**When to use extended thinking:**
+- Complex debugging with multiple possible causes
+- System design with many tradeoffs
+- Multi-step logic problems
+- Anything where you''d want a human to "think carefully"
+
+**When NOT to use it:**
+- Simple classification
+- Straightforward code generation
+- Anything routine
+
+Extended thinking is slower and more expensive. Use it strategically.
+
+## The Human Override Principle
+
+**Every LLM integration needs a human override path.**
+
+LLMs will make mistakes. Your systems must allow humans to:
+1. **Review** - See what the AI decided
+2. **Correct** - Fix wrong outputs
+3. **Learn** - Feed corrections back to improve prompts
+
+Bad pattern: LLM → Auto-send email to customer (no review)
+Good pattern: LLM → Draft email → Human approves → Send
+
+## Observability: Know When Things Go Wrong
+
+Production LLM systems need logging and monitoring:
+
+**Log these for every LLM call:**
+- Input (what you sent)
+- Output (what you got back)
+- Model used
+- Latency (how long it took)
+- Token count (cost tracking)
+- Success/failure
+
+**Alert on:**
+- Error rate spikes
+- Latency increases
+- Unexpected outputs
+- Cost anomalies
+
+If you can''t see what''s happening, you can''t fix it when it breaks.
+
+## What LLMs Are NOT
 
 **They are NOT:**
-- Perfect databases of facts (they can be wrong)
-- Replacement for testing (always test their code)
-- Replacement for learning (they accelerate learning)
+- ❌ Perfect databases of facts (they hallucinate)
+- ❌ Replacement for testing (always test their code)
+- ❌ Deterministic (same input can give different outputs)
+- ❌ Aware of real-time information (knowledge cutoff exists)
+- ❌ Able to take actions (they can only suggest, you execute)
 
 **They ARE:**
-- Incredibly fast at research and synthesis
-- Tireless collaborators
-- Great at pattern recognition
-- Excellent at explaining complexity simply
+- ✅ Incredibly fast at research and synthesis
+- ✅ Great at pattern recognition and transformation
+- ✅ Excellent at explaining complexity simply
+- ✅ Tireless - available 24/7
+- ✅ Probabilistic reasoning engines
 
 ## The Operator + LLM Partnership
 
-Think of LLMs as your junior team member:
+Think of LLMs as capable but inexperienced team members who need supervision:
 
-**Their strengths:**
-- Lightning fast at research and writing
-- Knows a bit about everything
-- Never tired or annoyed
-- Excellent at following instructions
+| LLM Strengths | Your Strengths |
+|---------------|----------------|
+| Speed - instant responses | Judgment - knowing what''s right |
+| Breadth - knows many topics | Context - understanding the business |
+| Consistency - doesn''t get tired | Verification - checking the work |
+| Scale - handles volume | Decision-making - final calls |
 
-**Their weaknesses:**
-- Can be confidently wrong
-- No access to external data unless you provide it
-- Can''t test in real-world scenarios
-- Needs clear instructions
-
-**Your job:**
-- Give clear instructions
-- Provide context
-- Verify outputs
-- Make final decisions
+**The partnership formula:**
+```
+You provide: Clear instructions + Context + Verification
+LLM provides: Speed + Knowledge + Draft outputs
+Result: 10x productivity
+```
 
 ## Real Example: Time Saved
 
-**Without LLM:**
-Research Airtable API (2 hours) → Figure out Zapier webhooks (30 mins) → Write test script (1 hour) → Debug auth (1 hour) → Build workflow (2 hours) = **6.5 hours**
+**Building an Airtable integration WITHOUT LLM:**
+1. Research Airtable API docs (2 hours)
+2. Figure out authentication (1 hour)
+3. Write integration code (2 hours)
+4. Debug errors (1.5 hours)
+5. Write error handling (1 hour)
+6. Test edge cases (1 hour)
+**Total: 8.5 hours**
 
-**With LLM:**
-Ask for step-by-step guide (5 mins) → Follow guide with provided code (1 hour) → Ask LLM to debug error (10 mins) → Build workflow (1 hour) = **2 hours, 15 mins**
+**Building the same integration WITH LLM:**
+1. Ask LLM for complete integration code with auth (15 mins)
+2. Review and understand the code (30 mins)
+3. Ask LLM to add error handling (10 mins)
+4. Test and ask LLM to fix issues (30 mins)
+5. Final review and deploy (15 mins)
+**Total: 1.5 hours**
 
-**4+ hours saved**, and you learned more because you focused on understanding rather than debugging.',
+**7 hours saved** - and you learned more because you focused on understanding rather than syntax debugging.
 
-  '## Exercise: Compare GPT vs Claude
+## Key Takeaways
 
-**Objective:** Understand when to use each model.
+1. **Match models to tasks** - Don''t use Opus for classification
+2. **Build with fallbacks** - Never depend on one model
+3. **Use structured outputs** - JSON is your friend for automation
+4. **Keep humans in the loop** - Every system needs override capability
+5. **Log everything** - Observability is not optional
+6. **Verify outputs** - Trust but verify, always',
 
-**Instructions:**
+  '## Exercise: Model Selection and Comparison
 
-Open both ChatGPT and Claude.
-
-**Test 1: Explanation**
-
-Ask both:
-```
-Explain what a large language model is, in 200 words, for a smart non-technical founder. Use examples.
-```
-
-Note:
-- Which explanation was clearer?
-- Which would you send to a client?
-- How do their styles differ?
-
-**Test 2: Code Generation**
-
-Ask both:
-```
-Write a Python script that reads a CSV file with columns: name, email, company, and prints each row.
-Include error handling and comments.
-```
-
-Compare:
-- Which code is more readable?
-- Which has better error handling?
-- Which would you use?
-
-**Test 3: Workflow Design**
-
-Ask both:
-```
-Design a workflow for customer inquiries:
-- Web form submission
-- Store in database
-- Route urgent to SMS
-- Send confirmation email
-Use the 4-layer model. Recommend specific tools.
-```
-
-Compare:
-- Which design is more practical?
-- Which tool recommendations are better?
-
-**Deliverable:**
-
-Document with your findings for each test and notes on when you''ll use each model.
-
-**Success Criteria:**
-- You''ve tested both models
-- You have clear preferences for specific tasks
-- You understand why you''d choose one over the other',
+This exercise is completed through the interactive form below. Complete all parts to understand when to use each model.',
 
   50,
   true,
