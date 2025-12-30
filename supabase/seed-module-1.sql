@@ -966,6 +966,8 @@ Every system you build—from a simple lead capture form to a complex CRM—will
 └─────────────────────────────────────────┘
 ```
 
+**Important:** The layers are a checklist, not a strict stack. In practice, you often design the data model first, then build automation and interfaces around it. Think of this as a design lens, not a top-to-bottom architecture.
+
 Let''s explore each layer in depth.
 
 ---
@@ -1070,7 +1072,7 @@ Refresh:
 
 **Where logic runs and things happen automatically.**
 
-The automation layer is the brain of your system. It connects everything together, applies business logic, and makes things happen without human intervention.
+The automation layer is the conductor of your system—it orchestrates triggers, rules, and actions across all other layers. It connects everything together, applies business logic, and makes things happen without human intervention.
 
 ### Types of Automation
 
@@ -1104,13 +1106,15 @@ Examples:
 
 **No-Code/Low-Code Platforms:**
 
-| Platform | Best For | Pricing Model |
-|----------|----------|---------------|
-| Zapier | Beginners, wide integrations | Per task |
-| Make (Integromat) | Complex workflows, visual builder | Per operation |
-| n8n | Technical users, self-hosted option | Per workflow |
-| Pipedream | Developers, code + no-code | Per credit |
-| Power Automate | Microsoft ecosystem | Per user |
+| Platform | Best For | Typical Tradeoffs |
+|----------|----------|-------------------|
+| Zapier | Beginners, widest integrations | Easier but less flexible, costs scale with volume |
+| Make (Integromat) | Complex workflows, visual builder | More powerful but steeper learning curve |
+| n8n | Technical users, self-hosted control | Most flexible but requires more setup |
+| Pipedream | Developers, code + no-code hybrid | Most powerful but needs coding comfort |
+| Power Automate | Microsoft ecosystem shops | Best MS integration but limited outside it |
+
+*Note: Pricing models change frequently—evaluate based on your volume and needs.*
 
 **Built-In Automation:**
 Many tools have automation built in:
@@ -1141,6 +1145,11 @@ Many tools have automation built in:
 5. **What happens when things fail?**
    - How will you know something broke?
    - What''s the fallback plan?
+
+6. **How will you observe and debug this?**
+   - Where are logs and run history?
+   - What alerts exist and who gets notified?
+   - How do you retry failed runs?
 
 ### Automation Patterns
 
@@ -1208,7 +1217,7 @@ Best for: Complex relationships, large datasets, serious applications
 Best for: Files, documents, media
 
 **Specialized Storage:**
-- Vector databases (Pinecone, Weaviate) for AI embeddings
+- Vector databases (e.g. Pinecone, Weaviate) when you need retrieval over large unstructured corpora
 - CRMs (HubSpot, Pipedrive) for customer data
 - Project tools (Asana, Monday) for task data
 
@@ -1265,10 +1274,11 @@ PRODUCTS TABLE
    - What connects to what?
    - Are there one-to-many or many-to-many relationships?
 
-3. **Who needs access?**
-   - Who can view?
-   - Who can edit?
-   - Are there privacy concerns?
+3. **Who needs access and what permissions exist?**
+   - Who can read, write, and export?
+   - What data is sensitive and needs extra protection?
+   - Where do secrets and credentials live?
+   - Are there privacy or compliance concerns?
 
 4. **How long is data kept?**
    - Is there a retention policy?
@@ -1284,6 +1294,8 @@ PRODUCTS TABLE
 **Where reasoning, classification, and generation happen.**
 
 The AI layer handles tasks that require understanding, decision-making, or content creation—things that traditionally needed human intelligence.
+
+**Important:** AI is not mandatory and it rarely stands alone. In modern systems, AI is usually embedded as a step inside automation workflows, as a feature in interfaces, or as enrichment in the data layer. Think of it as a capability you plug in where needed, not a separate standalone system.
 
 ### AI Capabilities
 
@@ -1330,6 +1342,8 @@ AI can enhance any layer:
 - Duplicate detection
 - Quality validation
 
+**Design principle:** Treat AI like a step you can swap out, evaluate, and roll back if quality drops. Never hard-wire AI so deeply that you can''t replace it with a different model or a rule-based fallback.
+
 ### Key Questions for the AI Layer
 
 1. **What needs intelligence?**
@@ -1340,12 +1354,18 @@ AI can enhance any layer:
    - How much does AI cost per operation?
    - Is the value delivered worth it?
 
-3. **What about errors?**
+3. **What about errors and accuracy?**
    - How accurate does AI need to be?
+   - What is the accuracy target and how will you measure it over time?
    - What happens when AI is wrong?
    - Should humans review AI decisions?
 
-4. **What data does AI need?**
+4. **What is the human override?**
+   - How does someone correct the AI when it''s wrong?
+   - What happens after a correction—does the system learn or just proceed?
+   - Is there a manual fallback when AI is unavailable or underperforming?
+
+5. **What data does AI need?**
    - What context is required for good results?
    - Is that data available?
 
