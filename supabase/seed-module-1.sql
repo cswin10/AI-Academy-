@@ -237,12 +237,17 @@ Understanding how processes connect and influence each other. Seeing the whole p
 ### 2. Automation Tools
 Knowing which tools solve which problems and when to use them. Not just knowing tools exist, but understanding their strengths, limitations, and ideal use cases.
 
+**Key concepts to master:**
+- **Workflow patterns:** Event-driven workflows, long-running processes, stateful vs stateless automation
+- **Hosting models:** Cloud-hosted (Zapier, Make) vs self-hosted (n8n) tradeoffs
+- **Integration approaches:** Native integrations, webhooks, APIs, and when to use each
+
 **Common tools:**
 - **Workflow automation:** Zapier, Make (Integromat), n8n, Pipedream
 - **Databases:** Airtable, Notion, Supabase, Google Sheets
 - **Forms:** Tally, Typeform, Google Forms, Jotform
 - **Communication:** Slack, Discord, email platforms
-- **AI:** OpenAI API, Claude API, specialized AI tools
+- **AI:** OpenAI API, Claude API, specialized AI tools (with model routing and fallbacks)
 
 ### 3. Data Awareness
 Understanding how information flows through systems. Where data comes from, how it''s structured, where it needs to go, and how to transform it along the way.
@@ -262,6 +267,8 @@ Leveraging language models and AI tools for decision-making, classification, gen
 - Extracting information from unstructured data
 - Summarizing and analyzing documents
 - Generating personalized responses
+
+Understanding reliability, evaluation, and failure modes is as important as generating good outputs.
 
 ### 5. Communication and Documentation
 Making systems understandable to humans. Explaining technical concepts to non-technical people. Creating documentation that enables others to use and maintain your work.
@@ -291,7 +298,7 @@ Not all operators are the same. Most specialize in one of three areas:
 
 **Best for:** People who love connecting things and seeing immediate results. You enjoy the puzzle of making different tools talk to each other.
 
-**Day-to-day:** "Today I built a workflow that takes form submissions, enriches the data with Clearbit, adds it to our CRM, and sends a personalized Slack notification to the right salesperson."
+**Day-to-day:** "Today I built a workflow that takes form submissions, enriches the data using a third-party enrichment API, adds it to our CRM, and sends a personalized Slack notification to the right salesperson."
 
 ### Type 2: AI-First Operator
 
@@ -305,10 +312,10 @@ Not all operators are the same. Most specialize in one of three areas:
 - Building AI-enhanced customer support systems
 
 **Tools they master:**
-- OpenAI API, Claude API, other LLM APIs
-- Vector databases (Pinecone, Weaviate)
+- OpenAI API, Claude API, other LLM APIs (including model routing, fallbacks, and cost-quality tradeoffs)
+- Vector databases (e.g. Pinecone, Weaviate) when retrieval over large unstructured datasets is required
 - AI platforms (Relevance AI, Stack AI)
-- Prompt engineering techniques
+- AI task design and evaluation (instructions, constraints, examples, scoring, and human-in-the-loop review)
 - Fine-tuning and RAG systems
 
 **Best for:** People fascinated by what AI can do. You enjoy pushing the boundaries of what''s possible with language models.
@@ -354,7 +361,7 @@ Not all operators are the same. Most specialize in one of three areas:
 3. **Months 7-12:** Specialize in an industry or solution type ($5,000-15,000 projects)
 4. **Year 2+:** Premium positioning, retainer clients, possibly hire help
 
-**Income potential:** $50,000-250,000+/year depending on specialization and client base
+**Income potential:** $50,000-250,000+/year depending on specialization and client base. These ranges assume strong execution, communication skills, and real client results.
 
 ### Path 2: In-House Operator
 
@@ -371,7 +378,7 @@ Not all operators are the same. Most specialize in one of three areas:
 - RevOps/SalesOps Specialist
 - No-Code Developer
 
-**Income potential:** $60,000-150,000/year depending on company size and location
+**Income potential:** $60,000-150,000/year depending on company size and location. These ranges assume strong execution, communication skills, and real client results.
 
 ### Path 3: Agency Owner
 
@@ -386,7 +393,7 @@ Not all operators are the same. Most specialize in one of three areas:
 2. **Year 2:** Hire first contractor or employee
 3. **Year 3+:** Build team, systematize delivery, focus on sales
 
-**Income potential:** $200,000-1,000,000+/year at scale
+**Income potential:** $200,000-1,000,000+/year at scale. These ranges assume strong execution, communication skills, and real client results.
 
 ### Path 4: Product Builder
 
@@ -474,6 +481,7 @@ A successful AI operator:
 - Creates systems that **anyone can use**, not just technical people
 - Documents everything so **others can maintain** the work
 - Designs for **failure**—systems degrade gracefully when things go wrong
+- Designs systems with **human override**, logging, and clear failure alerts
 - Thinks about **long-term maintenance**, not just initial build
 
 ### Commands Real Value
