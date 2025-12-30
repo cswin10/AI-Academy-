@@ -1907,6 +1907,9 @@ The quality of your output depends on the quality of your input. A perfectly des
 - Is in the expected format
 - Is validated before processing
 - Has clear source and timestamp
+- Has a known trust level (internal, customer, third-party, AI-generated)
+
+**Important:** Inputs from users, third parties, and AI should never be trusted equally. Internal system events are generally reliable; user inputs need validation; third-party and AI-generated inputs need extra scrutiny.
 
 **Bad input:**
 - Missing critical fields
@@ -1931,6 +1934,9 @@ Transformations are the "work" that happens between receiving input and producin
 | AI Processing | Classify, generate, summarize | Add intelligence |
 | Storage | Save to database, update record | Persist data |
 
+**AI Transformations Are Probabilistic:**
+Unlike validation or calculation steps which are deterministic (same input = same output), AI transformations are probabilistic. Always define what happens if confidence is low or output is ambiguous. AI steps should have fallback paths for uncertain results.
+
 **Transformation Order Matters:**
 The sequence of transformations is critical. Validate before you store. Enrich before you calculate. Think through dependencies.
 
@@ -1948,6 +1954,18 @@ Outputs are what your system produces—the visible results of all the work.
 | Document | PDF, spreadsheet, report | Create artifacts |
 | Action | Create task, assign ticket, trigger another workflow | Cause further action |
 | Display | Dashboard update, UI change | Show information |
+
+**Output Finality:**
+Some outputs are final (email sent, SMS delivered), others become inputs to downstream systems. Always identify which is which. Final outputs need confirmation and logging; intermediate outputs need clear handoff to the next system.
+
+**Observability Principle:**
+Every transformation should either succeed visibly or fail loudly. Silent failures are the most expensive failures—problems compound when no one knows something broke.
+
+---
+
+## Connecting to the 4-Layer Model
+
+You can think of Inputs and Outputs as Interface layer events, and Transformations as what happens across Automation, Data, and AI layers. This I→T→O framework and the 4-Layer Model are complementary lenses for the same systems.
 
 ---
 
@@ -2132,7 +2150,16 @@ EDGE CASE 4: Same-day reservation
 → Only allow if 4+ hours ahead
 → Phone confirmation required
 → Limited capacity
+
+EDGE CASE 5: Partial failure
+→ Some transformations succeed, others fail
+→ Decide: roll back, retry, or continue in degraded mode
+→ Always log what succeeded and what failed
+→ Notify appropriate humans
 ```
+
+**Human Override:**
+Every automated system must have a clear human override—a way to pause it, fix data, and resume safely. In the reservation example, staff should be able to manually override availability, adjust bookings, or cancel automations.
 
 ---
 
@@ -2579,6 +2606,8 @@ This section teaches you two principles that will save you countless hours and h
 
 These principles separate operators who ship value quickly from those who spend months building systems nobody uses.
 
+**Important:** Manual first is a learning phase, not a permanent solution. The goal is understanding, not martyrdom.
+
 ---
 
 ## Why Manual First?
@@ -2893,12 +2922,27 @@ When looking at a process with multiple pain points, prioritize based on:
 **Risk level:**
 - What happens if it breaks?
 - How easy is it to manually override?
-- What''s the blast radius?
+- What''s the blast radius—if this automation fails, how many people or systems are affected?
+- Is there a human override available?
 
 **Dependencies:**
 - What else relies on this working?
 - Does this block other improvements?
 - Are there prerequisite changes?
+
+### When NOT to Automate (Yet or Ever)
+
+Sometimes the right answer is "don''t automate this." Kill criteria include:
+
+| Reason | Example | Why to Avoid |
+|--------|---------|--------------|
+| The process changes weekly | Marketing experiments, new product launches | Automation will constantly break |
+| The rules are subjective | Quality assessment, relationship decisions | Humans are better at nuance |
+| Cost of failure is too high | Medical decisions, financial compliance | Risk outweighs benefit |
+| Volume is too low | Quarterly one-off tasks | Time to build > time saved |
+| Humans enjoy it and it builds relationships | Personal customer check-ins | Automation removes value |
+
+**The observability test:** Before automating anything, ask: "Every transformation should either succeed visibly or fail loudly. Can I build that visibility into this automation?" If you can''t observe and debug it, reconsider automating it.
 
 ---
 
@@ -3481,6 +3525,10 @@ When things go wrong (and they will):
 - It provides a troubleshooting starting point
 - It reduces blame when issues arise
 
+### 6. Documentation Is a Living Artifact
+
+Documentation is not static—it evolves with the system. Every time you modify a workflow, update a field, or fix a bug, the documentation should reflect that change. Stale documentation is often worse than no documentation, because it creates false confidence.
+
 ---
 
 ## What to Document
@@ -3655,6 +3703,8 @@ Process: Request access, get approved, receive invite
 
 #### 5. Troubleshooting Guide
 
+**Observability principle:** Remember—every transformation should either succeed visibly or fail loudly. Your troubleshooting guide should help people find failures quickly.
+
 Document common issues and how to fix them:
 
 ```
@@ -3737,6 +3787,70 @@ Guide for common changes:
 4. Follow same structure as existing workflows
 5. Test thoroughly
 6. Document the new source in this guide
+```
+
+#### 7. Decision Log
+
+One thing that senior operators always keep is a decision log—a record of why things are the way they are. This massively helps future changes.
+
+```
+## Decision Log
+
+### Why We Chose Airtable Over Notion
+**Date:** January 2024
+**Options Considered:** Airtable, Notion, Google Sheets, Supabase
+**Decision:** Airtable
+**Reasoning:**
+- Team already familiar with it
+- Built-in automation features
+- Better for relational data than Notion
+- Lower learning curve than Supabase
+**Tradeoffs Accepted:** Higher cost at scale, less flexible than code-based solution
+
+### Why We Route Hot Leads to Slack, Not Email
+**Date:** January 2024
+**Decision:** Slack for immediate alerts
+**Reasoning:** Sales team lives in Slack; email gets buried
+**Tradeoff:** Requires Slack access, misses people not in Slack
+```
+
+#### 8. AI Behavior Documentation (Required for AI-Enabled Systems)
+
+For any system with AI components, document:
+
+```
+## AI Component Documentation
+
+### AI-Powered Lead Scoring
+
+**What AI is allowed to do:**
+- Score leads based on company size, industry, and behavior
+- Suggest lead priority (Hot/Warm/Cold)
+- Flag unusual patterns for human review
+
+**What AI is explicitly NOT allowed to do:**
+- Automatically reject or delete leads
+- Send external communications
+- Modify customer data without human approval
+
+**Expected accuracy:**
+- Target: 85% agreement with human scoring
+- Current: 82% (last measured: March 2024)
+
+**Review process:**
+- Sales team reviews AI scores weekly
+- Disagreements logged and fed back for improvement
+- Monthly accuracy report generated
+
+**Known failure modes:**
+- Struggles with non-English company names
+- Overvalues company size for B2B leads
+- May miss intent signals in short form submissions
+
+**Human override:**
+- Any team member can manually override AI score
+- Override logged with reason
+- Overrides reviewed monthly for patterns
 ```
 
 ---

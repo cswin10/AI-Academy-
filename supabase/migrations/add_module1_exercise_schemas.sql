@@ -663,6 +663,29 @@ SET exercise_schema = '{
           "placeholder": "List at least 3 edge cases and how they should be handled...",
           "required": true,
           "rows": 5
+        },
+        {
+          "id": "own_workflow_trust_level",
+          "type": "radio",
+          "label": "INPUT TRUST LEVEL - How trustworthy is the input source?",
+          "required": true,
+          "options": ["Internal system (high trust)", "Verified user (medium trust)", "External/third-party (low trust)", "AI-generated (requires validation)"]
+        },
+        {
+          "id": "own_workflow_partial_failure",
+          "type": "textarea",
+          "label": "PARTIAL FAILURE - What if some steps succeed but others fail?",
+          "placeholder": "Decide: roll back everything, retry failed steps, or continue in degraded mode?",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "own_workflow_observability",
+          "type": "textarea",
+          "label": "OBSERVABILITY - How will you know if this workflow fails?",
+          "placeholder": "Where are logs? Who gets alerted? How do you replay failed runs?",
+          "required": true,
+          "rows": 3
         }
       ]
     },
@@ -717,20 +740,45 @@ SET exercise_schema = '{
           "placeholder": "What happens if validation fails? If a service is down? If data is missing?",
           "required": true,
           "rows": 4
+        },
+        {
+          "id": "design_output_finality",
+          "type": "textarea",
+          "label": "OUTPUT FINALITY - Which outputs are final vs. inputs to other systems?",
+          "placeholder": "Final outputs (email sent, record created) vs intermediate outputs (triggers next workflow)...",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "design_observability",
+          "type": "textarea",
+          "label": "OBSERVABILITY - How will you ensure failures are visible?",
+          "placeholder": "Every transformation should succeed visibly or fail loudly. How will you achieve this?",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "design_human_override",
+          "type": "textarea",
+          "label": "HUMAN OVERRIDE - How can humans intervene when needed?",
+          "placeholder": "How do you pause, fix data, and resume? Who has override access?",
+          "required": true,
+          "rows": 3
         }
       ]
     }
   ],
   "deliverables": [
     "Analyzed 3 example workflows into I→T→O components",
-    "Documented a real workflow from your work/life",
-    "Identified edge cases for your documented workflow",
-    "Designed a new workflow using the framework"
+    "Documented a real workflow including trust level and failure handling",
+    "Designed a new workflow with observability and human override",
+    "Identified output finality for all outputs"
   ],
   "success_criteria": [
     "You can break any workflow into Input, Transformations, Output",
-    "You can identify and document edge cases",
-    "You can design workflows with proper error handling"
+    "You assess input trust levels and handle them appropriately",
+    "You plan for partial failures and ensure observability",
+    "You include human override in every design"
   ]
 }'::jsonb
 WHERE slug = 'inputs-transformations-outputs';
@@ -870,6 +918,27 @@ SET exercise_schema = '{
           "placeholder": "Why is this a good or poor automation candidate?",
           "required": true,
           "rows": 4
+        },
+        {
+          "id": "blast_radius",
+          "type": "textarea",
+          "label": "BLAST RADIUS - If this automation fails, how many people/systems are affected?",
+          "placeholder": "Who/what depends on this? What is the impact of failure?",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "kill_criteria",
+          "type": "checkbox_group",
+          "label": "KILL CRITERIA - Does any of these apply? (If yes, reconsider automating)",
+          "required": false,
+          "options": [
+            "The process changes weekly",
+            "The rules are subjective",
+            "Cost of failure is very high",
+            "Volume is too low to justify",
+            "Humans enjoy it / builds relationships"
+          ]
         }
       ]
     },
@@ -924,6 +993,22 @@ SET exercise_schema = '{
           "placeholder": "Features that could be added eventually...",
           "required": true,
           "rows": 3
+        },
+        {
+          "id": "human_override",
+          "type": "textarea",
+          "label": "HUMAN OVERRIDE - How can humans intervene when needed?",
+          "placeholder": "How do you pause, fix data, and resume? Every automation needs an escape hatch.",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "observability_plan",
+          "type": "textarea",
+          "label": "OBSERVABILITY - How will you know if it fails?",
+          "placeholder": "Logs, alerts, dashboards? Remember: silent failures are the most expensive.",
+          "required": true,
+          "rows": 3
         }
       ]
     }
@@ -931,13 +1016,13 @@ SET exercise_schema = '{
   "deliverables": [
     "Performed a task manually at least 3 times",
     "Documented all steps, friction points, and edge cases",
-    "Completed automation assessment with scores",
-    "Designed a phased automation plan starting with MVP"
+    "Completed automation assessment including blast radius and kill criteria",
+    "Designed a phased automation plan with human override and observability"
   ],
   "success_criteria": [
     "You discovered insights by doing the task manually",
-    "You can evaluate automation candidates objectively",
-    "Your MVP design focuses on core value without over-engineering"
+    "You can evaluate automation candidates objectively including kill criteria",
+    "Your MVP design includes human override and observability from day one"
   ]
 }'::jsonb
 WHERE slug = 'manual-first-simple-first';
@@ -995,6 +1080,22 @@ SET exercise_schema = '{
           "type": "textarea",
           "label": "Troubleshooting Guide (3 common issues):",
           "placeholder": "Issue 1: [Symptom]\nCause: [Why it happens]\nFix: [How to resolve]\n\nIssue 2: ...",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "decision_log",
+          "type": "textarea",
+          "label": "Decision Log (Why things are the way they are):",
+          "placeholder": "Key Decision: [What was decided]\nOptions Considered: [Alternatives]\nWhy This Approach: [Reasoning]\nTradeoffs Accepted: [What you gave up]",
+          "required": true,
+          "rows": 6
+        },
+        {
+          "id": "ai_behavior_docs",
+          "type": "textarea",
+          "label": "AI Behavior Documentation (if AI is used, otherwise write N/A):",
+          "placeholder": "What AI is allowed to do:\nWhat AI is NOT allowed to do:\nExpected accuracy:\nHuman override process:\nKnown failure modes:",
           "required": true,
           "rows": 8
         }
@@ -1102,14 +1203,14 @@ SET exercise_schema = '{
     }
   ],
   "deliverables": [
-    "Complete system documentation with all sections",
+    "Complete system documentation including decision log and AI behavior docs",
     "Technical concept explained to 3 different audiences",
     "Professional project proposal"
   ],
   "success_criteria": [
     "Your documentation could be understood by someone who has never seen the system",
-    "Your explanations adapt appropriately to each audience",
-    "Your proposal makes a compelling case with specific benefits"
+    "You documented WHY decisions were made, not just WHAT was built",
+    "AI components have explicit boundaries, accuracy targets, and override paths"
   ]
 }'::jsonb
 WHERE slug = 'documentation-communication';
