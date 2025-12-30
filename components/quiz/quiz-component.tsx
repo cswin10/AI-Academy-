@@ -94,10 +94,11 @@ export function QuizComponent({
       const scorePercent = Math.round((correctAnswers / questions.length) * 100)
       const passed = scorePercent >= quiz.passing_score
       const isPerfect = scorePercent === 100
-      const xpEarned = passed ? quiz.xp_reward : 0
+      // Only award XP if user hasn't passed this quiz before
+      const xpEarned = passed && !hasPassedBefore ? quiz.xp_reward : 0
 
       // Save quiz attempt
-      await supabase.from('quiz_attempts').insert({
+      const { error: insertError } = await supabase.from('quiz_attempts').insert({
         quiz_id: quiz.id,
         user_id: userId,
         section_id: section.id,
@@ -108,6 +109,22 @@ export function QuizComponent({
         time_taken_seconds: timeTaken,
         answers,
       })
+
+      if (insertError) {
+        console.error('Error saving quiz attempt:', insertError)
+        // Don't proceed with XP/progress updates if we couldn't save the attempt
+        setResult({
+          passed,
+          scorePercent,
+          correctAnswers,
+          totalQuestions: questions.length,
+          xpEarned: 0, // Don't show XP if save failed
+          isPerfect,
+          questionResults,
+        })
+        setShowResults(true)
+        return
+      }
 
       if (passed && !hasPassedBefore) {
         // Mark section as complete
@@ -415,6 +432,11 @@ export function QuizComponent({
                   <div className="flex items-center justify-center gap-2 mt-4 text-primary">
                     <Sparkles className="h-5 w-5" />
                     <span className="font-semibold">+{result.xpEarned} XP earned!</span>
+                  </div>
+                )}
+                {result.passed && result.xpEarned === 0 && hasPassedBefore && (
+                  <div className="text-sm text-muted-foreground mt-4">
+                    Already completed - no additional XP
                   </div>
                 )}
                 {result.isPerfect && (
