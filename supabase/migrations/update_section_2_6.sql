@@ -37,15 +37,11 @@ This means:
 
 The context window is the maximum tokens (input + output) a model can process in one request.
 
-**Typical context windows by tier:**
+Context window sizes vary heavily by model and change frequently. As a rough guide:
+- Fast/Cheap tiers often range from 16k to 128k tokens
+- Balanced and Deep Reasoning tiers often support 128k to 200k+ tokens
 
-| Tier | Typical Window | Practical Limit |
-|------|----------------|-----------------|
-| Fast/Cheap | 16k-32k tokens | Use 80% max |
-| Balanced | 128k-200k tokens | Use 80% max |
-| Deep Reasoning | 128k-200k tokens | Use 80% max |
-
-> Context windows change as models evolve. Check current specs for your provider.
+> Always check current specs for your provider. These ranges shift as models evolve.
 
 **Why 80% practical limit?**
 - Leave room for output generation
@@ -70,6 +66,8 @@ Models can struggle with very long contexts:
 - Latency increases significantly
 
 **The middle problem:** Information at the start and end of context gets more attention than information in the middle. Structure your context accordingly.
+
+**Placement rule:** Put constraints and task goal at the top, put retrieved evidence at the bottom.
 
 ### 3. Hard Failures
 
@@ -124,7 +122,7 @@ Approach:
 - Analysis needing full context
 - Tasks where chunk boundaries break meaning
 
-For cross-document reasoning, use RAG instead.
+For cross-document reasoning, use RAG instead. But note: RAG retrieves relevant context, it does not guarantee global reasoning. For true global synthesis, combine retrieval with a structured multi-step synthesis pipeline.
 
 ### Strategy 2: RAG (Retrieval-Augmented Generation)
 
@@ -153,16 +151,7 @@ This is an architecture decision. If you need RAG, plan for it early.
 
 For conversations, keep only recent history.
 
-```javascript
-// Keep last N messages
-const recentMessages = conversationHistory.slice(-10);
-
-// Send to API with system prompt
-const messages = [
-  { role: "system", content: systemPrompt },
-  ...recentMessages
-];
-```
+**Implementation:** Keep only the last N messages (e.g., 10-20). On each request, send system prompt + recent messages only.
 
 **Trade-off:** Older context is lost. The model cannot reference early conversation.
 
@@ -193,35 +182,31 @@ Compression ratio: 70% reduction
 
 ### Strategy 5: Working Memory (Structured State)
 
-Extract key facts into structured storage.
+Extract key facts into structured storage instead of keeping raw messages.
 
-```javascript
-// Instead of keeping raw messages
-const workingMemory = {
-  user: {
-    name: "Sarah",
-    company: "TechCorp",
-    role: "CTO"
-  },
-  preferences: {
-    communication_style: "concise",
-    timezone: "UTC-8"
-  },
-  session: {
-    goal: "Evaluate authentication options",
-    decisions_made: ["Use OAuth2", "No SSO for MVP"],
-    open_questions: ["Session timeout duration?"]
-  }
-};
+**Example working memory structure:**
+```
+user:
+  name: Sarah
+  company: TechCorp
+  role: CTO
 
-// Inject structured context, not raw history
-const systemPrompt = `
-User context:
-- Name: ${workingMemory.user.name}
-- Company: ${workingMemory.user.company}
-- Session goal: ${workingMemory.session.goal}
-- Decisions made: ${workingMemory.session.decisions_made.join(", ")}
-`;
+preferences:
+  communication_style: concise
+  timezone: UTC-8
+
+session:
+  goal: Evaluate authentication options
+  decisions_made: [Use OAuth2, No SSO for MVP]
+  open_questions: [Session timeout duration?]
+```
+
+**Injected as context:**
+```
+User: Sarah (CTO, TechCorp)
+Goal: Evaluate authentication options
+Decisions: Use OAuth2, No SSO for MVP
+Open: Session timeout duration?
 ```
 
 **Benefits:**
@@ -231,6 +216,8 @@ User context:
 - Faster context injection
 
 This is the most sophisticated approach. Use it for production systems.
+
+**If you are building an agent with multi-turn goals, treat working memory as the default, not an upgrade.**
 
 ## Conversation Lifecycle Management
 
@@ -269,31 +256,13 @@ End of session:
 
 Estimate tokens before sending:
 
-**Rough estimate:**
-- 1 token ≈ 4 characters (English)
-- 1 token ≈ 0.75 words
+Token counts vary by language, content, and tokenizer. For accuracy, use provider token counts or a tokenizer library.
 
-**Accurate counting:**
-- Use tokenizer libraries (tiktoken, etc.)
-- Many providers return token counts in responses
-- Build counting into your pipeline
+**Rough heuristic (English only):** ~3-4 characters per token, ~0.75 words per token. Do not rely on this for budgeting.
 
-```javascript
-function estimateTokens(text) {
-  return Math.ceil(text.length / 4);
-}
+**For production:** Use provider-returned token counts or tokenizer libraries. Build counting into your pipeline.
 
-function checkContextBudget(messages, systemPrompt, limit) {
-  const total = estimateTokens(systemPrompt) +
-    messages.reduce((sum, m) => sum + estimateTokens(m.content), 0);
-
-  return {
-    used: total,
-    remaining: limit - total,
-    overBudget: total > limit * 0.8  // 80% threshold
-  };
-}
-```
+**Implementation note:** Before each request, sum estimated tokens for system prompt + messages. Alert or compress if approaching 80% of limit.
 
 ## Context Optimization Techniques
 
@@ -301,21 +270,11 @@ function checkContextBudget(messages, systemPrompt, limit) {
 
 HTML, markdown, whitespace consume tokens.
 
-**Before (90 tokens):**
-```html
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <p>Return policy: 30 days with receipt.</p>
-    </div>
-  </div>
-</div>
-```
+**Before (~90 tokens):** Nested HTML divs with classes wrapping "Return policy: 30 days with receipt."
 
-**After (8 tokens):**
-```
-Return policy: 30 days with receipt.
-```
+**After (~8 tokens):** `Return policy: 30 days with receipt.`
+
+Same information, 90% fewer tokens.
 
 ### 2. Use Structured Data
 
