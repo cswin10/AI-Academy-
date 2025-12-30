@@ -18,28 +18,55 @@ SET
 
 Complex tasks often benefit from being broken into multiple LLM calls. Each step focuses on one thing, making the overall system more reliable, testable, and cost-effective.
 
+---
+
+## Definitions
+
+**Pipeline** means a sequence of LLM calls where outputs from earlier steps feed into later steps. Each step has a focused task, and the pipeline as a whole accomplishes something more complex than any single step could.
+
+**Step contract** means the explicit definition of what a step accepts as input and what it produces as output. Contracts include data types, required fields, and validation criteria.
+
+**Error compounding** means that small errors in early steps propagate and amplify through later steps. A slightly wrong extraction becomes a wrong classification becomes a wrong response.
+
+---
+
 ## Why Chain Steps?
 
-**Single-step approach:**
-```
-Take this raw data, clean it, analyze it, generate insights, create a summary, and format as a report.
-```
+A single-step approach that asks the model to take raw data, clean it, analyze it, generate insights, create a summary, and format as a report often fails because too many objectives compete for attention, there is no way to validate intermediate results, if one part fails everything fails, and you cannot optimize or debug individual steps.
 
-This often fails because:
-- Too many objectives compete for attention
-- No way to validate intermediate results
-- If one part fails, everything fails
-- Cannot optimize or debug individual steps
+A multi-step approach separates these into focused steps: (1) clean and structure the raw data, (2) analyze the structured data, (3) generate insights from analysis, (4) format insights as report. Each step is focused, testable, and can use the appropriate capability tier.
 
-**Multi-step approach:**
-```
-Step 1: Clean and structure the raw data
-Step 2: Analyze the structured data
-Step 3: Generate insights from analysis
-Step 4: Format insights as report
-```
+---
 
-Each step is focused, testable, and can use the appropriate tier.
+## Step Contracts
+
+Every step in a pipeline should have an explicit contract defining its input and output.
+
+**Input contract**: What the step receives. Define the schema, required fields, and any preconditions. For example, Step 2 (classification) receives a JSON object with sentiment (string, one of positive/negative/neutral/mixed), topics (array of strings), and specific_issues (array of strings).
+
+**Output contract**: What the step produces. Define the schema, required fields, and any guarantees. For example, Step 2 produces a JSON object with priority (string, one of critical/high/medium/low) and reasoning (string, max 50 characters).
+
+**Validation at boundaries**: Check that input meets input contract before running the step. Check that output meets output contract before passing to next step. This catches errors at the source rather than letting them propagate.
+
+Step contracts enable independent testing. You can test Step 2 with mocked inputs that match its input contract without running Step 1.
+
+---
+
+## Error Compounding in Chains
+
+Errors in early steps compound through the chain. This is a fundamental risk of pipelines.
+
+**Example**: In a feedback processing pipeline, Step 1 extracts sentiment as "neutral" when the customer is actually frustrated (extraction error). Step 2 sees "neutral" and classifies priority as "low" (correct given input, wrong given reality). Step 3 generates a generic response (appropriate for low priority). Step 4 sends the generic response to a frustrated customer (outcome: escalation).
+
+The initial small error (sentiment misclassified) propagated through every subsequent step. By the end, the pipeline produced a confidently wrong result.
+
+**Mitigations**:
+- Validate aggressively between steps. Catch errors before they propagate.
+- Include confidence scores. Low confidence in Step 1 should propagate as a warning.
+- Pass original context forward. Later steps can sometimes catch earlier errors if they see the original input.
+- Design for graceful degradation. If extraction confidence is low, flag for human review rather than proceeding automatically.
+
+---
 
 ## When to Chain vs Single Step
 
@@ -56,68 +83,31 @@ Each step is focused, testable, and can use the appropriate tier.
 - You want to debug and optimize steps independently
 - Failure in one step should not corrupt the whole task
 
+---
+
 ## Pipeline Patterns
 
 ### Pattern 1: Sequential Processing
 
-Each step feeds the next.
+Each step feeds the next. Input flows through Step 1 to Step 2 to Step 3 to Output.
 
-```
-Input → Step 1 → Step 2 → Step 3 → Output
-```
+Example for document processing: Raw document goes to Step 1 (extract facts, Fast/Cheap tier) then to Step 2 (categorize facts, Fast/Cheap tier) then to Step 3 (generate summary, Balanced tier) producing the final summary.
 
-**Example: Document Processing**
-```
-Raw document
-  → Step 1: Extract facts (Fast/Cheap tier)
-  → Step 2: Categorize facts (Fast/Cheap tier)
-  → Step 3: Generate summary (Balanced tier)
-  → Final summary
-```
-
-**Implementation notes:**
-- Step 1 output becomes Step 2 input
-- Validate output between steps
-- If any step fails, retry before proceeding
+Implementation notes: Step 1 output becomes Step 2 input. Validate output between steps. If any step fails, retry before proceeding.
 
 ### Pattern 2: Analyze Then Act
 
 First understand, then decide, then execute.
 
-```
-Input → Understand → Decide → Execute → Output
-```
+Example for customer support: Customer email goes to Step 1 (understand: what is the request, what is the emotional state) then to Step 2 (classify: category, priority, sentiment) then to Step 3 (generate response: appropriate tone and content) producing a response ready for review.
 
-**Example: Customer Support Automation**
-```
-Customer email
-  → Step 1: Understand (what is the request? emotional state?)
-  → Step 2: Classify (category, priority, sentiment)
-  → Step 3: Generate response (appropriate tone and content)
-  → Response ready for review
-```
-
-**Why this works:**
-- Step 1 can focus entirely on comprehension
-- Step 2 makes decisions based on clean analysis
-- Step 3 crafts output informed by classification
+Why this works: Step 1 can focus entirely on comprehension. Step 2 makes decisions based on clean analysis. Step 3 crafts output informed by classification.
 
 ### Pattern 3: Generate and Refine
 
 Create draft, critique it, improve it.
 
-```
-Input → Generate Draft → Critique → Refine → Output
-```
-
-**Example: Content Creation**
-```
-Topic + requirements
-  → Step 1: Write first draft
-  → Step 2: Identify issues (clarity, accuracy, engagement)
-  → Step 3: Rewrite addressing issues
-  → Polished content
-```
+Example for content creation: Topic and requirements go to Step 1 (write first draft) then to Step 2 (identify issues: clarity, accuracy, engagement) then to Step 3 (rewrite addressing issues) producing polished content.
 
 This is the self-critique pattern from Section 3.4, structured as a pipeline.
 
@@ -125,225 +115,176 @@ This is the self-critique pattern from Section 3.4, structured as a pipeline.
 
 Multiple analyses run simultaneously, then synthesize.
 
-```
-Input ─┬→ Analysis A ─┐
-       ├→ Analysis B ─┼→ Synthesize → Output
-       └→ Analysis C ─┘
-```
+Example for competitive analysis: Company to analyze goes to parallel branches (product analysis, market analysis, financial analysis running simultaneously) then to a synthesis step that combines them into a comprehensive report.
 
-**Example: Competitive Analysis**
-```
-Company to analyze
-  → [Product analysis] + [Market analysis] + [Financial analysis] (parallel)
-  → Synthesize into comprehensive report
-  → Final competitive assessment
-```
-
-**Benefits:**
-- Faster than sequential (parallel execution)
-- Each analysis can be specialized
-- Synthesis step combines perspectives
+Benefits: Faster than sequential (parallel execution). Each analysis can be specialized. Synthesis step combines perspectives.
 
 ### Pattern 5: Branch and Converge
 
 Different paths for different cases.
 
-```
-Input → Classify → Branch by type → [Path A | Path B | Path C] → Merge → Output
-```
+Example for support ticket processing: Ticket goes to classification (Billing, Technical, or General) then routes to the specialized handler for that type. Each path has its own steps. All paths converge at a quality check before final response.
 
-**Example: Support Ticket Processing**
-```
-Ticket
-  → Classify type (Billing | Technical | General)
-  → Route to specialized handler
-    → Billing path: Check account, draft billing response
-    → Technical path: Diagnose issue, draft technical response
-    → General path: Standard response
-  → Quality check
-  → Final response
-```
+---
 
-## Building Reliable Pipelines
-
-### 1. Validate Between Steps
-
-Do not blindly pass output to next step.
-
-**Validation points:**
-- After Step 1: Is output valid? Does it have expected structure?
-- Before Step 2: Is input from Step 1 usable?
-- After each step: Log output for debugging
-
-**On validation failure:**
-- Retry the step with stricter prompt
-- If still failing, escalate or abort
-
-### 2. Pass Context Forward
+## Passing Context Forward
 
 Each step needs enough context to do its job.
 
-**Bad:**
-```
-Step 1: Analyze this document [document]
-Step 2: Improve this: [step 1 output only]
-```
-Step 2 does not know the original goal.
+**Bad approach**: Step 2 receives only Step 1 output. It does not know the original goal.
 
-**Good:**
-```
-Step 1: Analyze this document [document]
-Step 2:
-  Original document: [document]
-  Goal: [original goal]
-  Analysis from Step 1: [step 1 output]
-  Task: Improve based on analysis while meeting goal
-```
+**Good approach**: Step 2 receives the original input, the original goal, and the analysis from Step 1. Now it can perform its task with full context.
 
-**Rule:** Each step should have access to original context, not just previous step output.
+**Rule**: Each step should have access to original context, not just previous step output. This also helps catch error compounding because later steps can sometimes identify when earlier analysis contradicts the original input.
 
-### 3. Handle Errors Gracefully
+**Context envelope pattern**: Pass a consistent structure through the pipeline containing original_input, original_goal, and step_outputs (keyed by step name). Each step reads what it needs and adds its output to step_outputs.
+
+---
+
+## Idempotency and Caching
+
+**Idempotent steps** produce the same output for the same input regardless of when or how many times they run. Extraction and classification are typically idempotent. Generation with temperature greater than zero is not idempotent.
+
+**What can be cached**:
+- Extraction from the same document (if document unchanged)
+- Classification of the same text (if classification logic unchanged)
+- Static analysis results
+- Outputs from deterministic steps (temperature zero)
+
+**What should not be cached**:
+- Results dependent on current time or external state
+- Steps with randomness or variation (temperature greater than zero)
+- Outputs that must reflect current context or conversation state
+
+**Cache key design**: Include the step version, input hash, and any relevant parameters. When you update a step prompt, increment the version to invalidate old cache entries.
+
+**Partial pipeline runs**: If Step 1 output is cached, you can skip Step 1 and start from Step 2 with the cached result. This is especially valuable for reprocessing scenarios.
+
+---
+
+## Example: Three-Tier Pipeline
+
+A pipeline that uses all three capability tiers appropriately:
+
+**Step 1: Extract (Fast/Cheap tier)**
+- Task: Pull structured data from raw input
+- Why this tier: Extraction is pattern matching, no complex reasoning needed
+- Input: Raw customer feedback email
+- Output: JSON with sentiment, topics, issues, urgency_signals
+
+**Step 2: Classify (Fast/Cheap tier)**
+- Task: Categorize based on extracted data
+- Why this tier: Classification from structured data is straightforward
+- Input: Extraction from Step 1
+- Output: JSON with priority level and category
+
+**Step 3: Analyze (Balanced tier)**
+- Task: Generate insights and root cause analysis
+- Why this tier: Requires reasoning about patterns and implications
+- Input: Original email, extraction, classification
+- Output: JSON with key_insight, root_cause, recommended_action
+
+**Step 4: Respond (Balanced tier)**
+- Task: Draft appropriate response
+- Why this tier: Requires coherent, contextual generation
+- Input: All previous outputs plus original email
+- Output: Draft response text
+
+**Optional Step 5: Review (Deep Reasoning tier)**
+- Task: Complex cases needing nuanced judgment
+- When used: Only for high-priority or edge cases
+- Why this tier: May need to reason about policy, precedent, or unusual situations
+
+Cost optimization: Steps 1 and 2 use Fast/Cheap (roughly 1x cost). Steps 3 and 4 use Balanced (roughly 15x cost). Step 5 only runs for complex cases. This is more efficient than running everything through Balanced tier.
+
+---
+
+## Building Reliable Pipelines
+
+### Validate Between Steps
+
+Do not blindly pass output to next step.
+
+Validation points: After Step 1, check if output is valid and has expected structure. Before Step 2, verify input from Step 1 is usable. After each step, log output for debugging.
+
+On validation failure: Retry the step with stricter prompt. If still failing, escalate or abort.
+
+### Handle Errors Gracefully
 
 Steps will fail. Plan for it.
 
-**Error handling per step:**
-- Attempt the step
-- On failure: retry with stricter prompt
-- On second failure: retry with fallback approach
-- On third failure: abort and escalate
+Error handling per step: Attempt the step. On failure, retry with stricter prompt. On second failure, retry with fallback approach. On third failure, abort and escalate.
 
-**Circuit breaker:** If a step fails repeatedly across multiple inputs, stop processing and alert.
+Circuit breaker: If a step fails repeatedly across multiple inputs, stop processing and alert. This prevents wasting resources on a broken step.
 
-### 4. Log Everything
+### Log Everything
 
 For debugging, you need visibility into each step.
 
-**Log per step:**
-- Step name
-- Input (or input hash for large data)
-- Output
-- Duration
-- Success/failure
-- Retry count
+Log per step: Step name, input (or input hash for large data), output, duration, success/failure, retry count.
 
-**Log per pipeline run:**
-- Pipeline ID
-- Start/end time
-- All step logs
-- Final result
-- Overall success/failure
+Log per pipeline run: Pipeline ID, start/end time, all step logs, final result, overall success/failure.
+
+---
 
 ## Cost Optimization
 
 ### Use Different Tiers Per Step
 
-Not every step needs the same capability.
+Not every step needs the same capability. Match tier to task complexity.
 
-**Example: Report Generation Pipeline**
-```
-Step 1: Extract data (Fast/Cheap, deterministic task)
-Step 2: Analyze patterns (Balanced, needs reasoning)
-Step 3: Generate insights (Balanced, needs coherence)
-Step 4: Format report (Fast/Cheap, structural task)
-```
+Example for report generation: Step 1 extracts data (Fast/Cheap, deterministic task). Step 2 analyzes patterns (Balanced, needs reasoning). Step 3 generates insights (Balanced, needs coherence). Step 4 formats report (Fast/Cheap, structural task).
 
-**Cost comparison:**
-- All Balanced: 4 Balanced-tier calls
-- Optimized: 2 Fast/Cheap + 2 Balanced = ~40% cheaper
+Cost comparison: All Balanced tier would be 4 Balanced calls. Optimized mix is 2 Fast/Cheap plus 2 Balanced, roughly 40% cheaper.
 
 ### Cache Intermediate Results
 
-If you run similar pipelines, cache steps that do not change.
-
-**Cacheable:**
-- Extraction from same document
-- Classification of same text
-- Static analysis results
-
-**Not cacheable:**
-- Results dependent on current context
-- Steps with randomness/variation
+If you run similar pipelines, cache steps that do not change. Extraction from the same document, classification of the same text, and static analysis results are all cacheable.
 
 ### Parallelize Where Possible
 
-Parallel steps reduce latency, not cost, but faster completion means better user experience.
+Parallel steps reduce latency (not cost). Independent analyses, multiple classifications, and separate document processing can all run in parallel. Steps that depend on previous output cannot parallelize.
 
-**Can parallelize:**
-- Independent analyses
-- Multiple classifications
-- Separate document processing
-
-**Cannot parallelize:**
-- Steps that depend on previous output
-- Steps that share state
-
-## Connecting to Earlier Sections
-
-**From 2.1 (Capability Tiers):**
-- Choose tier per step based on complexity
-- Fast/Cheap for extraction/classification
-- Balanced for reasoning/generation
-- Deep Reasoning for complex synthesis (usually final step)
-
-**From 2.2 (Task Templates):**
-- Each step has its own task template
-- Templates are versioned together as a pipeline
-- Execution boundaries apply per step
-
-**From 2.4 (System Instructions):**
-- Each step can have different system instructions
-- Operator metadata tracks pipeline and step
-- Escalation can happen at any step
-
-**From 2.5 (Cost Management):**
-- Pipeline cost = sum of step costs
-- Optimize most-called steps first
-- Retries are hidden cost multipliers
-
-**From 2.6 (Context Management):**
-- Each step has its own context budget
-- Pass summaries, not full history, between steps
-- Large intermediate results can exceed context
+---
 
 ## Common Mistakes
 
-### 1. Over-Engineering Simple Tasks
+**Over-engineering simple tasks**: Do not use 5 steps when 1 would work. Chaining adds latency and complexity. Before adding steps, ask if this genuinely needs separation, whether validation between steps will catch errors, and whether different steps need different tiers.
 
-Do not use 5 steps when 1 would work. Chaining adds latency and complexity.
+**Losing context between steps**: Each step operates in isolation. If Step 3 needs information from the original input, you must pass it explicitly.
 
-**Before adding steps, ask:**
-- Does this genuinely need separation?
-- Will validation between steps catch errors?
-- Do different steps need different tiers?
+**Ignoring intermediate failures**: A failed step corrupts all following steps. Validate and handle errors at each step.
 
-### 2. Losing Context Between Steps
+**Using expensive tiers for everything**: Not every step needs maximum capability. Match tier to task complexity.
 
-Each step operates in isolation. If Step 3 needs information from the original input, you must pass it explicitly.
+**No observability**: Without logging, pipeline failures are invisible. You cannot optimize what you cannot see.
 
-### 3. Ignoring Intermediate Failures
+---
 
-A failed step corrupts all following steps. Validate and handle errors at each step.
+## Connecting to Earlier Sections
 
-### 4. Using Expensive Tiers for Everything
+**From 2.1 (Capability Tiers):** Choose tier per step based on complexity. Fast/Cheap for extraction/classification. Balanced for reasoning/generation. Deep Reasoning for complex synthesis (usually final step).
 
-Not every step needs maximum capability. Match tier to task complexity.
+**From 2.2 (Task Templates):** Each step has its own task template. Templates are versioned together as a pipeline. Execution boundaries apply per step.
 
-### 5. No Observability
+**From 2.4 (System Instructions):** Each step can have different system instructions. Operator metadata tracks pipeline and step. Escalation can happen at any step.
 
-Without logging, pipeline failures are invisible. You cannot optimize what you cannot see.
+**From 2.5 (Cost Management):** Pipeline cost equals sum of step costs. Optimize most-called steps first. Retries are hidden cost multipliers.
+
+**From 2.6 (Context Management):** Each step has its own context budget. Pass summaries, not full history, between steps. Large intermediate results can exceed context.
 
 ---
 
 ## Key Takeaways
 
-1. **Chain when tasks have distinct phases**, not for simple focused tasks
-2. **Five patterns**: Sequential, Analyze-then-Act, Generate-and-Refine, Parallel, Branch-and-Converge
-3. **Validate between steps**, do not blindly pass output forward
-4. **Pass context forward**, each step needs to understand the goal
-5. **Handle errors per step**, retry then escalate
-6. **Match tier to step complexity**, Fast/Cheap for extraction, Balanced for reasoning
-7. **Cache intermediate results** when inputs repeat
-8. **Parallelize independent steps** for lower latency
+1. **Define step contracts**, explicit input/output schemas for each step
+2. **Understand error compounding**, early errors amplify through the chain
+3. **Chain when tasks have distinct phases**, not for simple focused tasks
+4. **Pass context forward**, each step needs the original goal, not just previous output
+5. **Validate between steps**, do not blindly pass output forward
+6. **Design for idempotency**, cache steps that produce same output for same input
+7. **Match tier to step complexity**, Fast/Cheap for extraction, Balanced for reasoning
+8. **Handle errors per step**, retry then fallback then escalate
 9. **Log everything**, visibility enables optimization
 10. **Avoid over-engineering**, only chain when it genuinely helps',
 
@@ -359,52 +300,52 @@ WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines
 
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
 ((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 1,
-'When should you use a multi-step pipeline instead of a single prompt?',
-'["Always, pipelines are better", "When the task has distinct phases that benefit from focused processing and validation", "Never, single prompts are more efficient", "Only for very long documents"]',
+'What is a step contract?',
+'["A legal agreement between steps", "The explicit definition of what a step accepts as input and produces as output", "A way to limit step execution time", "The cost of running a step"]',
 1,
-'Use pipelines when tasks have distinct phases, when you need to validate intermediate results, or when different steps benefit from different capability tiers.'),
+'A step contract defines the input schema, output schema, required fields, and validation criteria for a pipeline step. Contracts enable independent testing and catch errors at boundaries.'),
 
 ((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 2,
-'What is the main benefit of validating between pipeline steps?',
-'["It uses more tokens", "Errors in one step can be caught before corrupting subsequent steps", "Validation is required by the API", "It makes the pipeline faster"]',
+'What is error compounding in pipelines?',
+'["Errors that count as multiple failures", "Small errors in early steps propagate and amplify through later steps", "Errors that compound interest costs", "Multiple errors in the same step"]',
 1,
-'Validation between steps catches errors early. A failed step that goes unvalidated will corrupt all following steps with bad input.'),
+'Error compounding means a small mistake in Step 1 (like wrong sentiment extraction) leads to wrong decisions in Step 2, wrong actions in Step 3, and a confidently incorrect final result.'),
 
 ((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 3,
-'Why should you pass original context forward to later steps?',
-'["To use more tokens", "Each step needs to understand the original goal, not just the previous step output", "Context is required by the API", "It is optional and rarely needed"]',
+'Why should you pass original context to later steps, not just previous step output?',
+'["To use more tokens", "Later steps can catch earlier errors and understand the original goal", "It is required by the API", "Context passing is optional"]',
 1,
-'Later steps operating only on previous output may lose sight of the original goal. Pass original context so each step understands the full picture.'),
+'Passing original context helps later steps understand the full goal and can sometimes catch when earlier analysis contradicts the original input, mitigating error compounding.'),
 
 ((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 4,
-'Which capability tier should you typically use for extraction and classification steps?',
-'["Deep Reasoning for accuracy", "Fast/Cheap, these are pattern matching tasks", "Always use the same tier for all steps", "The most expensive tier available"]',
+'Which steps are typically idempotent and cacheable?',
+'["All steps are idempotent", "Extraction and classification steps with temperature zero", "Only the final step", "Steps with high temperature settings"]',
+1,
+'Extraction and classification are typically idempotent because the same input produces the same output. Steps with temperature greater than zero have randomness and should not be cached.'),
+
+((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 5,
+'Which capability tier should you use for extraction and classification steps?',
+'["Deep Reasoning for accuracy", "Fast/Cheap tier, these are pattern matching tasks", "Always use the same tier for all steps", "The most expensive tier available"]',
 1,
 'Extraction and classification are pattern matching tasks that do not require complex reasoning. Fast/Cheap tier handles them reliably at lower cost.'),
 
-((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 5,
+((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 6,
+'What should happen when validation fails between steps?',
+'["Continue anyway and hope it works", "Retry with stricter prompt, then fallback approach, then escalate", "Immediately abort the entire pipeline", "Skip the failing step and continue"]',
+1,
+'On validation failure, retry with stricter prompt. On second failure, try a fallback approach. On third failure, abort and escalate. Never continue with invalid output.'),
+
+((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 7,
 'What is the Parallel Analysis pattern?',
 '["Running steps one after another", "Running multiple independent analyses simultaneously, then synthesizing results", "Using multiple LLMs at once", "Repeating the same step multiple times"]',
 1,
-'Parallel Analysis runs independent analyses simultaneously (product analysis, market analysis, financial analysis), then synthesizes them into a combined result.'),
-
-((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 6,
-'How should you handle a step that fails after retries?',
-'["Keep retrying indefinitely", "Abort the pipeline and escalate or use a fallback", "Ignore the failure and continue", "Failures cannot happen in pipelines"]',
-1,
-'After retry attempts fail, abort and escalate to human review or use a fallback. Continuing with failed output corrupts the entire pipeline.'),
-
-((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 7,
-'What should you log for each pipeline step?',
-'["Nothing, logging is expensive", "Step name, input, output, duration, success/failure, retry count", "Only errors", "Only the final result"]',
-1,
-'Log step name, input (or hash), output, duration, success/failure, and retry count. This visibility enables debugging and optimization.'),
+'Parallel Analysis runs independent analyses simultaneously (like product, market, and financial analysis), then synthesizes them into a combined result. This is faster than sequential.'),
 
 ((SELECT id FROM quizzes WHERE title = 'Multi-Step Task Pipelines Quiz'), 8,
-'When is caching intermediate results effective?',
-'["Never, caching wastes memory", "When the same inputs produce the same outputs and inputs repeat across pipeline runs", "Always cache everything", "Only for the final step"]',
+'What should you include in a cache key for pipeline steps?',
+'["Only the input", "Step version, input hash, and relevant parameters", "Just the timestamp", "The output only"]',
 1,
-'Cache intermediate results when inputs repeat (same document processed multiple times, same classification needed). Do not cache when results depend on variable context.');
+'Include step version (to invalidate when prompt changes), input hash (to match same inputs), and relevant parameters. This ensures cache hits only when appropriate.');
 
 -- Update exercise schema
 UPDATE sections
@@ -412,29 +353,29 @@ SET exercise_schema = '{
   "parts": [
     {
       "id": "part1",
-      "title": "Part 1: Pipeline Design",
-      "description": "Design a multi-step pipeline for customer feedback processing.",
+      "title": "Part 1: Step Contracts",
+      "description": "Define explicit contracts for each step in a feedback processing pipeline.",
       "fields": [
         {
-          "id": "pipeline_design",
+          "id": "step_contracts",
           "type": "textarea",
-          "label": "Design a pipeline to process customer feedback emails into actionable insights. Define each step:",
-          "placeholder": "Pipeline: Customer Feedback Processor\\n\\nStep 1: Extract Information\\n  Input: Raw customer email\\n  Output: Structured extraction {sentiment, topics, specific_issues, customer_type}\\n  Tier: Fast/Cheap (extraction task)\\n  Prompt summary: Extract structured data from email\\n\\nStep 2: Classify Priority\\n  Input: Structured extraction from Step 1\\n  Output: Priority classification {priority: critical|high|medium|low, reasoning}\\n  Tier: Fast/Cheap (classification task)\\n  Prompt summary: Classify based on sentiment and issue severity\\n\\nStep 3: Generate Insights\\n  Input: Original email + extraction + classification\\n  Output: {key_insight, root_cause, recommended_action}\\n  Tier: Balanced (requires reasoning)\\n  Prompt summary: Analyze patterns and recommend actions\\n\\nStep 4: Draft Response\\n  Input: Original email + all previous outputs\\n  Output: Draft response matching tone and addressing issues\\n  Tier: Balanced (requires coherent generation)\\n  Prompt summary: Write appropriate response\\n\\nValidation points:\\n- After Step 1: Check extraction has all fields\\n- After Step 2: Check priority is valid enum\\n- After Step 3: Check insight is actionable\\n- After Step 4: Check response addresses original issues",
+          "label": "Define input and output contracts for a 4-step feedback processing pipeline:",
+          "placeholder": "STEP 1: Extract Information\n\nInput Contract:\n  - raw_email: string (the customer email text)\n  - Preconditions: non-empty string\n\nOutput Contract:\n  - sentiment: string, one of [positive, negative, neutral, mixed]\n  - topics: array of strings (may be empty)\n  - specific_issues: array of strings (may be empty)\n  - urgency_signals: array of strings (may be empty)\n  - Guarantees: all fields present, valid enum for sentiment\n\nValidation:\n  - Parse as JSON\n  - Check sentiment in allowed values\n  - Check all arrays are arrays (not strings or null)\n\n---\n\nSTEP 2: Classify Priority\n\nInput Contract:\n  - extraction: object matching Step 1 output contract\n  - Preconditions: extraction passed Step 1 validation\n\nOutput Contract:\n  - priority: string, one of [critical, high, medium, low]\n  - reasoning: string, max 50 characters\n  - Guarantees: valid enum for priority, reasoning within length limit\n\n[Continue for Steps 3 and 4]",
           "required": true,
-          "rows": 36
+          "rows": 40
         }
       ]
     },
     {
       "id": "part2",
-      "title": "Part 2: Step Prompts",
-      "description": "Write the actual prompts for each step.",
+      "title": "Part 2: Error Compounding Analysis",
+      "description": "Trace how an error in Step 1 would propagate through your pipeline.",
       "fields": [
         {
-          "id": "step_prompts",
+          "id": "error_trace",
           "type": "textarea",
-          "label": "Write the prompts for Steps 1 and 2 (most critical steps):",
-          "placeholder": "STEP 1 PROMPT: Extract Information\\n\\nExtract structured information from this customer email.\\n\\nOutput JSON with this schema:\\n{\\n  \"sentiment\": \"positive|negative|neutral|mixed\",\\n  \"topics\": [\"array of topics mentioned\"],\\n  \"specific_issues\": [\"array of specific problems reported\"],\\n  \"customer_type\": \"new|existing|enterprise|unknown\",\\n  \"urgency_signals\": [\"any urgency indicators\"]\\n}\\n\\nRules:\\n- Respond with ONLY valid JSON\\n- All arrays can be empty if no items found\\n- Be specific in issues, not generic\\n\\nEmail:\\n[EMAIL_CONTENT]\\n\\nJSON:\\n\\n---\\n\\nSTEP 2 PROMPT: Classify Priority\\n\\nBased on this extracted information, classify the priority.\\n\\nExtraction from Step 1:\\n[STEP_1_OUTPUT]\\n\\nClassify priority as:\\n- critical: Service down, data loss, security issue\\n- high: Major functionality broken, angry customer\\n- medium: Feature request, moderate issue\\n- low: Question, minor feedback\\n\\nOutput JSON:\\n{\\n  \"priority\": \"critical|high|medium|low\",\\n  \"reasoning\": \"brief explanation (max 50 chars)\"\\n}\\n\\nJSON:",
+          "label": "Trace an error scenario: Step 1 incorrectly extracts sentiment as \"neutral\" when the customer is actually angry. Show how this compounds:",
+          "placeholder": "ERROR COMPOUNDING TRACE:\n\nOriginal input: \"This is absolutely unacceptable! I have been waiting for 3 weeks and still no response. I am going to cancel my subscription and tell everyone I know.\"\n\nStep 1 Error:\n  Correct extraction: sentiment = negative, urgency_signals = [\"waiting 3 weeks\", \"cancel subscription\"]\n  Actual extraction: sentiment = neutral, urgency_signals = []\n  Why it happened: Model focused on informational content, missed emotional language\n\nStep 2 Propagation:\n  Input received: sentiment = neutral, no urgency signals\n  Logic applied: neutral + no urgency = routine inquiry\n  Output: priority = low\n  Correct output would have been: priority = critical (cancellation threat)\n\nStep 3 Propagation:\n  Input received: priority = low\n  Logic applied: low priority = standard analysis\n  Output: generic insights about \"customer inquiry\"\n  Missing: retention risk, urgency, emotional context\n\nStep 4 Propagation:\n  Input received: low priority, generic insights\n  Logic applied: low priority = template response\n  Output: \"Thank you for your feedback. We will review your inquiry.\"\n  Correct response: Immediate escalation, personalized apology, retention offer\n\nFinal outcome:\n  Customer receives dismissive template response\n  Customer follows through on cancellation threat\n  Company loses customer + negative word of mouth\n\nMitigations that could have helped:\n1. [describe mitigation]\n2. [describe mitigation]\n3. [describe mitigation]",
           "required": true,
           "rows": 40
         }
@@ -442,59 +383,59 @@ SET exercise_schema = '{
     },
     {
       "id": "part3",
-      "title": "Part 3: Validation Logic",
-      "description": "Define validation between steps.",
+      "title": "Part 3: Context Envelope Design",
+      "description": "Design the context structure passed through your pipeline.",
       "fields": [
         {
-          "id": "validation_logic",
+          "id": "context_envelope",
           "type": "textarea",
-          "label": "Write validation logic for each step transition:",
-          "placeholder": "VALIDATION AFTER STEP 1 (before Step 2):\\n\\nfunction validateStep1Output(output) {\\n  errors = []\\n  \\n  // Parse check\\n  if not valid JSON: errors.push(\"INVALID_JSON\")\\n  \\n  // Required fields\\n  if output.sentiment not in [\"positive\", \"negative\", \"neutral\", \"mixed\"]:\\n    errors.push(\"INVALID_SENTIMENT\")\\n  \\n  if not isArray(output.topics): errors.push(\"TOPICS_NOT_ARRAY\")\\n  if not isArray(output.specific_issues): errors.push(\"ISSUES_NOT_ARRAY\")\\n  \\n  if output.customer_type not in [\"new\", \"existing\", \"enterprise\", \"unknown\"]:\\n    errors.push(\"INVALID_CUSTOMER_TYPE\")\\n  \\n  return errors\\n}\\n\\nVALIDATION AFTER STEP 2 (before Step 3):\\n\\nfunction validateStep2Output(output) {\\n  errors = []\\n  \\n  if not valid JSON: errors.push(\"INVALID_JSON\")\\n  \\n  if output.priority not in [\"critical\", \"high\", \"medium\", \"low\"]:\\n    errors.push(\"INVALID_PRIORITY\")\\n  \\n  if typeof output.reasoning != string or length(output.reasoning) > 50:\\n    errors.push(\"INVALID_REASONING\")\\n  \\n  return errors\\n}\\n\\n[Continue for Steps 3 and 4]",
+          "label": "Design a context envelope that passes original context and step outputs through the pipeline:",
+          "placeholder": "CONTEXT ENVELOPE STRUCTURE:\n\nenvelope = {\n  \"original\": {\n    \"input\": \"[the raw customer email]\",\n    \"goal\": \"Process feedback and generate appropriate response\",\n    \"received_at\": \"[timestamp]\",\n    \"customer_id\": \"[if known]\"\n  },\n  \"step_outputs\": {\n    \"extraction\": null,     // filled after Step 1\n    \"classification\": null, // filled after Step 2\n    \"analysis\": null,       // filled after Step 3\n    \"response\": null        // filled after Step 4\n  },\n  \"metadata\": {\n    \"pipeline_id\": \"[unique run ID]\",\n    \"pipeline_version\": \"v2.1\",\n    \"started_at\": \"[timestamp]\",\n    \"current_step\": 1\n  },\n  \"flags\": {\n    \"low_confidence\": false,\n    \"needs_human_review\": false,\n    \"error_occurred\": false\n  }\n}\n\nHow each step uses the envelope:\n\nStep 1:\n  Reads: envelope.original.input\n  Writes: envelope.step_outputs.extraction\n\nStep 2:\n  Reads: envelope.step_outputs.extraction\n  Writes: envelope.step_outputs.classification\n\nStep 3:\n  Reads: envelope.original.input (for full context)\n         envelope.step_outputs.extraction\n         envelope.step_outputs.classification\n  Writes: envelope.step_outputs.analysis\n  Note: Can flag if analysis contradicts original input\n\nStep 4:\n  Reads: all of envelope.original and envelope.step_outputs\n  Writes: envelope.step_outputs.response",
+          "required": true,
+          "rows": 40
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Idempotency and Caching",
+      "description": "Design caching strategy for your pipeline.",
+      "fields": [
+        {
+          "id": "caching_strategy",
+          "type": "textarea",
+          "label": "Identify which steps can be cached and design cache keys:",
+          "placeholder": "CACHING ANALYSIS:\n\nStep 1 (Extraction):\n  Idempotent: Yes (same email always extracts same data)\n  Cacheable: Yes\n  Cache key: hash(step_version + email_text)\n  TTL: 24 hours (or until step prompt changes)\n  Invalidation: When step version changes\n\nStep 2 (Classification):\n  Idempotent: Yes (same extraction always classifies same way)\n  Cacheable: Yes\n  Cache key: hash(step_version + extraction_json)\n  TTL: 24 hours\n  Invalidation: When classification logic changes\n\nStep 3 (Analysis):\n  Idempotent: Depends on temperature setting\n  Cacheable: Only if temperature = 0\n  Cache key: hash(step_version + original_input + extraction + classification)\n  TTL: 24 hours\n  Note: May want variation for different analyses, so caching less valuable\n\nStep 4 (Response):\n  Idempotent: No (responses should feel fresh)\n  Cacheable: No\n  Reason: Want variation in responses, personalization matters\n\nPartial pipeline runs:\n  Scenario: Same email reprocessed after Step 1 prompt update\n  Action: Use cached extraction from v1, but re-run with v2 prompt\n  \nCache key format:\n  pipeline:v{version}:step{N}:{input_hash}\n  Example: pipeline:v2:step1:abc123def456",
           "required": true,
           "rows": 36
         }
       ]
     },
     {
-      "id": "part4",
-      "title": "Part 4: Error Handling",
-      "description": "Design error handling for pipeline failures.",
-      "fields": [
-        {
-          "id": "error_handling",
-          "type": "textarea",
-          "label": "Define error handling strategy for each step:",
-          "placeholder": "ERROR HANDLING STRATEGY:\\n\\nPer-Step Retry Logic:\\n\\nAttempt 1: Run with standard prompt\\n  → If validation passes: proceed to next step\\n  → If validation fails: go to Attempt 2\\n\\nAttempt 2: Run with stricter prompt\\n  Modifications: Add \"You MUST output valid JSON\" + show the validation error\\n  → If validation passes: proceed\\n  → If fails: go to Attempt 3\\n\\nAttempt 3: Run with example\\n  Modifications: Add concrete example of valid output\\n  → If validation passes: proceed\\n  → If fails: abort step\\n\\nStep Failure Escalation:\\n\\nStep 1 fails (extraction):\\n  → Cannot proceed without extraction\\n  → Return error: \"Unable to process email, routing to human review\"\\n  → Flag for human review\\n\\nStep 2 fails (classification):\\n  → Fallback: Use \"medium\" priority as default\\n  → Flag as \"auto-classified, needs review\"\\n  → Continue with fallback\\n\\nStep 3 fails (insights):\\n  → Fallback: Skip insights, proceed to response\\n  → Flag: \"Response generated without insights\"\\n\\nStep 4 fails (response):\\n  → Fallback: Use template response\\n  → Flag: \"Template response, personalization failed\"\\n\\nCircuit Breaker:\\n  If same step fails 5 times in 10 minutes: disable pipeline, alert on-call",
-          "required": true,
-          "rows": 40
-        }
-      ]
-    },
-    {
       "id": "part5",
-      "title": "Part 5: Cost Optimization",
-      "description": "Optimize the pipeline for cost.",
+      "title": "Part 5: Tier Assignment",
+      "description": "Assign capability tiers to each step with justification.",
       "fields": [
         {
-          "id": "cost_optimization",
+          "id": "tier_assignment",
           "type": "textarea",
-          "label": "Analyze and optimize the cost of your pipeline:",
-          "placeholder": "COST ANALYSIS:\\n\\nPer-step token estimates:\\n\\nStep 1 (Extract): Fast/Cheap tier\\n  Input: ~300 tokens (email) + ~100 tokens (prompt)\\n  Output: ~100 tokens (JSON)\\n  Total: ~500 tokens at 1x cost\\n\\nStep 2 (Classify): Fast/Cheap tier\\n  Input: ~100 tokens (step 1 output) + ~100 tokens (prompt)\\n  Output: ~30 tokens (JSON)\\n  Total: ~230 tokens at 1x cost\\n\\nStep 3 (Insights): Balanced tier\\n  Input: ~300 tokens (original) + ~130 tokens (prev outputs) + ~100 tokens (prompt)\\n  Output: ~150 tokens\\n  Total: ~680 tokens at 15x cost = ~10,200 relative tokens\\n\\nStep 4 (Response): Balanced tier\\n  Input: ~300 tokens (original) + ~280 tokens (all outputs) + ~100 tokens (prompt)\\n  Output: ~200 tokens\\n  Total: ~880 tokens at 15x cost = ~13,200 relative tokens\\n\\nTotal per email: ~500 + ~230 + ~10,200 + ~13,200 = ~24,130 relative tokens\\n\\nOptimization opportunities:\\n1. Step 3 and 4 could potentially use Fast/Cheap if prompts are structured enough\\n   Savings: [calculate]\\n\\n2. Cache Step 1 extraction if same email is reprocessed\\n   Savings: ~500 tokens per cache hit\\n\\n3. Batch similar emails to share prompt tokens\\n   Savings: [estimate]\\n\\nMonthly cost at 10,000 emails:\\n  Before optimization: [calculate]\\n  After optimization: [calculate]\\n  Savings: [X]%",
+          "label": "Assign capability tiers to each step and calculate cost comparison:",
+          "placeholder": "TIER ASSIGNMENT:\n\nStep 1: Extract Information\n  Tier: Fast/Cheap\n  Justification: Extraction is pattern matching. The task is to identify sentiment keywords, topic mentions, and issue descriptions. No complex reasoning required.\n  Cost factor: 1x\n\nStep 2: Classify Priority\n  Tier: Fast/Cheap\n  Justification: Classification from structured data is rule-like. Given sentiment = negative and urgency_signals present, priority = high. Simple decision tree.\n  Cost factor: 1x\n\nStep 3: Analyze and Generate Insights\n  Tier: Balanced\n  Justification: Requires synthesizing information, identifying root causes, and generating actionable recommendations. This needs reasoning capability.\n  Cost factor: 15x\n\nStep 4: Draft Response\n  Tier: Balanced\n  Justification: Requires coherent, contextual generation with appropriate tone. Must address specific issues while maintaining professionalism.\n  Cost factor: 15x\n\nCOST COMPARISON:\n\nAll Balanced approach:\n  4 steps × Balanced tier = 4 × 15x = 60x relative cost\n\nOptimized approach:\n  2 steps × Fast/Cheap (1x) + 2 steps × Balanced (15x)\n  = 2x + 30x = 32x relative cost\n\nSavings: (60 - 32) / 60 = 47% cost reduction\n\nAt 10,000 emails/month:\n  [Calculate actual dollar amounts based on your pricing]",
           "required": true,
-          "rows": 40
+          "rows": 36
         }
       ]
     },
     {
       "id": "part6",
-      "title": "Part 6: Testing the Pipeline",
-      "description": "Test your pipeline with real examples.",
+      "title": "Part 6: Full Pipeline Test",
+      "description": "Test your complete pipeline design.",
       "fields": [
         {
-          "id": "pipeline_testing",
+          "id": "pipeline_test",
           "type": "textarea",
-          "label": "Test your pipeline with these 3 emails. Document each step output:",
-          "placeholder": "TEST 1: Negative feedback email\\nInput: \"Your product is terrible. Nothing works. I want a refund NOW.\"\\n\\nStep 1 output: [paste extraction result]\\nValidation: [pass/fail]\\n\\nStep 2 output: [paste classification]\\nValidation: [pass/fail]\\n\\nStep 3 output: [paste insights]\\nValidation: [pass/fail]\\n\\nStep 4 output: [paste response draft]\\nValidation: [pass/fail]\\n\\nFinal result: [summary]\\n\\n---\\n\\nTEST 2: Positive feedback email\\nInput: \"Love the new dashboard! Makes everything so much easier.\"\\n\\n[document all steps]\\n\\n---\\n\\nTEST 3: Mixed feedback email\\nInput: \"The product is great but onboarding was confusing. Took me 20 mins to figure out teams.\"\\n\\n[document all steps]\\n\\n---\\n\\nPipeline performance:\\n- Test 1: [success/failure, any issues]\\n- Test 2: [success/failure, any issues]\\n- Test 3: [success/failure, any issues]\\n\\nIssues identified:\\n- [list any problems found during testing]\\n\\nImprovements needed:\\n- [list fixes to implement]",
+          "label": "Trace a real example through your pipeline with all steps, contracts, and context envelope:",
+          "placeholder": "FULL PIPELINE TRACE:\n\nInput email: \"I love your product but the mobile app keeps crashing. Already reinstalled twice. Need this fixed for my presentation tomorrow.\"\n\nInitial envelope:\n  original.input: [email text]\n  original.goal: \"Process feedback and generate appropriate response\"\n  step_outputs: all null\n  flags: all false\n\nSTEP 1: Extract\n  Tier: Fast/Cheap\n  Input: envelope.original.input\n  Output: {\n    \"sentiment\": \"mixed\",\n    \"topics\": [\"mobile app\", \"crashes\"],\n    \"specific_issues\": [\"app crashing\", \"reinstalled twice without fix\"],\n    \"urgency_signals\": [\"presentation tomorrow\"]\n  }\n  Validation: PASS (all fields present, valid values)\n  Envelope updated: step_outputs.extraction = [output]\n\nSTEP 2: Classify\n  Tier: Fast/Cheap\n  Input: envelope.step_outputs.extraction\n  Output: {\n    \"priority\": \"high\",\n    \"reasoning\": \"Technical issue with deadline urgency\"\n  }\n  Validation: PASS\n  Envelope updated: step_outputs.classification = [output]\n\nSTEP 3: Analyze\n  Tier: Balanced\n  Input: envelope.original + envelope.step_outputs\n  Output: {\n    \"key_insight\": \"Positive user frustrated by recurring technical issue\",\n    \"root_cause\": \"Mobile app stability problem affecting loyal users\",\n    \"recommended_action\": \"Expedite technical support, offer workaround\"\n  }\n  Validation: PASS\n  Envelope updated: step_outputs.analysis = [output]\n\nSTEP 4: Respond\n  Tier: Balanced\n  Input: full envelope\n  Output: [Draft response acknowledging issue, providing immediate workaround for presentation, promising priority fix]\n  Validation: PASS\n  Envelope updated: step_outputs.response = [output]\n\nFinal result: Response ready for review\nTotal cost: 2x + 15x + 15x = 32x relative units\nTotal latency: [estimate based on your setup]",
           "required": true,
           "rows": 50
         }
@@ -502,20 +443,20 @@ SET exercise_schema = '{
     }
   ],
   "deliverables": [
-    "Complete pipeline design with 4 steps",
-    "Prompts for Steps 1 and 2",
-    "Validation logic for all step transitions",
-    "Error handling with retry and fallback strategies",
-    "Cost analysis with optimization opportunities",
-    "Test results for 3 different email types"
+    "Step contracts for all 4 steps with input/output schemas",
+    "Error compounding trace showing propagation and mitigations",
+    "Context envelope design with passing strategy",
+    "Caching analysis with idempotency assessment per step",
+    "Tier assignment with cost comparison",
+    "Full pipeline trace with real example"
   ],
   "success_criteria": [
-    "Each step has clear input, output, and tier assignment",
-    "Prompts request structured output with schema",
-    "Validation catches invalid outputs before next step",
-    "Error handling includes retries, fallbacks, and circuit breaker",
-    "Cost analysis includes optimization opportunities",
-    "Pipeline tested with varied inputs and issues documented"
+    "Each step has explicit input and output contracts",
+    "Error compounding scenario identifies realistic propagation path",
+    "Context envelope includes original input accessible to all steps",
+    "Caching strategy correctly identifies idempotent steps",
+    "Tier assignments match task complexity with justification",
+    "Full trace demonstrates all concepts working together"
   ]
 }'::jsonb
 WHERE slug = 'prompt-chaining';
