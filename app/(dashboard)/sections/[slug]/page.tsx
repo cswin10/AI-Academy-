@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { MarkdownContent } from '@/components/shared/markdown-content'
 import { QuizComponent } from '@/components/quiz/quiz-component'
+import { ExerciseForm } from '@/components/exercise/exercise-form'
 import { getLevelBgColor, getResourceTypeIcon } from '@/lib/utils/formatting'
 
 interface PageProps {
@@ -204,8 +205,14 @@ export default async function SectionPage({ params }: PageProps) {
         </Card>
       )}
 
-      {/* Exercise */}
-      {section.exercise_markdown && (
+      {/* Exercise - Interactive form if schema exists, otherwise markdown */}
+      {section.exercise_schema ? (
+        <ExerciseForm
+          sectionId={section.id}
+          userId={user.id}
+          schema={section.exercise_schema}
+        />
+      ) : section.exercise_markdown ? (
         <Card className="border-border bg-card border-l-4 border-l-primary">
           <CardHeader>
             <CardTitle className="text-lg">Exercise</CardTitle>
@@ -214,7 +221,7 @@ export default async function SectionPage({ params }: PageProps) {
             <MarkdownContent content={section.exercise_markdown} />
           </CardContent>
         </Card>
-      )}
+      ) : null}
 
       {/* Quiz */}
       {section.quiz && (
