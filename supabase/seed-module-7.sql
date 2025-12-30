@@ -1876,3 +1876,3613 @@ SELECT
   'video',
   2
 FROM sections WHERE slug = 'estimating-time-effort';
+
+-- ============================================================================
+-- SECTION 7.3: Managing Stakeholders & Expectations
+-- ============================================================================
+
+INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
+((SELECT id FROM quizzes WHERE title = 'Stakeholder Management Quiz'), 1,
+'What is a stakeholder?',
+'["Only the person paying", "Anyone who is affected by or can affect the project", "The CEO", "Your manager"]',
+1,
+'Stakeholders include everyone with an interest in the project - clients, users, decision-makers, and affected teams.'),
+
+((SELECT id FROM quizzes WHERE title = 'Stakeholder Management Quiz'), 2,
+'Why is managing expectations critical?',
+'["It''s not critical", "Unmanaged expectations lead to disappointment, even when you deliver well", "To look professional", "Clients demand it"]',
+1,
+'Even great work feels like failure if expectations were set wrong. Managing expectations = managing satisfaction.'),
+
+((SELECT id FROM quizzes WHERE title = 'Stakeholder Management Quiz'), 3,
+'How often should you communicate with stakeholders?',
+'["Only when there''s a problem", "Regular updates even when nothing is wrong", "Once at the start and once at the end", "They''ll ask if they need something"]',
+1,
+'Regular communication builds trust and prevents surprises - update proactively, not reactively.'),
+
+((SELECT id FROM quizzes WHERE title = 'Stakeholder Management Quiz'), 4,
+'What should you do when you discover a project will be delayed?',
+'["Hope they don''t notice", "Communicate immediately with new timeline and explanation", "Work harder to catch up", "Blame the tools"]',
+1,
+'Bad news doesn''t improve with age - communicate problems early with solutions, not excuses.');
+
+INSERT INTO sections (module_id, slug, title, order_index, level, content_markdown, exercise_markdown, estimated_minutes, is_required, quiz_id)
+SELECT
+  m.id,
+  'stakeholder-management',
+  'Managing Stakeholders & Expectations',
+  3,
+  'Intermediate',
+  '# Managing Stakeholders & Expectations
+
+Technical skills get you started. People skills keep you hired.
+
+## Who Are Your Stakeholders?
+
+**Stakeholder** = Anyone affected by or who can affect your project
+
+### Types of Stakeholders
+
+**Primary Stakeholders (Direct impact):**
+- **Client/Sponsor:** Paying for project, makes decisions
+- **End Users:** Will actually use the automation
+- **Your Team:** Working on the project with you
+
+**Secondary Stakeholders (Indirect impact):**
+- **Adjacent Teams:** Affected by the changes
+- **IT/Security:** Need to approve integrations
+- **Management:** Interested in outcomes
+
+**External Stakeholders:**
+- **Vendors:** Tools and platforms you use
+- **Partners:** Integrated systems owners
+
+**Each has different:**
+- Interests
+- Priorities
+- Communication needs
+- Decision authority
+
+## Stakeholder Analysis
+
+### Map Your Stakeholders
+
+**For each project, create:**
+```markdown
+## Stakeholder Map
+
+### Client Team
+**Name:** Sarah Johnson
+**Role:** VP of Sales (Sponsor)
+**Interest:** Reduce team workload, faster leads
+**Power:** High (budget authority)
+**Communication:** Weekly email updates, bi-weekly calls
+**Concerns:** Cost, disruption to team
+
+**Name:** Mike Chen
+**Role:** Sales Manager (End User)
+**Interest:** Easy to use, doesn''t break workflow
+**Power:** Medium (can veto if unusable)
+**Communication:** Slack, involved in testing
+**Concerns:** Learning curve, reliability
+
+**Name:** Jessica Rodriguez
+**Role:** Sales Rep (End User)
+**Interest:** Less manual work
+**Power:** Low (user but not decision maker)
+**Communication:** Through Mike
+**Concerns:** Will it actually work?
+
+### Our Side
+**Name:** You
+**Role:** Lead Operator
+**Interest:** Successful delivery, happy client
+**Power:** High (implementation decisions)
+
+### Other Stakeholders
+**Name:** IT Department
+**Role:** Security/Access
+**Interest:** Data security, compliance
+**Power:** Medium (can block integrations)
+**Communication:** Email, formal requests
+**Concerns:** Security risks, support burden
+```
+
+### Power/Interest Matrix
+
+**Categorize stakeholders:**
+```
+High Power, High Interest (Manage Closely)
+  → Sarah (VP) - Weekly updates, involved in decisions
+
+High Power, Low Interest (Keep Satisfied)
+  → IT Department - Inform of major changes, get approvals
+
+Low Power, High Interest (Keep Informed)
+  → Jessica (Sales Rep) - Include in testing, hear feedback
+
+Low Power, Low Interest (Monitor)
+  → Adjacent teams - FYI updates only
+```
+
+**Tailor your approach to each quadrant.**
+
+## Setting Expectations
+
+### What to Set Expectations About
+
+**Timeline:**
+"This will take 3-4 weeks, with Week 2 focused on building and Week 3 on testing."
+
+**Deliverables:**
+"You''ll receive: (1) working automation, (2) documentation, (3) 1 hour training session"
+
+**Communication:**
+"I''ll send weekly updates every Friday, and we''ll have a 30-minute call every other Tuesday."
+
+**Your Availability:**
+"I''m available for urgent issues same-day. For non-urgent questions, I respond within 24 hours."
+
+**Their Requirements:**
+"I''ll need access to your CRM by next Monday and 2 hours of your time for testing in Week 3."
+
+**Risks:**
+"The main risk is if the API doesn''t support what we need. If that happens, we''ll need to discuss alternatives."
+
+**What Success Looks Like:**
+"Success means 95%+ of form submissions automatically create CRM records with no manual intervention."
+
+### The Expectation-Setting Conversation
+
+**Template:**
+
+"Before we start, I want to make sure we''re aligned on a few things:
+
+**Timeline:** Based on the scope, this will take approximately 3-4 weeks. I''ll work on it [full-time / part-time], which means we''re looking at [specific end date].
+
+**My Process:** I''ll start with setup and planning, then build in Week 2, test thoroughly in Week 3, and deliver in Week 4. You''ll see regular progress updates.
+
+**What I Need From You:**
+- Access to all systems by [date]
+- Decisions on [X, Y, Z] by [date]
+- 2-3 hours for testing and feedback
+- Response to questions within 2 business days
+
+**Communication:** You''ll get:
+- Written updates every Friday
+- Check-in calls every other Tuesday
+- Immediate notification if any blockers
+
+**What Could Change:** Timeline could extend if:
+- We discover technical limitations
+- Scope changes
+- Access is delayed
+- Major bugs emerge during testing
+
+**What Happens When We''re Done:**
+- Handoff documentation
+- Training session
+- 30-day support period included
+- After that, we can discuss ongoing maintenance
+
+Does this align with your expectations?"
+
+**Get explicit agreement.**
+
+## Communication Strategies
+
+### Communication Frequency
+
+**Weekly Updates (Minimum):**
+```
+Subject: Project Update - Week 2
+
+Hi Sarah,
+
+Quick update on the lead automation project:
+
+**Progress This Week:**
+✓ Completed trigger setup
+✓ Built data validation
+✓ Started CRM integration (70% done)
+
+**Next Week:**
+- Complete CRM integration
+- Add email automation
+- Begin testing
+
+**On Track:** Yes, still targeting completion by March 15
+
+**Blockers:** None
+
+**Action Needed From You:** None this week
+
+Let me know if you have questions!
+
+Best,
+[You]
+```
+
+**Daily Updates (If needed):**
+- During critical phases
+- When client is anxious
+- Quick Slack messages
+
+**Ad-Hoc Updates:**
+- When you discover an issue
+- When you need a decision
+- When something changes
+
+### Update Templates
+
+**Status Update:**
+```
+✓ Completed: [What you finished]
+⏳ In Progress: [Current work]
+📅 Next: [What''s coming]
+🎯 Timeline: [On track / X days behind]
+⚠️ Issues: [Any problems]
+❓ Need From You: [Any asks]
+```
+
+**Problem Alert:**
+```
+Subject: Issue Found - [Brief Description]
+
+Hi [Stakeholder],
+
+I discovered an issue that affects our timeline:
+
+**Problem:** [Clear description]
+
+**Impact:** [How this affects project]
+
+**Options:**
+1. [Option A with pros/cons]
+2. [Option B with pros/cons]
+3. [Option C with pros/cons]
+
+**Recommendation:** [What you suggest]
+
+**Timeline Impact:** [How much delay]
+
+Can we discuss this [timeframe]?
+```
+
+**Decision Request:**
+```
+Subject: Decision Needed - [Topic]
+
+Hi [Stakeholder],
+
+I need a decision on [topic] to continue:
+
+**Context:** [Why this matters]
+
+**Options:**
+A) [Option A] - [Implications]
+B) [Option B] - [Implications]
+
+**Considerations:**
+- [Factor 1]
+- [Factor 2]
+
+**My Recommendation:** [What you suggest and why]
+
+**Timeline:** Need decision by [date] to stay on track
+
+Questions?
+```
+
+### Communication Channels
+
+**Email:**
+- Formal updates
+- Decision requests
+- Documentation
+- Anything needing a paper trail
+
+**Slack/Chat:**
+- Quick questions
+- Informal updates
+- Rapid back-and-forth
+- Team coordination
+
+**Calls/Meetings:**
+- Complex discussions
+- Kickoffs
+- Demos
+- Problem-solving
+- Relationship building
+
+**Choose the right channel for the message.**
+
+## Managing Difficult Conversations
+
+### Delivering Bad News
+
+**Scenario:** Project will be delayed
+
+**Bad:**
+"Um, so, it''s taking longer than expected... maybe another week?"
+
+**Good:**
+```
+Hi Sarah,
+
+I need to update you on our timeline.
+
+**Current Status:** We''re behind schedule due to [specific reason].
+
+**Original Timeline:** Complete by March 15
+**Revised Timeline:** Complete by March 22 (1 week delay)
+
+**Why:**
+[Specific, honest explanation without excuses]
+
+**What I''m Doing:**
+- [Action 1 to minimize impact]
+- [Action 2 to prevent future delays]
+
+**Your Options:**
+1. Accept new timeline (recommended)
+2. Reduce scope to hit original date
+3. Add resources (if possible)
+
+**Next Steps:** Can we discuss this [today/tomorrow]?
+
+I apologize for the delay and am committed to delivering quality work by the new date.
+```
+
+**Key principles:**
+- Communicate early
+- Be specific
+- Take responsibility
+- Offer solutions
+- Don''t make excuses
+
+### Handling Scope Creep
+
+**Client:** "Can you also add [new feature]?"
+
+**Response:**
+```
+"That''s a great idea! Let me check how that fits with our current scope.
+
+[Review scope document]
+
+That feature isn''t in our current scope, but I can definitely add it.
+
+Adding [feature] would:
+- Require [X additional hours]
+- Add [Y to budget]
+- Extend timeline by [Z]
+
+We have a few options:
+1. Add it to current project (adjust timeline/budget)
+2. Deliver core project first, then add this in Phase 2
+3. Swap it for [other lower-priority feature]
+
+What works best for you?"
+```
+
+**Protect scope while being helpful.**
+
+### Managing Unrealistic Expectations
+
+**Client:** "This should only take a day, right?"
+
+**You:**
+```
+"I understand why it might seem quick, but let me break down what''s involved:
+
+[List all actual tasks and time]
+
+Realistically, this is 2-3 weeks of work because [specific reasons].
+
+I want to set accurate expectations so you can plan accordingly.
+
+If you need it faster, we could:
+- Reduce scope to core features
+- Bring in additional help (cost increase)
+
+What''s most important to you - timeline, budget, or full feature set?"
+```
+
+**Educate, don''t argue.**
+
+## Stakeholder Meetings
+
+### Kickoff Meeting
+
+**Agenda:**
+```
+1. Introductions (5 min)
+2. Project overview (10 min)
+   - Problem we''re solving
+   - Proposed solution
+3. Scope review (15 min)
+   - What''s included/excluded
+   - Get agreement
+4. Process and communication (10 min)
+   - How we''ll work
+   - Update frequency
+   - Decision-making
+5. Timeline and milestones (10 min)
+6. Questions and next steps (10 min)
+
+Total: 1 hour
+```
+
+**Come prepared:**
+- Scope document
+- Timeline
+- What you need from them
+- Clear next steps
+
+### Status Meetings
+
+**Keep them short and focused:**
+```
+1. Quick wins (2 min)
+   - What was completed
+
+2. Current work (3 min)
+   - What''s in progress
+
+3. Blockers (5 min)
+   - What needs their help
+
+4. Next steps (2 min)
+   - What''s coming
+
+5. Questions (3 min)
+
+Total: 15 minutes
+```
+
+**Don''t:**
+- Give play-by-play of every detail
+- Complain about tools
+- Get lost in technical weeds
+
+**Do:**
+- Focus on progress and decisions
+- Be concise
+- Come with solutions
+
+### Demo Meetings
+
+**Show, don''t tell:**
+
+1. **Context** (1 min): What we built and why
+2. **Demo** (10 min): Actually show it working
+3. **Feedback** (5 min): What do they think?
+4. **Next Steps** (2 min): What happens now
+
+**Tips:**
+- Test your demo beforehand
+- Use realistic data
+- Have backup if live demo fails
+- Record the session
+
+## Building Trust
+
+### Tactics
+
+**1. Underpromise, Overdeliver**
+```
+Say: "I''ll have this by Friday"
+Deliver: Wednesday
+
+Builds reputation for reliability
+```
+
+**2. Communicate Proactively**
+```
+Don''t wait for them to ask
+Update even when nothing is wrong
+Builds confidence
+```
+
+**3. Admit When You Don''t Know**
+```
+"That''s a great question. I don''t know off the top of my head, but I''ll research it and get back to you by [time]."
+
+Builds credibility
+```
+
+**4. Follow Through**
+```
+If you say you''ll do something, do it
+If you can''t, communicate why
+Builds trust
+```
+
+**5. Be Honest About Problems**
+```
+"We have an issue. Here''s what happened, what I''m doing about it, and when it''ll be resolved."
+
+Builds respect
+```
+
+**6. Show Your Work**
+```
+Share progress, not just results
+Let them see how the sausage is made
+Builds confidence in your process
+```
+
+### What Breaks Trust
+
+❌ Missing deadlines without communication
+❌ Overpromising then underdelivering
+❌ Making excuses
+❌ Disappearing (not responding)
+❌ Delivering poor quality
+❌ Blaming others or tools
+❌ Saying "yes" then doing "no"
+
+**Trust is hard to build, easy to destroy.**
+
+## Managing Multiple Stakeholders
+
+**When stakeholders conflict:**
+
+**Sales wants:** Fast, minimal testing
+**IT wants:** Thorough testing, security review
+**Users want:** Easy, no training needed
+
+**Your job:** Balance competing needs
+
+**Approach:**
+1. **Acknowledge** all perspectives
+2. **Explain** the tradeoffs clearly
+3. **Recommend** based on project goals
+4. **Document** the decision
+5. **Get agreement** from decision-maker
+
+**Example:**
+```
+"I hear that Sales wants to launch ASAP, and IT needs time for security review.
+
+Here are our options:
+1. Launch in 1 week with minimal testing (risky)
+2. Launch in 3 weeks with full review (safer)
+3. Launch core features in 2 weeks, full features in 4 weeks (compromise)
+
+Given that this handles customer data, I recommend option 2 or 3 to avoid security issues.
+
+[Decision-maker], what works best for you?"
+```
+
+## Red Flags
+
+**Watch for:**
+
+🚩 Stakeholder unresponsive (delays project)
+🚩 Constantly changing requirements (scope creep)
+🚩 Unrealistic expectations won''t adjust (impossible to satisfy)
+🚩 Multiple decision-makers disagreeing (political minefield)
+🚩 No clear authority (who decides?)
+🚩 Withholding information (set up to fail)
+
+**Address early or walk away.**
+
+## Stakeholder Management Checklist
+
+**At project start:**
+☐ Identify all stakeholders
+☐ Map power and interest
+☐ Set expectations explicitly
+☐ Establish communication cadence
+☐ Define decision-making process
+☐ Get sign-off on scope
+
+**During project:**
+☐ Send regular updates
+☐ Communicate problems early
+☐ Document all decisions
+☐ Maintain responsiveness
+☐ Manage scope changes formally
+☐ Keep building trust
+
+**At project end:**
+☐ Demo the work
+☐ Get formal acceptance
+☐ Hand off properly
+☐ Request feedback
+☐ Discuss next steps
+☐ Thank everyone',
+
+  '## Exercise: Stakeholder Management Simulation
+
+**Objective:** Practice managing diverse stakeholders and expectations.
+
+**Instructions:**
+
+### Part 1: Stakeholder Analysis
+
+**Scenario: E-commerce Order Automation**
+
+**Stakeholders:**
+
+**1. Lisa Chen - VP of Operations (Client Sponsor)**
+- Budget authority
+- Wants: Efficiency, cost savings
+- Concerned: Disruption to business, reliability
+- Availability: Busy, prefers email
+
+**2. Marcus Thompson - Operations Manager (Primary User)**
+- Daily user of system
+- Wants: Easy to use, reliable
+- Concerned: Team training, change management
+- Availability: Very available, responsive
+
+**3. Jennifer Park - Customer Service Lead (Affected User)**
+- Team handles order issues
+- Wants: Better customer experience
+- Concerned: More work if automation breaks
+- Availability: Medium, prefers Slack
+
+**4. David Kumar - IT Security (Gatekeeper)**
+- Must approve integrations
+- Wants: Secure, compliant
+- Concerned: Data exposure, support burden
+- Availability: Low, formal process
+
+**5. Operations Team (5 people) - End Users**
+- Will use automation daily
+- Want: Less manual work
+- Concerned: Job security, learning curve
+- Availability: Through Marcus
+
+**Create stakeholder map:**
+
+**For each stakeholder:**
+- Power level: High/Medium/Low
+- Interest level: High/Medium/Low
+- Quadrant: Manage Closely / Keep Satisfied / Keep Informed / Monitor
+- Communication strategy: __
+- Key concerns: __
+- How to address concerns: __
+
+### Part 2: Set Expectations
+
+**Draft kickoff meeting agenda:**
+```markdown
+# Kickoff Meeting Agenda
+Date: [Date]
+Duration: 60 minutes
+Attendees: [List]
+
+## 1. Introductions (5 min)
+
+## 2. Project Overview (10 min)
+[What will you cover]
+
+## 3. Scope Review (15 min)
+[What will you cover]
+
+## 4. Process & Communication (10 min)
+[What will you cover]
+
+## 5. Timeline & Milestones (10 min)
+[What will you cover]
+
+## 6. Requirements From Team (5 min)
+[What will you cover]
+
+## 7. Questions & Next Steps (5 min)
+```
+
+**Write expectation-setting script:**
+```
+"Before we start, I want to align on expectations:
+
+**Timeline:** [Your statement]
+
+**My Process:** [Your statement]
+
+**What I Need:** [Your statement]
+
+**Communication:** [Your statement]
+
+**Risks:** [Your statement]
+
+**Success Looks Like:** [Your statement]
+
+Does this align with your expectations?"
+```
+
+### Part 3: Communication Plan
+
+**Create communication matrix:**
+
+| Stakeholder | Method | Frequency | Content | Owner |
+|-------------|--------|-----------|---------|-------|
+| Lisa | Email | Weekly | Status summary | You |
+| Marcus | Slack | As-needed | Details, questions | You |
+| Jennifer | Email | Bi-weekly | Customer impact updates | You |
+| David | Email | Major milestones | Security updates | You |
+| Ops Team | Through Marcus | Weekly | Usage, training | Marcus |
+
+**Write sample updates for each stakeholder:**
+
+**Update to Lisa (Email):**
+```
+Subject: [Your subject line]
+
+[Your content - appropriate tone and detail level]
+```
+
+**Update to Marcus (Slack):**
+```
+[Your content - appropriate tone and detail level]
+```
+
+**Update to David (Email):**
+```
+[Your content - appropriate tone and detail level]
+```
+
+### Part 4: Handle Difficult Scenarios
+
+**Scenario 1: Discovered Delay**
+
+**Situation:** You''re in Week 2. You just discovered the Shopify API doesn''t support a feature you need. This adds 1 week to timeline.
+
+**Draft your communication:**
+
+**To Lisa (Sponsor):**
+```
+Subject: [Your subject]
+
+[Your message]
+```
+
+**To Marcus (User):**
+```
+[Your message via Slack]
+```
+
+**What do you do about the other stakeholders?**
+
+---
+
+**Scenario 2: Scope Creep**
+
+**Situation:** Marcus emails: "Can we also add automatic inventory adjustments when orders are placed?"
+
+**This is not in scope and would add 2 weeks of work.**
+
+**Your response:**
+```
+[Your response to Marcus]
+```
+
+**Do you need to inform others? Who and how?**
+
+---
+
+**Scenario 3: Conflicting Stakeholders**
+
+**Situation:**
+- Lisa wants to launch in 2 weeks (aggressive)
+- David needs 1 week for security review
+- Marcus says team needs 1 week training
+
+**These requirements conflict.**
+
+**Draft your response:**
+```
+[Email to all stakeholders]
+
+Subject: Timeline Discussion Needed
+
+[Your message proposing solutions]
+```
+
+---
+
+**Scenario 4: Unresponsive Stakeholder**
+
+**Situation:** You need access to Shopify admin to continue. You''ve asked Marcus 3 times over 1 week. No response. Project is blocked.
+
+**What do you do?**
+
+**Escalation strategy:**
+1. [First action]
+2. [If no response]
+3. [Final escalation]
+
+**Draft escalation email:**
+```
+[Your message]
+```
+
+---
+
+**Scenario 5: Unrealistic Expectations**
+
+**Situation:** Lisa says in kickoff: "This is simple automation, should only take a few days, right?"
+
+**You estimated 3 weeks.**
+
+**Your response in the meeting:**
+```
+[What you say to manage expectations]
+```
+
+### Part 5: Status Meeting
+
+**You''re in Week 2 of 4. Write status meeting agenda:**
+```markdown
+# Week 2 Status Meeting
+Duration: 15 minutes
+Attendees: Lisa, Marcus, You
+
+## Agenda
+
+1. Completed This Week (2 min)
+   [What you''ll cover]
+
+2. In Progress (3 min)
+   [What you''ll cover]
+
+3. Blockers / Decisions Needed (5 min)
+   [What you''ll cover]
+
+4. Next Week Plan (2 min)
+   [What you''ll cover]
+
+5. Questions (3 min)
+```
+
+**Write your speaking points:**
+
+**1. Completed:**
+- [Achievement 1]
+- [Achievement 2]
+
+**2. In Progress:**
+- [Current work]
+
+**3. Blockers:**
+- [None OR issues]
+
+**4. Next Week:**
+- [Plan]
+
+### Part 6: Demo Preparation
+
+**You''re ready to demo the automation. Prepare demo script:**
+```markdown
+# Demo Script
+
+## Pre-Demo Setup
+- [What to prepare]
+- [Test data needed]
+- [Backup plan if live demo fails]
+
+## Demo Flow (15 minutes)
+
+**Introduction (1 min):**
+[What you''ll say]
+
+**Problem Reminder (1 min):**
+[What you''ll say]
+
+**Solution Overview (2 min):**
+[What you''ll say]
+
+**Live Demo (8 min):**
+Step 1: [Show X]
+Step 2: [Show Y]
+Step 3: [Show Z]
+
+**Results (1 min):**
+[What you''ll highlight]
+
+**Next Steps (2 min):**
+[What you''ll say]
+
+## Questions to Anticipate
+Q: [Likely question 1]
+A: [Your answer]
+
+Q: [Likely question 2]
+A: [Your answer]
+```
+
+### Part 7: Trust-Building Tactics
+
+**For this project, design trust-building strategy:**
+
+**Week 1:**
+- Action: __
+- Why this builds trust: __
+
+**Week 2:**
+- Action: __
+- Why this builds trust: __
+
+**Week 3:**
+- Action: __
+- Why this builds trust: __
+
+**Week 4:**
+- Action: __
+- Why this builds trust: __
+
+**Throughout:**
+- Tactic: __
+- How you''ll implement: __
+
+### Part 8: Conflict Resolution
+
+**Scenario: Security vs Speed**
+
+**David (IT):** "I need 2 weeks for security review"
+**Lisa (Sponsor):** "We need to launch in 2 weeks total"
+
+**Both are firm.**
+
+**Design your resolution approach:**
+
+**1. Acknowledge both perspectives:**
+```
+[What you say to David]
+[What you say to Lisa]
+```
+
+**2. Explain tradeoffs:**
+```
+[How you frame the decision]
+```
+
+**3. Propose options:**
+- Option A: [Description, pros/cons]
+- Option B: [Description, pros/cons]
+- Option C: [Description, pros/cons]
+
+**4. Recommendation:**
+```
+[What you recommend and why]
+```
+
+**5. Get decision:**
+```
+[How you request decision from Lisa]
+```
+
+### Deliverable
+
+**Complete stakeholder management plan:**
+
+**Section 1: Stakeholder Analysis**
+- All stakeholders mapped
+- Power/interest quadrants
+- Communication strategies
+
+**Section 2: Expectation Setting**
+- Kickoff agenda
+- Expectation-setting script
+- Sign-off process
+
+**Section 3: Communication Plan**
+- Communication matrix
+- Sample updates for each stakeholder
+- Escalation procedures
+
+**Section 4: Scenario Responses**
+- All 5 scenarios handled
+- Professional, clear communication
+- Problem-solving approach
+
+**Section 5: Meeting Materials**
+- Status meeting agenda
+- Demo script
+- Q&A preparation
+
+**Section 6: Trust Building**
+- Concrete tactics
+- Implementation plan
+- Measurement approach
+
+**Section 7: Conflict Management**
+- Resolution framework
+- Example resolution
+- Decision-making process
+
+**Section 8: Lessons Learned**
+- What was hardest about stakeholder management?
+- How would you handle a difficult stakeholder?
+- What communication skills do you need to develop?
+- How will you apply this to real projects?
+
+**Success Criteria:**
+- All stakeholders analyzed
+- Appropriate communication planned for each
+- Can handle difficult conversations professionally
+- Expectation-setting is clear
+- Problem scenarios resolved
+- Trust-building tactics defined
+- Ready to manage real stakeholders',
+
+  55,
+  true,
+  (SELECT id FROM quizzes WHERE title = 'Stakeholder Management Quiz')
+FROM modules m
+WHERE m.slug = 'project-management-operators';
+
+INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
+SELECT
+  id,
+  'Stakeholder Management Essentials',
+  'https://www.youtube.com/watch?v=XIhfqA54gEs',
+  'video',
+  1
+FROM sections WHERE slug = 'stakeholder-management'
+UNION ALL
+SELECT
+  id,
+  'Managing Difficult Stakeholders',
+  'https://www.youtube.com/watch?v=v0FfzJZhCcg',
+  'video',
+  2
+FROM sections WHERE slug = 'stakeholder-management';
+
+-- ============================================================================
+-- SECTION 7.4: Effective Communication & Documentation
+-- ============================================================================
+
+INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
+((SELECT id FROM quizzes WHERE title = 'Communication Quiz'), 1,
+'What is the purpose of project documentation?',
+'["To look professional", "To ensure knowledge transfer, enable maintenance, and provide reference", "To waste time", "Only for large projects"]',
+1,
+'Documentation enables others to understand, use, and maintain your work when you''re not available.'),
+
+((SELECT id FROM quizzes WHERE title = 'Communication Quiz'), 2,
+'When should you document a project?',
+'["After it''s done", "Throughout the project, not just at the end", "Never", "Only if the client asks"]',
+1,
+'Document as you go - trying to document everything at the end is painful and incomplete.'),
+
+((SELECT id FROM quizzes WHERE title = 'Communication Quiz'), 3,
+'What makes technical writing effective?',
+'["Using complex jargon", "Clear, concise, organized, with examples", "Being very detailed", "Long paragraphs"]',
+1,
+'Good technical writing is clear, concise, well-organized, and includes practical examples.'),
+
+((SELECT id FROM quizzes WHERE title = 'Communication Quiz'), 4,
+'Who is your documentation audience?',
+'["Just developers", "Anyone who needs to use, maintain, or understand the system", "Only you", "The client only"]',
+1,
+'Write for diverse audiences: end users, maintainers, stakeholders, and your future self.');
+
+INSERT INTO sections (module_id, slug, title, order_index, level, content_markdown, exercise_markdown, estimated_minutes, is_required, quiz_id)
+SELECT
+  m.id,
+  'communication-documentation',
+  'Effective Communication & Documentation',
+  4,
+  'Intermediate',
+  '# Effective Communication & Documentation
+
+Great operators are great communicators. Your technical skills only matter if people understand your work.
+
+## Why Communication Matters
+
+**Without good communication:**
+- Work goes unrecognized
+- Stakeholders feel uninformed
+- Knowledge is lost
+- You''re constantly answering same questions
+- Projects feel chaotic
+
+**With good communication:**
+- Everyone knows what''s happening
+- Work is valued and visible
+- Knowledge is preserved
+- Less time on redundant explanations
+- Projects feel professional
+
+**Communication is not "extra work." It''s part of the work.**
+
+## Types of Communication
+
+### 1. Status Updates
+
+**Purpose:** Keep stakeholders informed of progress
+
+**Frequency:** Weekly minimum
+
+**Format:**
+```markdown
+# Project Update - Week [N]
+
+## Progress This Week
+✓ [Completed task 1]
+✓ [Completed task 2]
+✓ [Completed task 3]
+
+## In Progress
+⏳ [Current task 1] - 60% complete
+⏳ [Current task 2] - Starting tomorrow
+
+## Coming Next Week
+📅 [Task 1]
+📅 [Task 2]
+📅 [Task 3]
+
+## Timeline
+🎯 On track for [date]
+or
+⚠️ Running [X days] behind due to [specific reason]
+
+## Blockers
+❌ None
+or
+⚠️ [Blocker description] - Need [what] by [when]
+
+## Metrics (if applicable)
+- [Metric 1]: [Value]
+- [Metric 2]: [Value]
+
+## Action Items for Stakeholders
+- [ ] [Item 1] - [Person] by [date]
+- [ ] [Item 2] - [Person] by [date]
+
+Questions? Reply or ping me in Slack.
+```
+
+### 2. Technical Documentation
+
+**Purpose:** Explain how things work
+
+**Audience:** Future maintainers (including future you)
+
+**Content:**
+
+**System Overview:**
+```markdown
+# [System Name] Documentation
+
+## Purpose
+What this automation does and why it exists.
+
+## Components
+- **Trigger:** [What starts it]
+- **Data Sources:** [Where data comes from]
+- **Processing:** [What happens to data]
+- **Outputs:** [Where data goes]
+- **Error Handling:** [How failures are managed]
+
+## Architecture Diagram
+[Visual representation]
+
+## Data Flow
+[How data moves through system]
+```
+
+**Setup Instructions:**
+```markdown
+## Setup Guide
+
+### Prerequisites
+- [Tool 1] with admin access
+- [Tool 2] account
+- [API keys needed]
+
+### Step-by-Step Setup
+1. [First step with screenshot]
+2. [Second step with screenshot]
+3. [Third step with screenshot]
+
+### Configuration
+[Settings and why they''re set that way]
+
+### Testing
+[How to verify it''s working]
+
+### Troubleshooting
+**Issue:** [Common problem]
+**Solution:** [How to fix]
+```
+
+**Maintenance Guide:**
+```markdown
+## Maintenance Guide
+
+### Daily/Weekly/Monthly Tasks
+- [Task 1] - Frequency: [X]
+- [Task 2] - Frequency: [Y]
+
+### Monitoring
+What to watch: [Metrics]
+Where to find them: [Location]
+What''s normal: [Ranges]
+What''s a problem: [Thresholds]
+
+### Common Issues
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| [Problem 1] | [Why it happens] | [Solution] |
+| [Problem 2] | [Why it happens] | [Solution] |
+
+### When to Call for Help
+- [Scenario 1]
+- [Scenario 2]
+
+### Escalation: [Your contact info]
+```
+
+### 3. User Guides
+
+**Purpose:** Help end users use the system
+
+**Audience:** Non-technical users
+
+**Tone:** Simple, friendly, clear
+
+**Format:**
+```markdown
+# How to Use [System Name]
+
+## What This Does
+[One sentence explanation]
+
+## Quick Start
+1. [First step - very simple]
+2. [Second step - very simple]
+3. [Third step - very simple]
+
+That''s it!
+
+## Step-by-Step Guide
+
+### Task 1: [Common Task]
+1. Go to [location]
+2. Click [button]
+3. Enter [information]
+   - Example: [Show example]
+4. Click [submit]
+5. You should see [expected result]
+
+[Screenshot of each step]
+
+### Task 2: [Another Common Task]
+[Similar format]
+
+## Tips & Tricks
+💡 [Helpful tip 1]
+💡 [Helpful tip 2]
+
+## Frequently Asked Questions
+
+**Q: [Common question]**
+A: [Clear answer]
+
+**Q: [Another question]**
+A: [Clear answer]
+
+## Need Help?
+- First: Check [troubleshooting section]
+- Still stuck: Contact [person] via [method]
+```
+
+### 4. Decision Documentation
+
+**Purpose:** Record why choices were made
+
+**Format:**
+```markdown
+# Decision: [Topic]
+Date: [Date]
+Participants: [Who was involved]
+
+## Context
+[What situation led to this decision]
+
+## Options Considered
+1. **Option A:** [Description]
+   - Pros: [List]
+   - Cons: [List]
+
+2. **Option B:** [Description]
+   - Pros: [List]
+   - Cons: [List]
+
+3. **Option C:** [Description]
+   - Pros: [List]
+   - Cons: [List]
+
+## Decision
+[What was chosen]
+
+## Reasoning
+[Why this option was selected]
+
+## Implications
+- [Impact 1]
+- [Impact 2]
+
+## Alternatives if This Doesn''t Work
+[Backup plan]
+```
+
+**Why this matters:** 6 months later when someone asks "why did we do it this way?" you have the answer.
+
+### 5. Handoff Documentation
+
+**Purpose:** Transfer project to client/team
+
+**Contents:**
+```markdown
+# Project Handoff: [Project Name]
+
+## Executive Summary
+[What was built, why, and key outcomes]
+
+## What Was Delivered
+- [Deliverable 1] - [Location/Link]
+- [Deliverable 2] - [Location/Link]
+- [Deliverable 3] - [Location/Link]
+
+## How to Access
+- [System 1]: [URL/Instructions]
+- [System 2]: [URL/Instructions]
+
+## How It Works
+[High-level explanation]
+
+## Daily Operations
+[What happens automatically each day]
+
+## Monitoring & Maintenance
+- Check [this] daily
+- Review [that] weekly
+- Update [something] monthly
+
+## Troubleshooting
+[Most common issues and fixes]
+
+## Support
+- Documentation: [Link]
+- Training materials: [Link]
+- Video walkthrough: [Link]
+- Contact for questions: [You]
+
+## Credentials & Access
+[Where stored - use password manager]
+
+## Future Enhancements
+[Ideas for Phase 2]
+
+## Known Limitations
+[What it doesn''t do and why]
+```
+
+## Writing Effective Documentation
+
+### Principles of Good Technical Writing
+
+**1. Clear > Clever**
+```
+Bad: "Leverage the synergistic paradigm..."
+Good: "Use this feature to..."
+```
+
+**2. Concise > Verbose**
+```
+Bad: "In order to be able to access the system..."
+Good: "To access the system..."
+```
+
+**3. Organized > Stream of Consciousness**
+```
+Bad: Random order, no structure
+Good: Logical flow, clear sections, headers
+```
+
+**4. Specific > Vague**
+```
+Bad: "It should work quickly"
+Good: "Processing completes in under 30 seconds"
+```
+
+**5. Examples > Theory**
+```
+Bad: "Configure the parameters appropriately"
+Good: "Set retry_count to 3 for most use cases"
+```
+
+### Structure for Any Document
+
+**Template:**
+```markdown
+# [Title]
+
+## Purpose
+[Why this document exists - one paragraph]
+
+## Quick Start
+[Absolute basics to get going]
+
+## Detailed Guide
+[Main content, well-organized with headers]
+
+## Examples
+[Real-world usage]
+
+## Troubleshooting
+[Common issues]
+
+## Additional Resources
+[Links, references]
+```
+
+### Using Visuals
+
+**When to use:**
+- Complex processes (flowcharts)
+- System architecture (diagrams)
+- User interfaces (screenshots)
+- Data flow (diagrams)
+
+**Tools:**
+- **Flowcharts:** Miro, Lucidchart, draw.io
+- **Screenshots:** Annotate with arrows/text
+- **Screen recordings:** Loom, Cloudapp
+- **Architecture diagrams:** draw.io, Whimsical
+
+**Example diagram:**
+```
+[Form] → [Validation] → [Database] → [Email]
+                ↓                      ↓
+            [Error Log]             [Slack]
+```
+
+**Better than 3 paragraphs of text.**
+
+### Documentation Templates
+
+**System Documentation Template:**
+```markdown
+# [System Name]
+
+## Overview
+**Purpose:** [What it does]
+**Status:** [Active/Beta/Deprecated]
+**Owner:** [Who maintains it]
+**Last Updated:** [Date]
+
+## Architecture
+[Diagram + explanation]
+
+## Components
+[List each piece]
+
+## Setup
+[How to configure]
+
+## Usage
+[How to use]
+
+## Monitoring
+[What to watch]
+
+## Troubleshooting
+[Common issues]
+
+## Changelog
+[Version history]
+```
+
+**Process Documentation Template:**
+```markdown
+# [Process Name]
+
+## When to Use This Process
+[Scenarios]
+
+## Prerequisites
+[What you need]
+
+## Steps
+1. [Step 1]
+   - Why: [Reason]
+   - How: [Details]
+   - Expected result: [What to see]
+
+2. [Step 2]
+   [Same format]
+
+## Verification
+[How to confirm it worked]
+
+## If Something Goes Wrong
+[Recovery steps]
+
+## Examples
+[Real examples]
+```
+
+## Communication Best Practices
+
+### Email Best Practices
+
+**Subject Lines:**
+```
+Good:
+- "Project Update - Week 3"
+- "Decision Needed: API Choice"
+- "Issue Found: Timeline Impact"
+
+Bad:
+- "Update"
+- "Question"
+- "Hey"
+```
+
+**Structure:**
+```
+[Greeting]
+
+[Context - one sentence]
+
+[Main content - organized with bullets or numbers]
+
+[Action items with deadlines]
+
+[Closing]
+```
+
+**Example:**
+```
+Hi Sarah,
+
+Quick update on the automation project.
+
+Progress this week:
+- Completed CRM integration
+- Tested with sample data
+- Started on email templates
+
+Next week:
+- Finish email automation
+- Begin full testing
+- Prepare documentation
+
+On track for March 15 delivery.
+
+Action needed: Please provide final email template by Friday so I can integrate it.
+
+Let me know if you have questions!
+
+Best,
+[You]
+```
+
+### Slack/Chat Best Practices
+
+**When to Use:**
+- Quick questions
+- Time-sensitive updates
+- Informal coordination
+
+**How to Use:**
+
+**Good:**
+```
+Hey @marcus - Quick question on the CRM fields.
+
+Should "Company Size" be a dropdown or free text?
+
+Need to decide today to stay on track.
+```
+
+**Bad:**
+```
+hey when u get a chance can u answer something about the thing we talked about
+
+[10 messages later explaining what you mean]
+```
+
+**Tips:**
+- Be concise but complete
+- One message, not 10 fragments
+- Use threads for discussions
+- Tag people when needed
+- Use channels appropriately
+
+### Meeting Communication
+
+**Before:**
+- Send agenda 24 hours in advance
+- Include materials to review
+- State meeting purpose and outcomes
+
+**During:**
+- Start on time
+- Follow agenda
+- Take notes
+- Track action items
+- End with next steps
+
+**After:**
+- Send meeting notes within 24 hours
+- List action items with owners
+- Attach any discussed materials
+
+**Meeting Notes Template:**
+```markdown
+# Meeting Notes: [Title]
+Date: [Date]
+Attendees: [List]
+Duration: [Time]
+
+## Agenda
+1. [Topic 1]
+2. [Topic 2]
+3. [Topic 3]
+
+## Discussion Summary
+
+### Topic 1
+[Key points discussed]
+[Decisions made]
+
+### Topic 2
+[Key points discussed]
+[Decisions made]
+
+## Action Items
+- [ ] [Task] - @owner - Due [date]
+- [ ] [Task] - @owner - Due [date]
+
+## Next Steps
+[What happens next]
+
+## Next Meeting
+[Date/Time/Topics]
+```
+
+## Documentation Tools
+
+**Lightweight:**
+- Google Docs (collaboration)
+- Notion (organization)
+- Markdown files in GitHub (version control)
+
+**Medium:**
+- Confluence (team wikis)
+- GitBook (public documentation)
+
+**Heavy:**
+- Custom documentation sites (if needed)
+
+**Recommendation:** Start simple. Notion or Google Docs is fine for most projects.
+
+## Common Documentation Mistakes
+
+**Mistake 1: "I''ll document it later"**
+You won''t. Do it now.
+
+**Mistake 2: Over-documenting**
+Don''t write a novel. Write what''s needed.
+
+**Mistake 3: Under-documenting**
+"It''s obvious" to you now. Won''t be in 6 months.
+
+**Mistake 4: No visuals**
+Screenshots and diagrams save 1000 words.
+
+**Mistake 5: Technical Jargon**
+Write for your audience, not yourself.
+
+**Mistake 6: No examples**
+Examples make concepts clear.
+
+**Mistake 7: No maintenance**
+Documentation gets stale. Update it.
+
+## Documentation Checklist
+
+**Every project should have:**
+
+☐ System overview document
+☐ Setup/configuration guide
+☐ User guide
+☐ Troubleshooting guide
+☐ Maintenance procedures
+☐ Architecture diagram
+☐ Data flow diagram
+☐ Contact information
+☐ Links to related resources
+
+**Every handoff should include:**
+
+☐ Executive summary
+☐ What was delivered
+☐ How to access
+☐ How it works
+☐ How to maintain
+☐ Troubleshooting
+☐ Training materials
+☐ Your contact info',
+
+  '## Exercise: Create Complete Documentation
+
+**Objective:** Build comprehensive documentation for a project.
+
+**Instructions:**
+
+### Part 1: System Documentation
+
+**For your lead automation project (or similar), create:**
+
+**1. System Overview Document**
+```markdown
+# Lead Automation System Documentation
+
+## Overview
+**Purpose:** [Describe what it does and why]
+
+**Status:** [Active/Beta]
+
+**Owner:** [You]
+
+**Last Updated:** [Date]
+
+## Quick Facts
+- **Handles:** [X] leads per day
+- **Response Time:** [Y] seconds
+- **Uptime:** [Z]%
+- **Cost:** [$] per month
+
+## System Architecture
+
+[Create diagram showing:]
+- Trigger source
+- Processing steps
+- Data destinations
+- Error handling
+
+[Use draw.io, Miro, or simple ASCII art]
+
+## Components
+
+### Trigger: Form Submission
+- **Platform:** [Typeform/Google Forms]
+- **Webhook URL:** [URL]
+- **Triggers when:** Form submitted
+
+### Processing Steps
+1. **Data Validation**
+   - Checks: [List validations]
+   - Rejects if: [Conditions]
+
+2. **CRM Integration**
+   - Platform: [Airtable/etc]
+   - Creates record in: [Table name]
+   - Maps fields: [List mappings]
+
+3. **Email Automation**
+   - Service: [Gmail/SendGrid]
+   - Template: [Name/Link]
+   - Sent to: [Recipient]
+
+4. **Team Notification**
+   - Platform: [Slack]
+   - Channel: [#sales]
+   - Message format: [Example]
+
+### Error Handling
+- Logs errors to: [Location]
+- Alerts: [Who/How]
+- Retry logic: [Description]
+
+## Data Flow
+
+[Create diagram showing how data moves]
+
+## Access & Credentials
+[Link to password manager entry]
+
+## Dependencies
+- [Tool 1] - Why needed
+- [Tool 2] - Why needed
+- [API 3] - Why needed
+```
+
+### Part 2: Setup Guide
+
+**Write step-by-step setup instructions:**
+```markdown
+# Setup Guide: Lead Automation
+
+## Prerequisites
+
+Before you begin, ensure you have:
+- [ ] Admin access to [System 1]
+- [ ] Account for [System 2]
+- [ ] API keys for [Service]
+- [ ] Permission to create webhooks
+
+## Step-by-Step Setup
+
+### 1. Configure Form Trigger
+
+1. Log into [Form Platform]
+2. Navigate to Settings → Integrations
+3. Click "Webhooks"
+4. Add new webhook:
+   - URL: [Webhook URL]
+   - Events: Form submission
+   - [Screenshot]
+
+5. Test webhook:
+   - Submit test form
+   - Verify in [Automation Platform] history
+   - Expected result: [What to see]
+
+### 2. Set Up CRM Integration
+
+[Similar detailed steps with screenshots]
+
+### 3. Configure Email Template
+
+[Detailed steps]
+
+### 4. Set Up Slack Notifications
+
+[Detailed steps]
+
+### 5. Enable Error Logging
+
+[Detailed steps]
+
+## Verification
+
+Test the complete flow:
+1. Submit test form with data: [Example data]
+2. Check CRM for new record: [Where to look]
+3. Verify email sent: [Check inbox]
+4. Confirm Slack notification: [Check channel]
+
+Success = All 4 steps complete within 30 seconds
+
+## Troubleshooting Setup
+
+**Issue:** Webhook not triggering
+**Solution:** [Steps to diagnose]
+
+**Issue:** CRM record not created
+**Solution:** [Steps to diagnose]
+```
+
+### Part 3: User Guide
+
+**Write for non-technical end users:**
+```markdown
+# User Guide: Lead Automation System
+
+## What This System Does
+
+In one sentence: [Explain simply]
+
+## You Don''t Need to Do Anything!
+
+This system automatically:
+✓ Captures form submissions
+✓ Creates CRM records
+✓ Sends response emails
+✓ Notifies your team
+
+Everything happens in the background.
+
+## What You Will See
+
+When a new lead comes in, you''ll see:
+
+1. **Slack Notification** (within 30 seconds)
+   [Screenshot of notification]
+
+   This means a new lead arrived and was processed.
+
+2. **CRM Record** (check anytime)
+   [Screenshot of record]
+
+   All lead information is automatically saved here.
+
+3. **Confirmation Email** (sent to lead)
+   [Screenshot of email]
+
+   The lead receives this welcome email automatically.
+
+## Frequently Asked Questions
+
+**Q: What if I don''t see a Slack notification?**
+A: Check [CRM] to see if lead was captured. If yes, check Slack settings. If no, contact [You].
+
+**Q: Can I edit the email template?**
+A: Yes! Contact [You] with requested changes.
+
+**Q: What if a lead provides invalid information?**
+A: The system checks for valid emails. Invalid entries are flagged in [Location].
+
+**Q: How do I see all leads?**
+A: Go to [CRM URL] → [View name]
+
+## Tips for Success
+
+💡 Check Slack regularly for new leads
+💡 Respond to hot leads within 5 minutes
+💡 Update lead status in CRM as you work
+
+## Need Help?
+
+Contact [Your Name]
+- Email: [Your email]
+- Slack: @[you]
+- Response time: Within 24 hours
+```
+
+### Part 4: Maintenance Guide
+
+**Create maintenance documentation:**
+```markdown
+# Maintenance Guide: Lead Automation
+
+## Daily Tasks
+
+### Morning Check (5 minutes)
+- [ ] Check error log: [Location]
+- [ ] Verify yesterday''s lead count: [Where]
+- [ ] Review any failed automations: [Where]
+
+**Expected:**
+- 0 errors
+- [X-Y] leads processed
+- 100% success rate
+
+**Red flags:**
+- >5 errors
+- 0 leads (if normally active)
+- <90% success rate
+
+**If red flags:** [Troubleshooting steps]
+
+## Weekly Tasks
+
+### Monday Review (15 minutes)
+- [ ] Review week''s statistics
+- [ ] Check disk usage: [Where]
+- [ ] Verify integrations still active
+- [ ] Test with sample submission
+
+### Friday Cleanup (10 minutes)
+- [ ] Archive old logs
+- [ ] Review and close error tickets
+- [ ] Update documentation if anything changed
+
+## Monthly Tasks
+
+### First Monday of Month (30 minutes)
+- [ ] Review month''s metrics
+- [ ] Check for tool updates
+- [ ] Review and optimize costs
+- [ ] Backup configuration
+- [ ] Test disaster recovery
+
+## Monitoring Metrics
+
+**Track these weekly:**
+
+| Metric | Current | Target | Status |
+|--------|---------|--------|--------|
+| Leads processed | [X] | [Y] | ✓ |
+| Success rate | [X]% | >95% | ✓ |
+| Response time | [X]s | <30s | ⚠️ |
+| Error rate | [X]% | <2% | ✓ |
+
+**Where to find metrics:** [Dashboard link]
+
+## Common Issues & Solutions
+
+### Issue 1: Leads Not Processing
+**Symptoms:** No new CRM records, no Slack notifications
+
+**Diagnosis:**
+1. Check [Automation Platform] history
+2. Look for error messages
+3. Verify form webhook still active
+
+**Solutions:**
+- If webhook inactive: [Steps to reactivate]
+- If API error: [Steps to fix]
+- If unclear: Contact [You]
+
+### Issue 2: Duplicate Leads
+**Symptoms:** Same lead appears twice in CRM
+
+**Diagnosis:**
+Check if person submitted form twice (common)
+
+**Solution:**
+Merge duplicates in CRM: [Instructions]
+
+### Issue 3: Emails Not Sending
+**Symptoms:** Leads in CRM but no confirmation email
+
+**Diagnosis:**
+Check email service status: [Link]
+
+**Solution:**
+- If service down: Wait for recovery
+- If email invalid: Note in CRM
+- If persistent: Contact [You]
+
+## When to Escalate
+
+Contact [You] immediately if:
+- System completely stops working
+- >20% error rate
+- Data loss suspected
+- Security concern
+
+Contact [You] within 24 hours for:
+- Recurring errors
+- Performance degradation
+- Feature requests
+- Questions about behavior
+
+## Emergency Contacts
+
+**Primary:** [Your name/contact]
+**Backup:** [If applicable]
+**Escalation:** [Manager if you''re unavailable]
+```
+
+### Part 5: Handoff Package
+
+**Create complete handoff documentation:**
+```markdown
+# Project Handoff: Lead Automation System
+
+## Executive Summary
+
+**What We Built:**
+Fully automated lead capture and processing system.
+
+**Why:**
+Reduce manual data entry from 5 hours/day to 0.
+
+**Key Outcomes:**
+- 100% of leads automatically captured
+- Response time: <30 seconds (was 2 hours)
+- Zero manual data entry
+- Team time saved: 25 hours/week
+
+## Deliverables
+
+✓ Working automation (live and operational)
+✓ System documentation (this document)
+✓ User guide for team
+✓ Training video (15 minutes)
+✓ Maintenance procedures
+✓ 30 days of post-launch support
+
+## How to Access Everything
+
+**Automation Platform:** [URL + credentials location]
+**CRM:** [URL + credentials location]
+**Form:** [URL]
+**Documentation:** [Link to this doc]
+**Training Video:** [Link]
+**Error Dashboard:** [Link]
+
+## What Happens Automatically
+
+**Every time someone submits the form:**
+1. Form data is instantly captured
+2. Data is validated
+3. CRM record is created
+4. Welcome email is sent to lead
+5. Team is notified in Slack
+
+**No human intervention required.**
+
+## Daily Operations
+
+**Your team should:**
+- Check Slack for new lead notifications
+- Review leads in CRM
+- Follow up with leads
+- Update lead status as they work
+
+**They should NOT:**
+- Manually enter form submissions
+- Forward form emails
+- Worry about technical details
+
+**System handles everything automatically.**
+
+## Support & Maintenance
+
+**Included:**
+- 30 days of free support (unlimited questions)
+- Bug fixes for 30 days
+- One round of minor adjustments
+
+**After 30 days:**
+- [Support plan options]
+
+**Contact:**
+- [Your email]
+- [Your phone]
+- Response time: <24 hours weekdays
+
+## Training
+
+**Video walkthrough:** [Link] (15 minutes)
+Covers: How it works, where to find leads, what to watch for
+
+**Live training session:** Scheduled for [Date/Time]
+Attendees: [List]
+
+**Documentation:** [Link to user guide]
+
+## Known Limitations
+
+What this system does NOT do:
+- Lead scoring (Phase 2)
+- Automatic follow-ups (Phase 2)
+- Integration with marketing tools (Phase 2)
+
+## Future Enhancements
+
+Ideas for Phase 2:
+- AI-powered lead scoring
+- Automated follow-up sequences
+- Dashboard with analytics
+- Integration with [Tool]
+
+## Technical Details
+
+For technical staff:
+- Complete system documentation: [Link]
+- Setup guide: [Link]
+- Maintenance procedures: [Link]
+- Architecture diagram: [Link]
+
+## Success Metrics
+
+Track these to measure success:
+- Leads captured per week
+- Response time
+- Team time saved
+- Error rate
+
+**Dashboard:** [Link]
+
+## Questions?
+
+Contact [You]:
+- Email: [Your email]
+- Phone: [Your phone]
+- Slack: @[you]
+```
+
+### Part 6: Create Visual Documentation
+
+**Create these diagrams:**
+
+1. **System Architecture**
+   - All components
+   - How they connect
+   - Data flows
+
+2. **Process Flow**
+   - Step-by-step what happens
+   - Decision points
+   - Error paths
+
+3. **Data Flow**
+   - Where data enters
+   - Transformations
+   - Final destinations
+
+**Tools:** draw.io, Lucidchart, or Miro
+
+### Part 7: Communication Examples
+
+**Write 3 status updates:**
+
+**Week 1 Update:**
+```
+[Your update]
+```
+
+**Week 2 Update:**
+```
+[Your update]
+```
+
+**Final Delivery Update:**
+```
+[Your update]
+```
+
+### Deliverable
+
+**Complete documentation package:**
+
+**1. System Documentation**
+- Overview
+- Architecture
+- Components
+- Data flows
+- Credentials
+
+**2. Setup Guide**
+- Prerequisites
+- Step-by-step instructions
+- Verification steps
+- Troubleshooting
+
+**3. User Guide**
+- Simple explanation
+- What users see
+- FAQs
+- Contact info
+
+**4. Maintenance Guide**
+- Daily/weekly/monthly tasks
+- Monitoring metrics
+- Common issues
+- Escalation procedures
+
+**5. Handoff Package**
+- Executive summary
+- Deliverables
+- Access information
+- Support details
+- Training materials
+
+**6. Visual Documentation**
+- Architecture diagram
+- Process flow diagram
+- Data flow diagram
+
+**7. Communication Examples**
+- Status updates
+- Problem alerts
+- Handoff email
+
+**Success Criteria:**
+- Someone could maintain system with this documentation
+- Someone could set up from scratch with setup guide
+- End users can use system with user guide
+- All common issues have solutions documented
+- Professional, clear, organized
+- Appropriate for each audience
+- Includes visuals
+- Ready to deliver to client',
+
+  60,
+  true,
+  (SELECT id FROM quizzes WHERE title = 'Communication Quiz')
+FROM modules m
+WHERE m.slug = 'project-management-operators';
+
+INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
+SELECT
+  id,
+  'Technical Writing Fundamentals',
+  'https://www.youtube.com/watch?v=8vS0vPJpyZU',
+  'video',
+  1
+FROM sections WHERE slug = 'communication-documentation'
+UNION ALL
+SELECT
+  id,
+  'Creating Effective Documentation',
+  'https://www.youtube.com/watch?v=t4vKPhjcMZg',
+  'video',
+  2
+FROM sections WHERE slug = 'communication-documentation';
+
+-- ============================================================================
+-- SECTION 7.5: Project Delivery & Handoff
+-- ============================================================================
+
+INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
+((SELECT id FROM quizzes WHERE title = 'Delivery and Handoff Quiz'), 1,
+'What is the purpose of a project handoff?',
+'["To get paid", "To transfer ownership, knowledge, and responsibility to the client/team", "To finish quickly", "To avoid future work"]',
+1,
+'Handoff ensures the client can successfully operate and maintain what you built without depending on you.'),
+
+((SELECT id FROM quizzes WHERE title = 'Delivery and Handoff Quiz'), 2,
+'When should you start preparing for handoff?',
+'["At the end of the project", "From the beginning - document as you build", "After you get paid", "Never"]',
+1,
+'Good handoff preparation starts day 1 - document as you go, don''t try to do it all at the end.'),
+
+((SELECT id FROM quizzes WHERE title = 'Delivery and Handoff Quiz'), 3,
+'What is included in a successful project handoff?',
+'["Just the working code", "Documentation, training, credentials, support plan, and acceptance sign-off", "Only documentation", "Whatever the client asks for"]',
+1,
+'Comprehensive handoff includes everything needed for the client to own and operate the system independently.'),
+
+((SELECT id FROM quizzes WHERE title = 'Delivery and Handoff Quiz'), 4,
+'Why is post-launch support important?',
+'["It''s not important", "It builds trust, catches edge cases, and enables long-term success", "To make more money", "Clients demand it"]',
+1,
+'Support period helps smooth the transition, builds client confidence, and catches issues in real-world use.');
+
+INSERT INTO sections (module_id, slug, title, order_index, level, content_markdown, exercise_markdown, estimated_minutes, is_required, quiz_id)
+SELECT
+  m.id,
+  'delivery-handoff',
+  'Project Delivery & Handoff',
+  5,
+  'Intermediate',
+  '# Project Delivery & Handoff
+
+How you finish a project determines if you get hired again. Nail the landing.
+
+## Why Handoff Matters
+
+**Bad handoff:**
+- "Here''s the thing, it works, good luck!"
+- Client confused
+- Questions for weeks
+- Things break
+- Client unhappy
+- No referral
+
+**Good handoff:**
+- Clear documentation
+- Comprehensive training
+- Smooth transition
+- Client confident
+- Minimal questions
+- Successful long-term use
+- Great referral
+
+**Handoff = The difference between one-time client and long-term relationship.**
+
+## Handoff Components
+
+### 1. Working System
+
+**Must be:**
+- ✓ Fully functional
+- ✓ Tested thoroughly
+- ✓ Error handling in place
+- ✓ Monitoring enabled
+- ✓ Documented
+
+**Not:**
+- ❌ "It mostly works"
+- ❌ "Just need to fix a few bugs"
+- ❌ "Test it yourself"
+
+### 2. Complete Documentation
+
+**Required:**
+- System overview
+- Setup instructions
+- User guide
+- Maintenance procedures
+- Troubleshooting guide
+- Architecture diagrams
+- Contact information
+
+**See previous section for details.**
+
+### 3. Credentials & Access
+
+**Organized:**
+```markdown
+## Access Information
+
+Stored in: [Password manager / secure location]
+
+### Automation Platform
+- URL: [Link]
+- Login: [Email]
+- Password: [In 1Password]
+- 2FA: [Setup details]
+
+### CRM
+- URL: [Link]
+- Login: [Email]
+- Password: [In 1Password]
+
+### Email Service
+- Account: [Email]
+- API Key: [In 1Password]
+
+### Slack
+- Workspace: [Name]
+- Webhook URL: [In 1Password]
+
+## Credentials Handoff Process
+1. Shared via [secure method]
+2. Client confirms access
+3. Client changes passwords
+4. Remove your admin access (if appropriate)
+```
+
+### 4. Training
+
+**Live Training Session:**
+```markdown
+## Training Session Agenda
+Duration: 60-90 minutes
+
+### Part 1: Overview (10 min)
+- What we built
+- Why it matters
+- How it helps
+
+### Part 2: Demo (20 min)
+- Live walkthrough
+- Show normal operations
+- Show edge cases
+- Show error handling
+
+### Part 3: Hands-On (20 min)
+- Client tries it
+- Walk through common tasks
+- Practice troubleshooting
+- Answer questions
+
+### Part 4: Maintenance (10 min)
+- Daily operations
+- What to watch
+- Common issues
+
+### Part 5: Support (5 min)
+- How to get help
+- Support period details
+- Next steps
+
+### Q&A (15 min)
+```
+
+**Recorded Training:**
+- Record the session
+- Share recording afterward
+- Create separate videos for each topic if helpful
+
+**Training Materials:**
+- User guide (PDF/link)
+- Quick reference card
+- Cheat sheet with common tasks
+- Troubleshooting flowchart
+
+### 5. Support Plan
+
+**Define support period:**
+```markdown
+## Post-Launch Support
+
+### Included (First 30 Days)
+- ✓ Unlimited questions via email
+- ✓ Bug fixes at no charge
+- ✓ One round of minor adjustments
+- ✓ Response time: <24 hours weekdays
+
+### Not Included
+- ✗ New features (different from bugs)
+- ✗ Integration with new tools
+- ✗ Major scope changes
+- ✗ Training for new team members (after initial)
+
+### After 30 Days
+[Options for ongoing support]
+
+### How to Get Support
+- Email: [Your email]
+- Subject line: "[Project Name] Support"
+- Include: Description, screenshots, what you tried
+- Response time: [X hours/days]
+```
+
+### 6. Acceptance & Sign-Off
+
+**Formal acceptance:**
+```markdown
+## Project Acceptance
+
+Project: [Name]
+Client: [Company]
+Date: [Date]
+
+### Deliverables Completed
+☑ [Deliverable 1]
+☑ [Deliverable 2]
+☑ [Deliverable 3]
+
+### Success Criteria Met
+☑ [Criteria 1]
+☑ [Criteria 2]
+☑ [Criteria 3]
+
+### Training Completed
+☑ Live training session ([Date])
+☑ Documentation provided
+☑ Video walkthrough shared
+
+### Access Provided
+☑ All credentials shared
+☑ Client confirmed access
+☑ Permissions set correctly
+
+## Acceptance
+
+By signing below, the client acknowledges:
+- All deliverables have been completed
+- System meets agreed-upon requirements
+- Training has been provided
+- Documentation is sufficient
+- Project is accepted
+
+Client Signature: ___________________
+Date: ___________
+
+Operator Signature: ___________________
+Date: ___________
+```
+
+**Get this signed before final invoice.**
+
+## Handoff Process
+
+### Pre-Handoff Checklist
+
+**2 weeks before handoff:**
+
+☐ Finalize all features
+☐ Complete all testing
+☐ Fix all known bugs
+☐ Complete documentation
+☐ Prepare training materials
+☐ Schedule handoff meeting
+☐ Organize credentials
+☐ Set up monitoring
+☐ Prepare acceptance form
+
+**1 week before handoff:**
+
+☐ Send documentation to client for review
+☐ Send training agenda
+☐ Confirm handoff meeting
+☐ Test everything one final time
+☐ Prepare demo environment
+☐ Create backup of system
+☐ Final quality check
+
+**Day before handoff:**
+
+☐ Verify system is running perfectly
+☐ Check all integrations
+☐ Prepare demo script
+☐ Charge devices
+☐ Test internet connection
+☐ Have backup plans ready
+
+### Handoff Meeting
+
+**Agenda:**
+
+**1. Celebrate (5 min)**
+"We''ve completed the project! Let''s review what we accomplished."
+
+**2. Overview (10 min)**
+- Remind them of original problem
+- Show what you built
+- Highlight key improvements
+
+**3. Live Demo (20 min)**
+- Walk through entire workflow
+- Show normal operations
+- Show error scenarios
+- Show monitoring dashboard
+
+**4. Hands-On Training (30 min)**
+- Client logs in
+- Client performs tasks
+- Client practices troubleshooting
+- Answer questions
+
+**5. Documentation Review (10 min)**
+- Walk through documentation
+- Show where everything is
+- Explain how to find answers
+
+**6. Support & Next Steps (10 min)**
+- Review support plan
+- Exchange contact info
+- Discuss timeline for questions
+- Sign acceptance form
+
+**Total: 85 minutes**
+
+### Post-Handoff Actions
+
+**Immediately after:**
+- Send meeting notes
+- Share recording (if recorded)
+- Send all materials mentioned
+- Confirm they have access to everything
+
+**Within 1 week:**
+- Check in: "How''s it going?"
+- Answer any initial questions
+- Fix any issues discovered
+
+**Ongoing:**
+- Monitor error logs (if accessible)
+- Respond to support requests
+- Track usage (if visible)
+
+## Common Handoff Mistakes
+
+### Mistake 1: Assuming They Know
+
+"This is obvious" to you ≠ obvious to them
+
+**Explain everything. Assume zero knowledge.**
+
+### Mistake 2: Rushing the Handoff
+
+"Here''s the docs, bye!"
+
+**Take time. Make them comfortable.**
+
+### Mistake 3: No Training
+
+"Just read the docs"
+
+**Docs are reference. Training is essential.**
+
+### Mistake 4: Incomplete Documentation
+
+Missing: troubleshooting, credentials, contact info
+
+**Documentation checklist in previous section.**
+
+### Mistake 5: No Support Plan
+
+"Contact me if issues come up" (vague)
+
+**Define support period, scope, and process.**
+
+### Mistake 6: Not Testing First
+
+Demo fails during handoff meeting
+
+**Test everything before the meeting.**
+
+### Mistake 7: No Acceptance Sign-Off
+
+Verbal "looks good!"
+
+**Get written acceptance.**
+
+## Post-Launch Support
+
+### Support Request Process
+
+**Client emails:** "It''s not working!"
+
+**Your process:**
+
+**1. Acknowledge (within 2 hours)**
+```
+Hi [Client],
+
+Thanks for reaching out. I''ll investigate this and
+get back to you with findings within [X hours].
+
+Can you provide:
+- What you were trying to do
+- What happened instead
+- Any error messages
+- Screenshots if possible
+
+This helps me diagnose quickly.
+
+Best,
+[You]
+```
+
+**2. Investigate**
+- Reproduce the issue
+- Check logs
+- Identify root cause
+
+**3. Fix or Advise (within agreed timeframe)**
+```
+Hi [Client],
+
+I found the issue: [Specific problem]
+
+I''ve [fixed it / need your help to fix]:
+[Explanation]
+
+Can you test and confirm it''s working now?
+
+Let me know if you have questions.
+
+Best,
+[You]
+```
+
+**4. Confirm Resolution**
+```
+Great! Glad it''s working.
+
+For future reference: [What caused it and how to prevent]
+
+Let me know if anything else comes up.
+
+Best,
+[You]
+```
+
+### Support Metrics
+
+**Track:**
+- Number of support requests
+- Time to first response
+- Time to resolution
+- Issue types
+- Client satisfaction
+
+**Use this data to:**
+- Improve documentation
+- Identify missing training
+- Refine processes
+- Justify ongoing support contract
+
+### Transitioning Out of Support
+
+**At end of support period:**
+```
+Hi [Client],
+
+Our 30-day support period ends on [Date]. Here''s a summary:
+
+**Support During This Period:**
+- Requests handled: [X]
+- Average response time: [Y hours]
+- Issues resolved: [All / Details]
+
+**Going Forward:**
+
+Option 1: Continue with monthly support ($[X]/month)
+- [Benefits]
+
+Option 2: Pay-per-incident support ($[X]/hour)
+- [How it works]
+
+Option 3: Self-support
+- You handle maintenance using documentation
+- Can always reach out for paid help if needed
+
+Which works best for you?
+
+Best,
+[You]
+```
+
+## Building Long-Term Relationships
+
+### Stay in Touch
+
+**Without being annoying:**
+
+**30 days after launch:**
+"How''s the automation working? Any questions or issues?"
+
+**60 days after launch:**
+"Just checking in. Any feature requests or improvements you''d like?"
+
+**Quarterly:**
+"Thought you might be interested in [new capability]. Would this help your team?"
+
+**When you learn something new:**
+"Hey, I just learned about [X] which might help with [Y problem you mentioned]."
+
+### Ask for Referrals
+
+**After successful project:**
+```
+Hi [Client],
+
+I''m glad the automation is working well for you!
+
+If you know anyone else who could benefit from similar work,
+I''d appreciate an introduction.
+
+Also, if you''d be willing to provide a testimonial or be
+a reference for future clients, that would be incredibly helpful.
+
+Thanks again for the opportunity to work with you!
+
+Best,
+[You]
+```
+
+### Request Testimonials
+
+**Template request:**
+```
+Hi [Client],
+
+Could you write a brief testimonial about our work together?
+
+Specifically, it would be helpful if you could mention:
+- What problem we solved
+- What the outcome was (time saved, cost reduced, etc.)
+- Your experience working with me
+
+I''ll use this on my website / LinkedIn to help other
+clients understand what I do.
+
+Thanks so much!
+
+Best,
+[You]
+```
+
+### Case Study (with permission)
+```markdown
+# Case Study: [Client Name] Lead Automation
+
+## Challenge
+[Client] was spending 25 hours/week manually processing
+leads from their website.
+
+## Solution
+Automated lead capture, validation, CRM integration,
+and team notifications.
+
+## Results
+- Time saved: 25 hours/week
+- Response time: 2 hours → 30 seconds
+- Error rate: 15% → <1%
+- ROI: $50,000/year in labor savings
+
+## Testimonial
+"[Quote from client]"
+```
+
+## Handoff Checklist
+
+**Before handoff meeting:**
+
+☐ System fully functional
+☐ All testing complete
+☐ Documentation complete
+☐ Training materials ready
+☐ Credentials organized
+☐ Demo prepared and tested
+☐ Acceptance form prepared
+☐ Support plan defined
+☐ Meeting scheduled
+
+**During handoff meeting:**
+
+☐ Demo completed successfully
+☐ Hands-on training done
+☐ Client can perform basic tasks
+☐ Documentation reviewed
+☐ Support plan explained
+☐ Questions answered
+☐ Acceptance form signed
+☐ Next steps clear
+
+**After handoff meeting:**
+
+☐ Meeting notes sent
+☐ Recording shared
+☐ Materials sent
+☐ Follow-up within 1 week
+☐ Support requests tracked
+☐ Feedback collected
+☐ Final invoice sent
+☐ Project closed
+
+## Measuring Handoff Success
+
+**Successful handoff:**
+- Client can operate system independently
+- Minimal support requests
+- Client is confident
+- Positive feedback
+- Referral or repeat business
+
+**Failed handoff:**
+- Constant questions
+- Client confused
+- Things breaking
+- Client dissatisfied
+- One-and-done relationship
+
+**Learn from each handoff. Improve the next one.**',
+
+  '## Exercise: Complete Project Handoff
+
+**Objective:** Execute a professional project handoff.
+
+**Instructions:**
+
+### Part 1: Pre-Handoff Preparation
+
+**Complete the pre-handoff checklist:**
+
+**2 Weeks Before:**
+- [ ] All features finalized: [Status]
+- [ ] Testing complete: [Status]
+- [ ] Documentation complete: [Link]
+- [ ] Training materials ready: [Link]
+- [ ] Handoff meeting scheduled: [Date/Time]
+- [ ] Credentials organized: [Where stored]
+- [ ] Monitoring enabled: [Dashboard link]
+- [ ] Acceptance form prepared: [Link]
+
+**1 Week Before:**
+- [ ] Documentation sent for review: [Date sent]
+- [ ] Training agenda sent: [Date sent]
+- [ ] Handoff meeting confirmed: [Confirmed]
+- [ ] Final testing done: [Results]
+- [ ] Demo environment ready: [Tested]
+- [ ] System backup created: [Location]
+- [ ] Final quality check: [Passed]
+
+**Day Before:**
+- [ ] System running perfectly: [Verified]
+- [ ] All integrations working: [Tested]
+- [ ] Demo script prepared: [Ready]
+- [ ] Equipment charged: [Ready]
+- [ ] Internet tested: [Working]
+- [ ] Backup plans ready: [Prepared]
+
+### Part 2: Create Handoff Materials
+
+**1. Create Handoff Meeting Agenda**
+```markdown
+# Handoff Meeting Agenda
+
+**Project:** [Name]
+**Date:** [Date]
+**Time:** [Time]
+**Duration:** 90 minutes
+**Attendees:** [List]
+
+## Preparation
+Please review before meeting:
+- Documentation: [Link]
+- Training video: [Link]
+
+## Agenda
+
+### 1. Welcome & Overview (10 min)
+- Celebrate completion
+- Review original goals
+- Highlight key achievements
+
+### 2. System Demo (20 min)
+- Live walkthrough of complete workflow
+- Show normal operations
+- Demonstrate error handling
+- Show monitoring dashboard
+
+### 3. Hands-On Training (30 min)
+- You try: [Task 1]
+- You try: [Task 2]
+- You try: [Task 3]
+- Troubleshooting practice
+
+### 4. Documentation Review (10 min)
+- Where everything is located
+- How to find answers
+- Contact information
+
+### 5. Support & Maintenance (10 min)
+- Daily operations
+- What to watch for
+- Support period details
+
+### 6. Next Steps & Sign-Off (10 min)
+- Acceptance form
+- Final questions
+- Contact information
+- Timeline for follow-up
+
+## Materials Needed
+- [ ] Working demo environment
+- [ ] Documentation links
+- [ ] Acceptance form
+- [ ] Support contact card
+```
+
+**2. Prepare Demo Script**
+```markdown
+# Demo Script
+
+## Setup
+- [ ] Open browser tabs: [List]
+- [ ] Test data ready: [List examples]
+- [ ] Backup plan if demo fails: [Describe]
+
+## Script
+
+### Introduction (2 min)
+"Let me show you how this works in practice. I''ll walk through
+a complete example from start to finish."
+
+### Normal Flow (8 min)
+"First, let''s see what happens when someone fills out your form..."
+
+[Step by step walkthrough]
+
+"Notice how... [Key point 1]"
+"See how it handles... [Key point 2]"
+
+### Edge Cases (5 min)
+"Now let me show you what happens if someone enters
+invalid information..."
+
+[Show validation]
+
+"And if there''s an error in one of the integrations..."
+
+[Show error handling]
+
+### Monitoring (5 min)
+"Here''s your dashboard where you can see everything..."
+
+[Show monitoring]
+
+"These are the key metrics to watch..."
+"This is what normal looks like..."
+"This would indicate a problem..."
+
+## Key Points to Emphasize
+- [Point 1]
+- [Point 2]
+- [Point 3]
+
+## Questions to Anticipate
+Q: [Likely question 1]
+A: [Your prepared answer]
+
+Q: [Likely question 2]
+A: [Your prepared answer]
+```
+
+**3. Create Acceptance Form**
+```markdown
+# Project Acceptance Form
+
+**Project:** [Name]
+**Client:** [Company Name]
+**Date:** [Date]
+**Operator:** [Your Name]
+
+## Deliverables Review
+
+All agreed deliverables have been completed and demonstrated:
+
+- [ ] Automated workflow (Form → CRM → Email → Slack)
+- [ ] Data validation rules implemented
+- [ ] Error handling and logging in place
+- [ ] System documentation provided
+- [ ] User guide created
+- [ ] Training session completed
+- [ ] Support plan defined
+
+## Success Criteria Met
+
+All success criteria have been achieved:
+
+- [ ] 100% of form submissions captured
+- [ ] CRM records created automatically
+- [ ] Response emails sent within 30 seconds
+- [ ] Team notifications in Slack
+- [ ] Error rate < 1%
+- [ ] No manual data entry required
+
+## Training Complete
+
+Client team has been trained and can operate the system:
+
+- [ ] Live training session completed ([Date])
+- [ ] Hands-on practice completed
+- [ ] Documentation reviewed and understood
+- [ ] Support process explained
+
+## Access Provided
+
+All necessary access has been shared:
+
+- [ ] Automation platform access
+- [ ] CRM access confirmed
+- [ ] Credentials securely shared
+- [ ] Monitoring dashboard accessible
+
+## Client Acceptance
+
+I acknowledge that:
+- All deliverables have been completed as agreed
+- The system meets the requirements in our scope document
+- Training has been provided and is satisfactory
+- Documentation is sufficient for ongoing use
+- I understand the support process and timeline
+- I accept the project as complete
+
+**Client Signature:** _________________________
+
+**Date:** _____________
+
+**Operator Signature:** _________________________
+
+**Date:** _____________
+
+## Notes
+[Any additional comments or observations]
+```
+
+**4. Create Support Plan Document**
+```markdown
+# Post-Launch Support Plan
+
+**Project:** [Name]
+**Support Period:** 30 days from [Start Date] to [End Date]
+
+## What''s Included
+
+### During Support Period (30 Days)
+
+**Included:**
+✓ Unlimited questions via email
+✓ Bug fixes at no additional charge
+✓ One round of minor adjustments
+✓ System monitoring and alerts
+✓ Response time: <24 hours (weekdays)
+✓ Phone support for urgent issues
+
+**Not Included:**
+✗ New features beyond original scope
+✗ Integration with additional tools
+✗ Major scope changes or redesign
+✗ Training for new team members
+✗ Support outside business hours (Mon-Fri 9am-6pm)
+
+## How to Get Support
+
+### Email Support (Primary)
+**Email:** [Your email]
+**Subject:** "[Project Name] Support - [Brief Description]"
+
+**Please include:**
+- What you were trying to do
+- What happened instead
+- Any error messages (screenshots helpful)
+- What you''ve already tried
+
+**Response time:** Within 24 hours on weekdays
+
+### Phone Support (Urgent Issues Only)
+**Phone:** [Your phone]
+**Use for:** System completely down, data loss, security issues
+**Hours:** Mon-Fri 9am-6pm
+
+### Slack (Quick Questions)
+**Workspace:** [If applicable]
+**Channel:** [#support]
+**Use for:** Quick clarifications, not technical issues
+
+## What Counts as a "Bug"
+
+**Bug (Covered):**
+- Feature doesn''t work as specified in scope
+- System error or crash
+- Data not processing correctly
+- Integration broken
+
+**Not a Bug (Not Covered):**
+- "I want it to work differently" (feature change)
+- "Can we add X?" (new feature)
+- User error from not following documentation
+- Third-party service outage (Airtable, Slack, etc.)
+
+## Support Process
+
+**1. You Submit Request**
+Via email with details
+
+**2. I Acknowledge (within 2-6 hours)**
+"Got it, investigating"
+
+**3. I Diagnose**
+Reproduce issue, check logs, identify cause
+
+**4. I Fix or Advise (within 24 hours)**
+Either fix directly or provide guidance
+
+**5. You Test**
+Confirm it''s working
+
+**6. Resolved**
+Issue marked complete
+
+## After Support Period Ends
+
+**Options:**
+
+**Option 1: Ongoing Monthly Support**
+- $[X]/month
+- Includes: [Y] hours of support, monitoring, maintenance
+- Best for: Ongoing peace of mind
+
+**Option 2: Pay-Per-Incident**
+- $[X]/hour
+- Billed in 15-minute increments
+- Best for: Occasional help
+
+**Option 3: Self-Support**
+- You handle everything using documentation
+- Can always hire me for specific issues at hourly rate
+- Best for: Confident technical teams
+
+## Contact Information
+
+**Primary:** [Your email]
+**Phone:** [Your phone]
+**Hours:** Mon-Fri, 9am-6pm
+**Timezone:** [Your timezone]
+**Response time:** <24 hours weekdays
+
+## Emergency Contact
+
+For system-down emergencies only:
+**Phone:** [Your phone]
+**Text:** "URGENT - [Project Name] - [Brief issue]"
+```
+
+### Part 3: Conduct Mock Handoff
+
+**Practice your handoff:**
+
+**1. Set up demo environment**
+- Everything working
+- Test data ready
+- Backup plan prepared
+
+**2. Record yourself doing the demo**
+- Follow your script
+- Time yourself
+- Watch for:
+  - Clarity
+  - Pacing
+  - Completeness
+  - Professionalism
+
+**3. Review the recording**
+- What went well?
+- What needs improvement?
+- Did you cover everything?
+- Would a non-technical person understand?
+
+**4. Refine and re-record if needed**
+
+### Part 4: Post-Handoff Communication
+
+**Draft post-handoff emails:**
+
+**Immediately After Meeting:**
+```
+Subject: Meeting Notes & Materials - [Project Name]
+
+Hi [Client],
+
+Great meeting today! Here''s a summary and all the materials
+we discussed:
+
+**Meeting Recording:** [Link]
+
+**Documentation:**
+- System overview: [Link]
+- User guide: [Link]
+- Maintenance procedures: [Link]
+- Troubleshooting guide: [Link]
+
+**Training Materials:**
+- Full training video: [Link]
+- Quick reference guide: [PDF]
+
+**Access:**
+All credentials have been shared via [method]. Please confirm
+you can access everything.
+
+**Support:**
+Support plan: [Link]
+Contact me anytime at [email] or [phone].
+
+**Next Steps:**
+1. Review the recording and materials
+2. Start using the system with your team
+3. Reach out with any questions (no question is too small!)
+
+I''ll check in with you next week to see how things are going.
+
+Thanks for the opportunity to work on this project!
+
+Best,
+[You]
+```
+
+**One Week Follow-Up:**
+```
+Subject: Check-In - [Project Name]
+
+Hi [Client],
+
+Just checking in! How''s the automation working?
+
+**Quick questions:**
+- Is the system running smoothly?
+- Have you encountered any issues?
+- Is there anything you need clarification on?
+- How is your team adapting to it?
+
+Remember, you have [X days] left in your support period,
+so now''s the time to ask any questions or request any
+adjustments needed.
+
+Happy to hop on a quick call if easier to discuss.
+
+Best,
+[You]
+```
+
+**End of Support Period:**
+```
+Subject: Support Period Ending - [Project Name]
+
+Hi [Client],
+
+Our 30-day support period ends on [Date]. Let''s recap:
+
+**During This Period:**
+- Support requests: [X]
+- Average response time: [Y] hours
+- Issues resolved: [All resolved]
+- System uptime: [Z]%
+
+**System Performance:**
+- Leads processed: [X]
+- Success rate: [Y]%
+- Average processing time: [Z] seconds
+
+**Going Forward:**
+
+I have three options for ongoing support:
+
+1. **Monthly Support Plan** ($[X]/month)
+   - [Details]
+   - Best for: [Who]
+
+2. **Pay-Per-Incident** ($[X]/hour)
+   - [Details]
+   - Best for: [Who]
+
+3. **Self-Support**
+   - [Details]
+   - Best for: [Who]
+
+Which interests you? Or are you all set with the documentation?
+
+Either way, I''m always available if something comes up.
+
+It''s been great working with you!
+
+Best,
+[You]
+```
+
+### Part 5: Request Testimonial
+
+**Draft testimonial request:**
+```
+Subject: Request for Testimonial - [Project Name]
+
+Hi [Client],
+
+I''m so glad the lead automation is working well for your team!
+
+Would you be willing to write a brief testimonial about our work
+together? It would really help me show potential clients what I do.
+
+**Helpful if you could mention:**
+- What problem we solved
+- What the outcome was (time saved, efficiency gained, etc.)
+- Your experience working with me
+- Would you recommend me to others?
+
+A few sentences is perfect - doesn''t need to be long!
+
+You can reply to this email or I''ve created a simple form: [Link]
+
+Thanks so much for considering this!
+
+Best,
+[You]
+
+PS - If you know anyone else who could benefit from automation
+work, I''d love an introduction!
+```
+
+### Part 6: Create Case Study
+
+**Write a case study (with client permission):**
+```markdown
+# Case Study: [Client Name] Lead Automation
+
+## Client Background
+[Brief description of client and their business]
+
+## The Challenge
+
+**Problem:**
+[Client] was spending 25 hours per week manually processing
+leads from their website.
+
+**Pain Points:**
+- Slow response time (2+ hours per lead)
+- Manual data entry errors (15% error rate)
+- Leads occasionally missed entirely
+- Team frustration with repetitive work
+- Missed sales opportunities
+
+**Business Impact:**
+- Lost leads due to slow response
+- $50,000/year in labor costs
+- Poor customer experience
+
+## The Solution
+
+**What We Built:**
+Fully automated lead capture and processing system:
+- Form submission triggers instant workflow
+- Data validation prevents errors
+- CRM record created automatically
+- Welcome email sent within 30 seconds
+- Team notified in Slack
+
+**Technology Used:**
+- Typeform (form)
+- Zapier (automation)
+- Airtable (CRM)
+- Gmail (email)
+- Slack (notifications)
+
+**Timeline:** 3 weeks from kickoff to launch
+
+## The Results
+
+**Quantitative:**
+- Response time: 2 hours → 30 seconds (99.7% improvement)
+- Manual time: 25 hours/week → 0 hours (100% reduction)
+- Error rate: 15% → <1% (93% improvement)
+- Leads captured: 80% → 100% (20% increase)
+- ROI: $50,000/year labor savings
+
+**Qualitative:**
+- Team can focus on selling, not data entry
+- Better customer experience
+- Improved lead quality
+- Happier team
+
+## Client Testimonial
+
+"[Quote from client about their experience and results]"
+
+— [Name, Title, Company]
+
+## Lessons Learned
+
+**What worked well:**
+- [Key success factor 1]
+- [Key success factor 2]
+
+**Challenges overcome:**
+- [Challenge and how we solved it]
+
+## Interested in Similar Results?
+
+[Your CTA]
+```
+
+### Deliverable
+
+**Complete handoff package:**
+
+**Section 1: Pre-Handoff Preparation**
+- Complete checklist
+- All items checked off
+- Evidence of completion
+
+**Section 2: Handoff Materials**
+- Meeting agenda
+- Demo script
+- Acceptance form
+- Support plan document
+
+**Section 3: Mock Handoff**
+- Recording of practice demo
+- Self-assessment
+- Refinements made
+
+**Section 4: Post-Handoff Communications**
+- Immediate follow-up email
+- One-week check-in email
+- End-of-support email
+- All drafted and ready
+
+**Section 5: Relationship Building**
+- Testimonial request drafted
+- Case study written
+- Referral strategy
+
+**Section 6: Reflection**
+- What would make this handoff successful?
+- What could go wrong?
+- How would you handle difficult questions?
+- What makes you confident about this handoff?
+- What would you do differently next time?
+
+**Success Criteria:**
+- Comprehensive handoff plan created
+- All materials professional and complete
+- Demo practiced and polished
+- Support plan clear and fair
+- Post-handoff communication planned
+- Ready to execute real handoff
+- Client would feel confident taking over
+- You would feel proud of this handoff',
+
+  60,
+  true,
+  (SELECT id FROM quizzes WHERE title = 'Delivery and Handoff Quiz')
+FROM modules m
+WHERE m.slug = 'project-management-operators';
+
+INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
+SELECT
+  id,
+  'Project Handoff Best Practices',
+  'https://www.youtube.com/watch?v=cO40QYXVvZs',
+  'video',
+  1
+FROM sections WHERE slug = 'delivery-handoff'
+UNION ALL
+SELECT
+  id,
+  'Client Training and Onboarding',
+  'https://www.youtube.com/watch?v=2z2U6hDh05A',
+  'video',
+  2
+FROM sections WHERE slug = 'delivery-handoff';
