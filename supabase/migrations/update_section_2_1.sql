@@ -16,35 +16,35 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 'LLMs are versatile collaborators that assist with explanation, planning, coding, writing, and more - not random generators or fact databases.'),
 
 ((SELECT id FROM quizzes WHERE title = 'What LLMs Are Quiz'), 2,
-'Which model tier should you use for high-volume lead classification (10,000+ per month)?',
-'["Claude Opus 4 for best quality", "Claude Haiku or GPT-4o-mini for cost efficiency", "Always use the most expensive model", "It does not matter which model you use"]',
+'How should operators choose which model to use for a task?',
+'["Always use the most expensive model for best quality", "Route by capability tier: fast/cheap for simple tasks, deep reasoning for complex ones", "Use the same model for everything for consistency", "Pick randomly"]',
 1,
-'Simple, repetitive tasks like classification should use fast, cheap models like Haiku or GPT-4o-mini. Save expensive models for complex reasoning.'),
+'Operators route tasks by capability tier - fast/cheap models for classification and extraction, balanced models for daily work, high-reasoning models for complex problems.'),
 
 ((SELECT id FROM quizzes WHERE title = 'What LLMs Are Quiz'), 3,
-'What is "model routing" in the context of LLM operations?',
-'["Sending requests to random models", "Directing different task types to appropriate models based on complexity", "Using only one model for everything", "Routing network traffic"]',
+'What is the operator principle: "If switching models does not change the system design..."?',
+'["...then the model is broken", "...then it is not an architectural decision", "...then you should switch anyway", "...then you need a better model"]',
 1,
-'Model routing means matching tasks to the right model - simple tasks to cheap/fast models, complex tasks to powerful models. This optimizes cost and quality.'),
+'If switching models doesn''t change the system design, it''s not an architectural decision. Operators focus on systems, not vendor loyalty.'),
 
 ((SELECT id FROM quizzes WHERE title = 'What LLMs Are Quiz'), 4,
 'Which of these is a REQUIRED practice for production LLM systems?',
-'["Using only the newest models", "Having fallbacks, human override, and observability", "Avoiding structured outputs", "Never logging LLM responses"]',
+'["Using only the newest models", "Having fallbacks, human override, confidence thresholds, and observability", "Avoiding structured outputs", "Never logging LLM responses"]',
 1,
-'Production LLM systems must have fallbacks (for failures), human override (for corrections), and observability (logging/monitoring). These are non-negotiable.'),
+'Production LLM systems must have fallbacks, human override, confidence thresholds, and observability. These are non-negotiable for safe, reliable automation.'),
 
 ((SELECT id FROM quizzes WHERE title = 'What LLMs Are Quiz'), 5,
-'Why should you use structured outputs (JSON) instead of free-form text in automation?',
-'["JSON looks more professional", "Structured outputs can be reliably parsed and used by downstream systems", "Free-form text is never useful", "It is required by all APIs"]',
+'What should happen when an LLM output has medium or low confidence?',
+'["Auto-execute anyway", "Queue for human review or fail safely", "Ignore the output", "Retry until confidence is high"]',
 1,
-'Structured outputs like JSON can be reliably parsed by code. Free-form text is unpredictable and hard to use in automation workflows.');
+'Medium confidence outputs should be queued for human review. Low confidence outputs should trigger fallbacks or fail safely. Only high confidence outputs should auto-execute.');
 
 -- Update the section content
 UPDATE sections
 SET
   content_markdown = '# What LLMs Are and How They Help Operators
 
-Large Language Models (LLMs) like GPT and Claude are your most important tools as an AI operator. Understanding what they are, what they''re good at, and how to use them effectively will 10x your productivity.
+Large Language Models (LLMs) like GPT, Claude, and Gemini are your most important tools as an AI operator. Understanding what they are, what they''re good at, and how to use them effectively will 10x your productivity.
 
 ## What LLMs Actually Are
 
@@ -61,68 +61,102 @@ Technically, LLMs are neural networks trained to predict the next token (word pi
 | **Analyst** | Synthesize information and find patterns | "Analyze these support tickets for trends" |
 | **Debugger** | Find and fix issues | "Why is this Zapier workflow failing?" |
 
-## The 2024/2025 Model Landscape
+---
 
-The model landscape has evolved significantly. Here''s what you need to know:
+## The LLM Ecosystem: Why Operators Don''t Bet on One Model
 
-### Claude Models (Anthropic)
+Smart operators maintain flexibility across providers. Each has strengths:
 
-| Model | Best For | Context | Speed | Cost |
-|-------|----------|---------|-------|------|
-| **Claude Sonnet 4** | Daily driver - code, analysis, writing | 200K tokens | Fast | Medium |
-| **Claude Opus 4** | Complex reasoning, architecture, hard problems | 200K tokens | Slower | Higher |
-| **Claude Haiku** | Classification, extraction, high-volume tasks | 200K tokens | Very Fast | Low |
+| Provider | Where It Shines | Typical Operator Use |
+|----------|-----------------|---------------------|
+| **Anthropic (Claude)** | Long context, code quality, nuanced writing | Default daily driver |
+| **OpenAI (GPT family)** | Tool calling, structured output, broad ecosystem | Production automation |
+| **Google (Gemini)** | Multimodal, document/image understanding | PDF analysis, screenshots |
+| **Open-source (LLaMA, Mistral)** | Cost control, data sovereignty | Self-hosted or regulated environments |
 
-### OpenAI Models
+**Key principle:**
 
-| Model | Best For | Context | Speed | Cost |
-|-------|----------|---------|-------|------|
-| **GPT-4.1** | Structured outputs, tool use, JSON | 128K tokens | Fast | Medium |
-| **o1 / o3** | Complex reasoning, math, logic puzzles | 200K tokens | Slow | High |
-| **GPT-4o-mini** | Simple tasks, classification, high volume | 128K tokens | Very Fast | Very Low |
+> If switching models doesn''t change the system design, it''s not an architectural decision.
 
-### When to Use Which
+Operators focus on systems, not vendor loyalty. Tools are interchangeable; your thinking is what matters.
 
-**Use Claude Sonnet 4 for:**
-- Code generation and refactoring
-- Long document analysis (contracts, specs)
-- System architecture design
-- Detailed explanations
-- Most everyday operator work
+---
 
-**Use Claude Opus 4 / o1 for:**
-- Complex multi-step reasoning
-- Difficult debugging
-- Strategic planning
-- Problems that require "thinking hard"
+## Understanding Model Tiers (Not Specific Names)
 
-**Use Haiku / GPT-4o-mini for:**
-- Lead classification (hot/warm/cold)
-- Data extraction (pull email from text)
-- Format conversion (CSV to JSON)
-- Any high-volume, simple task
+> **Important:** Model names, pricing, and capabilities change frequently. Focus on capability tiers, not specific labels.
 
-## Model Routing: A Key Operator Skill
+### The Three Tiers
 
-Smart operators don''t use one model for everything. They **route tasks to the right model**:
+| Tier | Capability | When to Use | Cost |
+|------|------------|-------------|------|
+| **Fast/Cheap** | Classification, extraction, format conversion | High-volume, simple, pattern-based tasks | Very Low |
+| **Balanced** | Code, analysis, writing, daily operator work | Most everyday tasks | Medium |
+| **Deep Reasoning** | Complex multi-step problems, architecture, hard debugging | Tasks requiring careful analysis | Higher |
 
-```
-Simple classification → Haiku ($0.25/1M tokens)
-Standard code task → Sonnet 4 ($3/1M tokens)
-Complex architecture → Opus 4 ($15/1M tokens)
-```
+### Examples by Provider
 
-**Example routing logic:**
+**Fast/Cheap tier:**
+- Anthropic: Haiku
+- OpenAI: GPT-4o-mini
+- Google: Gemini Flash
+
+**Balanced tier:**
+- Anthropic: Sonnet
+- OpenAI: GPT-4o
+- Google: Gemini Pro
+
+**Deep Reasoning tier:**
+- Anthropic: Opus (with extended reasoning)
+- OpenAI: o1, o3
+- Google: Gemini Ultra
+
+*These names will change. The tier concept won''t.*
+
+---
+
+## Capability-First Routing
+
+Operators route tasks by **capability**, not by provider.
+
+### Core Capabilities to Route By
+
+| Capability | Best Tier | Example Tasks |
+|------------|-----------|---------------|
+| **Classification** | Fast/Cheap | Lead scoring, email categorization, sentiment |
+| **Extraction** | Fast/Cheap | Pull order numbers, parse addresses, extract dates |
+| **Code Generation** | Balanced | Write scripts, debug, refactor |
+| **Long Document Analysis** | Balanced+ | Contract review, spec analysis |
+| **Structured Output (JSON)** | Balanced | API responses, data transformation |
+| **Multimodal (Images, PDFs)** | Varies | Screenshot analysis, document processing |
+| **Complex Reasoning** | Deep | Architecture decisions, tricky debugging |
+| **Data Sovereignty** | Open-source | Regulated industries, sensitive data |
+
+### Routing Logic Example
+
 ```
 IF task is classification or extraction:
-    use Haiku
-ELSE IF task requires deep reasoning:
-    use Opus 4 with extended thinking
+    use Fast/Cheap tier
+ELSE IF task involves images or PDFs:
+    use model with multimodal capability
+ELSE IF task requires deep multi-step reasoning:
+    use Deep Reasoning tier
 ELSE:
-    use Sonnet 4 (default)
+    use Balanced tier (default)
 ```
 
-This approach can reduce costs by 80% while maintaining quality where it matters.
+### Cost Impact
+
+Proper routing can reduce LLM costs by 70-90% while maintaining quality where it matters.
+
+```
+10,000 classifications/month:
+  Deep tier: ~$150/month
+  Fast tier: ~$2/month
+  Savings: 98%
+```
+
+---
 
 ## Model Fallbacks: Build Resilient Systems
 
@@ -130,18 +164,43 @@ Production systems need fallbacks. Models have outages, rate limits, and failure
 
 **Pattern: Primary → Fallback → Manual**
 ```
-1. Try Claude Sonnet 4
-2. If fails → Try GPT-4.1
+1. Try primary model (e.g., Claude Balanced)
+2. If fails → Try fallback (e.g., GPT Balanced)
 3. If fails → Queue for human review
 ```
 
 Never build systems that depend on a single model with no backup plan.
 
+---
+
+## Extended Reasoning Modes
+
+Some models offer extended reasoning modes (Claude''s extended thinking, OpenAI''s o1/o3).
+
+**What this actually means:**
+
+These modes increase internal computation, not intelligence. The model allocates more processing to work through complex problems before responding.
+
+**When to use extended reasoning:**
+- Complex debugging with multiple possible causes
+- System design with many tradeoffs
+- Multi-step logic problems
+- Anything where you''d want a human to "think carefully"
+
+**When NOT to use it:**
+- Simple classification
+- Straightforward code generation
+- Anything routine
+
+**Tradeoffs:** Extended reasoning is slower and more expensive. Use it selectively, not by default.
+
+---
+
 ## API vs Chat Interface
 
 As an operator, you''ll use LLMs two ways:
 
-### Chat Interface (ChatGPT, Claude.ai)
+### Chat Interface (ChatGPT, Claude.ai, Gemini)
 - **Best for:** Learning, exploration, one-off tasks
 - **How it works:** You type, AI responds, back and forth
 - **Limitation:** Manual, doesn''t scale
@@ -152,6 +211,8 @@ As an operator, you''ll use LLMs two ways:
 - **Advantage:** Scales infinitely, integrates with workflows
 
 **You need both.** Start with chat to learn and prototype. Move to API when you need automation.
+
+---
 
 ## Structured Outputs: Get Predictable Results
 
@@ -169,28 +230,15 @@ maybe follow up next week..."
   "classification": "warm",
   "priority": "medium",
   "next_action": "follow_up",
-  "follow_up_date": "2025-01-06"
+  "follow_up_days": 7
 }
 ```
 
-The second version can be parsed and used by your automation. Always request structured output when building systems.
+The second version can be parsed and used by your automation.
 
-## Extended Thinking for Hard Problems
+> **Always request structured output when building systems.** This is non-negotiable.
 
-Claude Opus 4 and o1/o3 support "extended thinking" - they can reason through complex problems step by step before answering.
-
-**When to use extended thinking:**
-- Complex debugging with multiple possible causes
-- System design with many tradeoffs
-- Multi-step logic problems
-- Anything where you''d want a human to "think carefully"
-
-**When NOT to use it:**
-- Simple classification
-- Straightforward code generation
-- Anything routine
-
-Extended thinking is slower and more expensive. Use it strategically.
+---
 
 ## The Human Override Principle
 
@@ -201,8 +249,46 @@ LLMs will make mistakes. Your systems must allow humans to:
 2. **Correct** - Fix wrong outputs
 3. **Learn** - Feed corrections back to improve prompts
 
-Bad pattern: LLM → Auto-send email to customer (no review)
-Good pattern: LLM → Draft email → Human approves → Send
+| Pattern | Risk Level |
+|---------|------------|
+| LLM → Auto-send email (no review) | ❌ Dangerous |
+| LLM → Draft email → Human approves → Send | ✅ Safe |
+
+---
+
+## Confidence Thresholds: When to Execute
+
+Not every AI output should trigger an action. Operators define confidence thresholds and execution rules:
+
+| Confidence | Action |
+|------------|--------|
+| **High confidence** | Auto-execute |
+| **Medium confidence** | Queue for human review |
+| **Low confidence** | Fallback or manual handling |
+
+### How to Implement
+
+1. **Request confidence in structured output:**
+```json
+{
+  "classification": "hot",
+  "confidence": 0.92,
+  "reasoning": "Budget approved, timeline urgent, decision maker engaged"
+}
+```
+
+2. **Define thresholds:**
+```
+IF confidence >= 0.85: auto-execute
+ELSE IF confidence >= 0.60: human review
+ELSE: fallback to manual
+```
+
+3. **Log everything for tuning** - Thresholds should be adjusted based on real performance data.
+
+This dramatically improves system safety and reliability.
+
+---
 
 ## Observability: Know When Things Go Wrong
 
@@ -211,34 +297,41 @@ Production LLM systems need logging and monitoring:
 **Log these for every LLM call:**
 - Input (what you sent)
 - Output (what you got back)
-- Model used
+- Model and tier used
 - Latency (how long it took)
 - Token count (cost tracking)
+- Confidence score
 - Success/failure
 
 **Alert on:**
 - Error rate spikes
 - Latency increases
-- Unexpected outputs
+- Confidence score drops
+- Unexpected output patterns
 - Cost anomalies
 
 If you can''t see what''s happening, you can''t fix it when it breaks.
+
+---
 
 ## What LLMs Are NOT
 
 **They are NOT:**
 - ❌ Perfect databases of facts (they hallucinate)
-- ❌ Replacement for testing (always test their code)
+- ❌ Replacement for testing (always verify their code)
 - ❌ Deterministic (same input can give different outputs)
 - ❌ Aware of real-time information (knowledge cutoff exists)
 - ❌ Able to take actions (they can only suggest, you execute)
+- ❌ Thinking like humans (they''re probabilistic reasoning engines)
 
 **They ARE:**
 - ✅ Incredibly fast at research and synthesis
 - ✅ Great at pattern recognition and transformation
 - ✅ Excellent at explaining complexity simply
 - ✅ Tireless - available 24/7
-- ✅ Probabilistic reasoning engines
+- ✅ Probabilistic, not deterministic
+
+---
 
 ## The Operator + LLM Partnership
 
@@ -257,6 +350,23 @@ You provide: Clear instructions + Context + Verification
 LLM provides: Speed + Knowledge + Draft outputs
 Result: 10x productivity
 ```
+
+---
+
+## LLM Task Design (Not "Prompt Engineering")
+
+Effective LLM use is about task design, not magic spells:
+
+| Component | Purpose |
+|-----------|---------|
+| **Instructions** | What you want done |
+| **Constraints** | What to avoid, limits |
+| **Examples** | Show the pattern you want |
+| **Evaluation** | How you''ll verify quality |
+
+Prompts are instructions, constraints, and examples - not magic. The skill is in clear thinking, not clever wording.
+
+---
 
 ## Real Example: Time Saved
 
@@ -279,83 +389,78 @@ Result: 10x productivity
 
 **7 hours saved** - and you learned more because you focused on understanding rather than syntax debugging.
 
+> **Note:** Actual savings depend on your experience, problem clarity, and verification discipline. These estimates assume you verify outputs properly.
+
+---
+
 ## Key Takeaways
 
-1. **Match models to tasks** - Don''t use Opus for classification
-2. **Build with fallbacks** - Never depend on one model
-3. **Use structured outputs** - JSON is your friend for automation
-4. **Keep humans in the loop** - Every system needs override capability
-5. **Log everything** - Observability is not optional
-6. **Verify outputs** - Trust but verify, always',
-  exercise_markdown = '## Exercise: Model Selection and Comparison
+1. **Route by capability tier** - Not by brand or hype
+2. **Build with fallbacks** - Never depend on one model or provider
+3. **Use structured outputs** - JSON is non-negotiable for automation
+4. **Set confidence thresholds** - Not every output should auto-execute
+5. **Keep humans in the loop** - Every system needs override capability
+6. **Log everything** - Observability is not optional
+7. **Focus on systems** - If switching models doesn''t change your design, it''s not architectural
+8. **Verify outputs** - LLMs are probabilistic, not oracles',
 
-This exercise is completed through the interactive form below. Complete all parts to understand when to use each model.',
+  exercise_markdown = '## Exercise: Model Ecosystem and Routing Design
+
+This exercise is completed through the interactive form below. You''ll design capability-based routing for a real use case.',
+
   exercise_schema = '{
   "parts": [
     {
       "id": "part1",
-      "title": "Part 1: Model Knowledge Assessment",
-      "description": "Test your understanding of the current LLM landscape.",
+      "title": "Part 1: Understanding Model Tiers",
+      "description": "Demonstrate your understanding of capability-based model selection.",
       "fields": [
         {
-          "id": "claude_models",
-          "type": "checkbox_group",
-          "label": "Which of these are current Claude model tiers? (Select all that apply)",
-          "required": true,
-          "options": [
-            "Claude Opus 4",
-            "Claude Sonnet 4",
-            "Claude Haiku",
-            "Claude GPT",
-            "Claude Mini"
-          ]
-        },
-        {
-          "id": "model_for_classification",
-          "type": "radio",
-          "label": "You need to classify 50,000 customer support tickets per month as Billing/Technical/General. Which model should you use?",
-          "required": true,
-          "options": [
-            "Claude Opus 4 - need the best quality",
-            "Claude Sonnet 4 - balanced choice",
-            "Claude Haiku - fast and cheap for simple classification",
-            "o1 - need deep reasoning"
-          ]
-        },
-        {
-          "id": "classification_reasoning",
+          "id": "tier_understanding",
           "type": "textarea",
-          "label": "Explain why you chose that model for the classification task:",
-          "placeholder": "Consider: task complexity, volume, cost, speed requirements...",
+          "label": "In your own words, explain the three model tiers (Fast/Cheap, Balanced, Deep Reasoning) and when to use each:",
+          "placeholder": "Fast/Cheap tier is for...\nBalanced tier is for...\nDeep Reasoning tier is for...",
           "required": true,
-          "rows": 3
+          "rows": 5
         },
         {
-          "id": "model_for_architecture",
+          "id": "classification_tier",
           "type": "radio",
-          "label": "You need to design a complex multi-system integration with many tradeoffs. Which model should you use?",
+          "label": "You need to classify 50,000 customer support tickets per month as Billing/Technical/General. Which TIER should you use?",
           "required": true,
           "options": [
-            "Claude Haiku - fast response",
-            "GPT-4o-mini - cheapest option",
-            "Claude Opus 4 or o1 - complex reasoning required",
-            "Any model works equally well"
+            "Deep Reasoning - need the best quality",
+            "Balanced - safe middle ground",
+            "Fast/Cheap - high volume, simple pattern matching",
+            "Any tier works equally well"
           ]
         },
         {
-          "id": "architecture_reasoning",
-          "type": "textarea",
-          "label": "Explain why complex architecture design needs a more powerful model:",
-          "placeholder": "Consider: tradeoff analysis, multi-step reasoning, experience needed...",
+          "id": "architecture_tier",
+          "type": "radio",
+          "label": "You need to design a complex multi-system integration with many tradeoffs. Which TIER should you use?",
           "required": true,
-          "rows": 3
+          "options": [
+            "Fast/Cheap - keep costs low",
+            "Balanced - good enough for most things",
+            "Deep Reasoning - complex analysis required",
+            "Any tier works equally well"
+          ]
+        },
+        {
+          "id": "multimodal_scenario",
+          "type": "textarea",
+          "label": "A client sends you scanned PDF invoices that need data extraction. Which capability do you need and which providers offer it?",
+          "placeholder": "Capability needed: ...\nProviders that offer this: ...\nMy approach: ...",
+          "required": true,
+          "rows": 4
         }
       ]
     },
     {
       "id": "part2",
-      "title": "Part 2: Model Routing Design",
-      "description": "Design a model routing strategy for a real use case.",
+      "title": "Part 2: Capability-First Routing Design",
+      "description": "Design a model routing strategy based on capabilities, not brands.",
       "fields": [
         {
           "id": "business_context",
@@ -367,169 +472,129 @@ This exercise is completed through the interactive form below. Complete all part
         {
           "id": "task_list",
           "type": "textarea",
-          "label": "List 5+ tasks where LLMs could help in this business:",
-          "placeholder": "1. Classify incoming emails by intent\n2. Generate response drafts\n3. Extract order numbers from messages\n4. Summarize long customer histories\n5. Design new automation workflows...",
+          "label": "List 5+ tasks where LLMs could help. For each, identify the CAPABILITY needed (classification, extraction, code gen, reasoning, multimodal, etc.):",
+          "placeholder": "1. Classify incoming emails → Capability: Classification\n2. Extract order numbers → Capability: Extraction\n3. Generate response drafts → Capability: Writing/Generation\n4. Analyze support trends → Capability: Analysis/Reasoning\n5. Process receipt images → Capability: Multimodal",
           "required": true,
-          "rows": 6
+          "rows": 7
         },
         {
           "id": "routing_table",
           "type": "textarea",
-          "label": "Create a routing table: For each task, specify which model tier to use and why:",
-          "placeholder": "Task 1: Email classification → Haiku (simple pattern matching, high volume)\nTask 2: Response drafts → Sonnet 4 (needs good writing quality)\nTask 3: Order extraction → Haiku (simple extraction)\n...",
+          "label": "Create a routing table by TIER (not specific model names). Which tier handles each task?",
+          "placeholder": "Task 1: Email classification → Fast/Cheap tier (simple pattern matching)\nTask 2: Order extraction → Fast/Cheap tier (structured extraction)\nTask 3: Response drafts → Balanced tier (needs writing quality)\nTask 4: Trend analysis → Balanced tier (synthesis required)\nTask 5: Receipt images → Balanced tier with multimodal capability",
           "required": true,
-          "rows": 8
+          "rows": 7
         },
         {
-          "id": "cost_estimate",
+          "id": "provider_flexibility",
           "type": "textarea",
-          "label": "Estimate monthly costs for your routing strategy (assume volumes):",
-          "placeholder": "Email classification: 10k/month × $0.25/1M tokens = ~$X\nResponse drafts: 5k/month × $3/1M tokens = ~$X\nTotal estimated: $X/month",
+          "label": "For your most critical task, list 2-3 providers that could handle it. Why does this flexibility matter?",
+          "placeholder": "Critical task: ...\nOption 1: [Provider] - because...\nOption 2: [Provider] - because...\nFlexibility matters because: ...",
           "required": true,
           "rows": 5
-        },
-        {
-          "id": "alternative_cost",
-          "type": "textarea",
-          "label": "What would it cost if you used Opus 4 for everything? Calculate the difference:",
-          "placeholder": "All tasks with Opus: X tokens × $15/1M = $X\nDifference: $X saved per month with routing",
-          "required": true,
-          "rows": 3
         }
       ]
     },
     {
       "id": "part3",
-      "title": "Part 3: Fallback and Override Design",
-      "description": "Design resilient systems with fallbacks and human oversight.",
+      "title": "Part 3: Confidence Thresholds and Safety",
+      "description": "Design execution rules based on confidence levels.",
       "fields": [
         {
-          "id": "primary_model",
-          "type": "select",
-          "label": "For your main use case, what is your PRIMARY model choice?",
-          "required": true,
-          "options": [
-            "Claude Sonnet 4",
-            "Claude Opus 4",
-            "Claude Haiku",
-            "GPT-4.1",
-            "GPT-4o-mini",
-            "o1 / o3"
-          ]
-        },
-        {
-          "id": "fallback_model",
-          "type": "select",
-          "label": "What is your FALLBACK model if the primary fails?",
-          "required": true,
-          "options": [
-            "Claude Sonnet 4",
-            "GPT-4.1",
-            "Claude Haiku",
-            "GPT-4o-mini",
-            "Queue for human review",
-            "Fail silently (not recommended)"
-          ]
-        },
-        {
-          "id": "fallback_triggers",
-          "type": "checkbox_group",
-          "label": "When should the system switch to the fallback? (Select all that apply)",
-          "required": true,
-          "options": [
-            "API timeout (>30 seconds)",
-            "Rate limit exceeded",
-            "5xx server error",
-            "Invalid/malformed response",
-            "Content policy violation",
-            "Cost threshold exceeded"
-          ]
-        },
-        {
-          "id": "human_override_design",
+          "id": "confidence_design",
           "type": "textarea",
-          "label": "Describe your human override process. How can humans intervene when the AI makes mistakes?",
-          "placeholder": "1. All AI outputs are logged with unique IDs\n2. Users can flag incorrect outputs via [method]\n3. Flagged items go to [queue/dashboard]\n4. Humans can correct and the correction is [stored/fed back]...",
+          "label": "For your lead classification or email routing system, design confidence thresholds. What happens at each level?",
+          "placeholder": "High confidence (>85%): Auto-execute - route to appropriate queue\nMedium confidence (60-85%): Queue for human review with AI suggestion\nLow confidence (<60%): Flag for manual classification, no AI action",
           "required": true,
           "rows": 5
         },
         {
-          "id": "observability_plan",
+          "id": "structured_output_example",
           "type": "textarea",
-          "label": "What will you log and monitor for your LLM system?",
-          "placeholder": "Logs:\n- Input prompts\n- Model responses\n- Latency\n- Token counts\n- Errors\n\nAlerts:\n- Error rate > X%\n- Latency > X seconds\n- Daily cost > $X",
+          "label": "Write a sample structured output (JSON) that includes classification, confidence, and reasoning:",
+          "placeholder": "{\n  \"classification\": \"hot_lead\",\n  \"confidence\": 0.89,\n  \"reasoning\": \"Budget mentioned, timeline is Q1, decision maker engaged\",\n  \"recommended_action\": \"immediate_followup\"\n}",
           "required": true,
-          "rows": 6
+          "rows": 7
+        },
+        {
+          "id": "fallback_design",
+          "type": "textarea",
+          "label": "Design your fallback chain. What happens when your primary model fails?",
+          "placeholder": "1. Primary: [Provider/Tier] - because...\n2. Fallback 1: [Provider/Tier] - triggered when...\n3. Fallback 2: Human review queue - triggered when...\n4. Final fallback: Fail safely with notification",
+          "required": true,
+          "rows": 5
+        },
+        {
+          "id": "human_override",
+          "type": "textarea",
+          "label": "How will humans review and correct AI decisions? Describe the override process:",
+          "placeholder": "1. All AI decisions logged with unique ID\n2. Dashboard shows decisions with confidence scores\n3. Users can click to review low-confidence items\n4. Override button allows correction\n5. Corrections logged for future prompt improvement",
+          "required": true,
+          "rows": 5
         }
       ]
     },
     {
       "id": "part4",
-      "title": "Part 4: Hands-On Model Comparison",
-      "description": "Actually test different models and document your findings.",
+      "title": "Part 4: Observability Planning",
+      "description": "Design logging and monitoring for your LLM system.",
       "fields": [
         {
-          "id": "test_completed",
-          "type": "radio",
-          "label": "Have you tested both ChatGPT and Claude with the prompts below?",
+          "id": "logging_plan",
+          "type": "textarea",
+          "label": "What will you log for every LLM call? Be specific:",
+          "placeholder": "- Timestamp\n- Request ID\n- Input (sanitized)\n- Output\n- Model/tier used\n- Latency (ms)\n- Token count (input/output)\n- Confidence score\n- Cost estimate\n- Success/failure status",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "alert_conditions",
+          "type": "checkbox_group",
+          "label": "Which conditions should trigger alerts? (Select all that apply)",
           "required": true,
           "options": [
-            "Yes, I tested both",
-            "I tested one of them",
-            "Not yet, I will do this after"
+            "Error rate exceeds 5%",
+            "Average latency exceeds 10 seconds",
+            "Confidence scores dropping below threshold",
+            "Daily cost exceeds budget",
+            "Unusual output patterns detected",
+            "Fallback model being used frequently",
+            "Human override rate increasing"
           ]
         },
         {
-          "id": "explanation_test",
+          "id": "key_principle",
           "type": "textarea",
-          "label": "Test 1: Ask both models to explain webhooks to a non-technical person in 100 words. Which was clearer and why?",
-          "placeholder": "Claude said: [summary]\nGPT said: [summary]\nWinner: [model] because [reason]",
+          "label": "In your own words, explain this principle: \"If switching models doesn''t change the system design, it''s not an architectural decision.\"",
+          "placeholder": "This means that...\nFor example...\nThis matters because...",
           "required": true,
-          "rows": 5
-        },
-        {
-          "id": "code_test",
-          "type": "textarea",
-          "label": "Test 2: Ask both to write a Python function that validates email addresses. Compare the code quality:",
-          "placeholder": "Claude code: [observations - error handling, readability, edge cases]\nGPT code: [observations]\nWinner for code: [model] because [reason]",
-          "required": true,
-          "rows": 5
-        },
-        {
-          "id": "structured_output_test",
-          "type": "textarea",
-          "label": "Test 3: Ask both to classify this lead as JSON: \"We are a 50-person company looking to implement next month. Budget approved.\" Compare the outputs:",
-          "placeholder": "Claude output: {\"classification\": \"...\", ...}\nGPT output: {\"classification\": \"...\", ...}\nWhich followed JSON format better? Which classification was more accurate?",
-          "required": true,
-          "rows": 5
-        },
-        {
-          "id": "personal_preferences",
-          "type": "textarea",
-          "label": "Based on your tests, when will you personally use Claude vs GPT vs other models?",
-          "placeholder": "I will use Claude for: [tasks]\nI will use GPT for: [tasks]\nI will use Haiku/mini for: [tasks]\nReasoning: [why]",
-          "required": true,
-          "rows": 5
+          "rows": 4
         }
       ]
     }
   ],
   "deliverables": [
-    "Correctly identified current model tiers and their use cases",
-    "Designed a model routing strategy with cost estimates",
-    "Created fallback and human override processes",
-    "Tested multiple models and documented preferences",
-    "Planned observability for LLM operations"
+    "Explained model tiers based on capability, not brand names",
+    "Designed capability-first routing for a real use case",
+    "Created confidence thresholds with execution rules",
+    "Designed fallback chains and human override processes",
+    "Planned observability with logging and alerting"
   ],
   "success_criteria": [
-    "You can match tasks to appropriate model tiers",
-    "You understand cost implications of model choices",
-    "You have fallback and human override plans for every LLM integration",
-    "You know when to use Claude vs GPT vs cheaper models",
+    "You route by capability tier, not by specific model names",
+    "You maintain provider flexibility (not locked to one vendor)",
+    "You have confidence thresholds that prevent unsafe auto-execution",
+    "You have fallback chains and human override processes",
     "You plan for observability in all LLM systems"
   ]
 }'::jsonb
 WHERE slug = 'what-llms-are';
+
+-- Update external resources to remove "prompt engineering" language
+UPDATE external_resources
+SET title = 'LLM Task Design - Beginner''s Guide'
+WHERE section_id = (SELECT id FROM sections WHERE slug = 'what-llms-are')
+AND title LIKE '%Prompt Engineering%';
 
 -- Verify the update
 SELECT slug, title,
