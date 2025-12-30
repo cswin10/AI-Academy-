@@ -217,7 +217,7 @@ Action 1: Create record + send email + notify team
 ```
 # Idempotent: Safe to repeat
 "Update record where ID = 123"
-"Set status to 'processed'"
+"Set status to ''processed''"
 
 # Not idempotent: Creates duplicates
 "Create new record"
