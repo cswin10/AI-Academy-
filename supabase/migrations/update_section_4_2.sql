@@ -1,5 +1,5 @@
 -- ============================================================================
--- UPDATE SECTION 4.2: AI Code Assistants (Cursor, Windsurf, GitHub Copilot, Cline)
+-- UPDATE SECTION 4.2: AI Code Assistants (Cursor, Windsurf, GitHub Copilot, Cline, Claude Code)
 -- Modernized with extensive content, 8 quiz questions, and exercise_schema
 -- ============================================================================
 
@@ -118,6 +118,26 @@ Claude integration: Uses Claude''s API directly, benefiting from Claude''s stron
 **Pricing:** Free extension. You provide your own Claude API key and pay per use. Cost depends on usage volume.
 
 **Best for:** Operators who specifically want Claude for code. Those comfortable managing API costs. Users who want explicit control over AI actions.
+
+### Claude Code
+
+Claude Code is Anthropic''s official command-line interface for AI-assisted development. Unlike GUI-based editors, Claude Code runs directly in your terminal, making it powerful for developers who prefer command-line workflows.
+
+**Core Features:**
+
+Agentic operation: Claude Code can read and understand your entire codebase, edit multiple files, and execute terminal commands. It operates as an autonomous agent that completes multi-step tasks.
+
+Terminal-native: Works in any terminal environment. Integrates with your existing command-line workflow, git, and build tools without requiring a specific editor.
+
+Full codebase context: Automatically indexes and understands your project structure. References relevant files when generating or modifying code.
+
+Command execution: Can run shell commands, tests, and build processes as part of completing tasks. You approve actions before execution.
+
+Multi-file editing: Handles refactoring and feature implementation that spans many files in a single operation.
+
+**Pricing:** Free and open source tool. Uses Claude API, so you pay based on API usage. Cost scales with how much you use it.
+
+**Best for:** Developers comfortable in the terminal who want maximum power and flexibility. Those building complex features requiring multi-file changes. Operators who want agentic AI that can handle entire workflows. Users who prefer open source tools.
 
 ## How Operators Use Code Assistants
 
@@ -319,6 +339,12 @@ Option C: Cline with VS Code
 - Install Cline extension
 - Configure Claude API key
 - Test with a simple request
+
+Option D: Claude Code (recommended for terminal users)
+- Install via npm, pip, or download from github.com/anthropics/claude-code
+- Configure Claude API key
+- Open your project folder in terminal
+- Test with a simple request like "explain this codebase"
 
 **Document your setup:**
 - Which tool you chose and why
@@ -537,7 +563,7 @@ exercise_schema = '{
       "title": "Environment Setup",
       "type": "setup",
       "task": "Install and configure chosen code assistant",
-      "options": ["Cursor", "GitHub Copilot", "Cline"],
+      "options": ["Cursor", "GitHub Copilot", "Cline", "Claude Code"],
       "documentation_required": ["tool_choice_reasoning", "setup_issues", "time_spent"]
     },
     {
