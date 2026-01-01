@@ -45,7 +45,7 @@ This section builds on the capability tiers introduced in Module 1 and the task 
 
 **Model Capability Tier**: As introduced in Module 1, models fall into tiers based on capability and cost. Fast/Cheap tier handles simple tasks efficiently. Balanced tier offers good performance for most operator work. Deep Reasoning tier handles complex analysis and multi-step logic.
 
-**Tokens**: The units used to measure text length. Roughly 4 characters per token in English. A 100-page document contains approximately 75,000 tokens.
+**Tokens**: The units used to measure text length. Roughly 4 characters per token in English. Large documents can contain tens of thousands of tokens, though this varies significantly based on formatting and content density.
 
 **Inference**: The process of sending a prompt to a model and receiving a response. You pay for inference based on input and output tokens consumed.
 
@@ -61,7 +61,7 @@ Now consider a contract analysis task. The input is a 50-page legal document. Th
 
 ### ChatGPT (OpenAI)
 
-OpenAI offers models across all capability tiers. GPT-4o-mini serves as a Fast/Cheap option for simple tasks. GPT-4o provides Balanced tier capabilities for most operator work. The o1 series offers Deep Reasoning for complex analysis requiring multi-step logic.
+OpenAI offers models across all capability tiers. Examples include smaller, faster models for simple classification tasks (Fast/Cheap tier), general-purpose models for most operator work (Balanced tier), and reasoning-focused models for complex multi-step analysis (Deep Reasoning tier). Model names change over time, so select based on tier requirements and current benchmarks rather than memorizing specific model identifiers.
 
 Strengths: Excellent structured output support including JSON mode and function calling. Strong ecosystem of Custom GPTs for creating reusable task-specific interfaces. Web browsing and DALL-E image generation included with Plus subscription. Most widely adopted platform with extensive community resources.
 
@@ -69,19 +69,19 @@ Limitations: Can be verbose in responses when conciseness is needed. Conservativ
 
 Best for: Structured data extraction (connect to Module 3.2 on output formatting). Tool-integrated workflows using function calling. Creating reusable Custom GPTs for repeated tasks. Image generation needs via DALL-E integration.
 
-Pricing structure: Plus subscription at 20 dollars monthly provides chat interface access. API pricing is usage-based, approximately 2.50 dollars per million tokens for GPT-4o.
+Pricing structure: Subscription tiers provide chat interface access. API pricing is usage-based, charged per token. Check the current pricing page for up-to-date rates, as these change periodically.
 
 ### Claude (Anthropic)
 
-Claude offers Haiku as Fast/Cheap tier, Sonnet as Balanced tier, and Opus as Deep Reasoning tier. The distinctive feature is a 200,000 token context window, enabling analysis of very long documents without chunking.
+Claude offers models across capability tiers, with examples including fast lightweight models for simple tasks, general-purpose models for most work, and advanced reasoning models for complex analysis. Model names evolve, so focus on tier matching rather than specific identifiers. A distinctive feature is support for large context windows (up to approximately 200k tokens depending on model and plan), enabling analysis of very long documents without chunking.
 
-Strengths: Exceptional code generation and debugging capabilities. 200k context window handles documents that would require chunking on other platforms. Thoughtful, detailed responses that follow complex instructions well. Projects feature allows persistent context across conversations.
+Strengths: Exceptional code generation and debugging capabilities. Large context windows handle documents that would require chunking on other platforms. Thoughtful, detailed responses that follow complex instructions well. Projects feature allows persistent context across conversations.
 
-Limitations: No native image generation capability. No web browsing (relies on provided content). Smaller third-party integration ecosystem than ChatGPT.
+Limitations: No native image generation capability. Web search and research features have been introduced for some plans and contexts, but availability varies by region and subscription level, so verify in your account. Smaller third-party integration ecosystem than ChatGPT.
 
-Best for: Code writing and debugging tasks. Analyzing long documents (100+ pages) in single requests. Complex reasoning tasks requiring careful instruction following. System architecture design and technical documentation.
+Best for: Code writing and debugging tasks. Analyzing long documents in single requests. Complex reasoning tasks requiring careful instruction following. System architecture design and technical documentation.
 
-Pricing structure: Pro subscription at 20 dollars monthly for chat interface. API pricing varies by tier, approximately 3 dollars per million tokens for Sonnet.
+Pricing structure: Subscription tiers provide chat interface access. API pricing is usage-based and varies by model tier. Check the current pricing page for up-to-date rates.
 
 ### Gemini (Google)
 
@@ -95,11 +95,11 @@ Best for: Teams heavily using Google Workspace. Tasks requiring real-time web in
 
 ### Perplexity
 
-Perplexity is purpose-built for research tasks with citation. Unlike general-purpose LLMs, every response includes sources.
+Perplexity is purpose-built for research tasks with citation. Unlike general-purpose LLMs, it is designed to provide sources with responses.
 
-Strengths: Always provides citations and source links. Built-in web search that is the default mode. Clean interface focused on research workflow. Multiple search modes (Quick, Pro, Focus) for different needs.
+Strengths: Typically provides citations and source links, though citation quality varies by mode and query type. Built-in web search that is the default mode. Clean interface focused on research workflow. Multiple search modes for different needs.
 
-Limitations: Not designed for creative writing or content generation. Limited code generation capabilities. Smaller context window than competitors. No API access currently available.
+Limitations: Not designed for creative writing or content generation. Limited code generation capabilities. Smaller context window than competitors. API access exists but Perplexity is primarily positioned as a research-first product, and the API offering has separate considerations for pricing, rate limits, and licensing that you should evaluate independently.
 
 Best for: Research requiring verifiable sources. Fact-checking and verification tasks. Quick answers about current events. Comparing information across multiple sources.
 
@@ -109,7 +109,7 @@ From Module 2, recall the 4-layer automation model: Triggers, Logic, Execution, 
 
 In the Logic layer, you design how AI processes information. A simple classification might use any platform''s Fast/Cheap tier. A complex analysis chain might use Claude''s long context for document ingestion, then ChatGPT''s function calling for structured extraction.
 
-In the Execution layer, API access becomes critical. Platforms without APIs (like Perplexity currently) cannot integrate into automated workflows. When designing execution layer automations, confirm your chosen platform offers the API capabilities you need.
+In the Execution layer, API access becomes critical. When designing execution layer automations, confirm your chosen platform offers the API capabilities you need and that the API terms fit your use case.
 
 Consider this workflow: receive customer email (Trigger), classify urgency and extract action items (Logic), route to appropriate team (Execution), send acknowledgment (Output). The Logic layer might use a Fast/Cheap tier model for classification plus a Balanced tier model for extraction. The Execution layer requires API access for programmatic integration with email and ticketing systems.
 
@@ -125,13 +125,13 @@ Consider the cost implications. Two platform subscriptions at 20 dollars each to
 
 ## Capability Tier Mapping Across Platforms
 
-Understanding which models on each platform correspond to which capability tier helps you make efficient choices.
+Understanding which models on each platform correspond to which capability tier helps you make efficient choices. Note that model names change over time, so these are examples rather than permanent mappings. Check current model offerings and select based on tier requirements.
 
-Fast/Cheap tier (simple classification, basic extraction): GPT-4o-mini on ChatGPT, Haiku on Claude, Gemini Flash on Google.
+Fast/Cheap tier (simple classification, basic extraction): Each platform offers smaller, faster models optimized for throughput and cost. Examples have included models with "mini", "flash", or "haiku" in their names.
 
-Balanced tier (most operator work, moderate complexity): GPT-4o on ChatGPT, Sonnet on Claude, Gemini Pro on Google.
+Balanced tier (most operator work, moderate complexity): The default or flagship models on each platform typically serve this tier, offering good capability at reasonable cost.
 
-Deep Reasoning tier (complex analysis, multi-step logic, code architecture): o1 series on ChatGPT, Opus on Claude, Gemini Ultra on Google.
+Deep Reasoning tier (complex analysis, multi-step logic, code architecture): Each platform offers advanced reasoning models, sometimes with "reasoning", "thinking", or premium naming. These cost more but handle complex multi-step problems.
 
 For each step in your workflow, ask: what is the minimum capability tier that produces acceptable results? Using Deep Reasoning tier for simple classification wastes money and adds latency.
 
@@ -184,9 +184,9 @@ Module 2 introduced the execution layer of automations. API access transforms pl
 
 With API access, you can send requests programmatically from code, integrate into Zapier, Make, or n8n workflows (covered in Section 4.3), build custom applications, and process high volumes without manual interaction.
 
-API pricing is usage-based. You pay per token consumed (input plus output). For high-volume automation, calculate expected costs before implementation.
+API pricing is usage-based. You pay per token consumed (input plus output). For high-volume automation, calculate expected costs before implementation using the current pricing page.
 
-Example cost calculation: A lead classification workflow processes 1,000 leads monthly. Each classification uses approximately 500 input tokens and 50 output tokens. Using GPT-4o-mini at 0.15 dollars per million input tokens and 0.60 dollars per million output tokens results in approximately 0.11 dollars monthly for this workflow.
+Example cost calculation approach: A lead classification workflow processes 1,000 leads monthly. Each classification uses approximately 500 input tokens and 50 output tokens. To estimate cost, multiply your token volumes by the current per-token rates for your chosen model tier. Fast/Cheap tier models are typically very affordable at this scale, often costing less than a dollar monthly for simple classification tasks.
 
 ## Common Mistakes
 

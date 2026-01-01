@@ -75,7 +75,7 @@ Tab completion: As you type, AI predicts the next code. Press Tab to accept. Thi
 
 Composer (multi-file): Press Command-I to make changes across multiple files simultaneously. Describe a feature and watch it implement across your project.
 
-**Pricing:** Free tier with limited requests. Pro at 20 dollars monthly provides unlimited requests and access to the best models.
+**Pricing:** Free tier with limited requests. Pro subscription provides higher limits, priority access, and model choices. Check current pricing, as tiers and limits evolve.
 
 **Best for:** Operators new to coding who want the most supportive environment. Building new projects from scratch. Learning to code through doing rather than studying.
 
@@ -85,7 +85,7 @@ Windsurf offers a similar AI-first experience to Cursor at a lower price point. 
 
 **Core Features:** Similar to Cursor with inline editing, chat, and completions. The "Cascade" feature enables multi-file operations similar to Cursor''s Composer.
 
-**Pricing:** Free tier available. Pro at 10 dollars monthly, half the cost of Cursor.
+**Pricing:** Free tier available. Pro subscription is typically priced lower than Cursor. Check current pricing for exact rates.
 
 **Best for:** Operators who want AI-first coding at lower cost. Those who do not need Cursor''s bleeding-edge features.
 
@@ -99,13 +99,13 @@ Inline suggestions: As you type, Copilot suggests completions. These appear as g
 
 Copilot Chat: A sidebar for asking questions about code, requesting explanations, or generating new code.
 
-**Pricing:** Individual at 10 dollars monthly. Business at 19 dollars per user monthly. Free for students and open source maintainers.
+**Pricing:** Individual and business tiers available. Free tier available for students and open source maintainers. Check current pricing for exact rates.
 
 **Best for:** Operators already comfortable with VS Code who want to add AI assistance. Those who prefer enhancing their existing workflow rather than switching editors.
 
-### Cline (formerly Claude Dev)
+### Cline
 
-Cline is a VS Code extension that turns Claude into a coding agent. It brings Claude''s strong code capabilities directly into your editor.
+Cline is a VS Code agent extension that uses Claude for coding tasks. It brings Claude''s strong code capabilities directly into your editor.
 
 **Core Features:**
 
@@ -229,11 +229,11 @@ The assistant generates code matching each comment, creating well-documented cod
 
 ### Practice 5: Reference Documentation
 
-In Cursor, use @docs to include official documentation in your request:
+In Cursor, use @docs to reference documentation in your request:
 
 "@docs python requests library - how do I add authentication headers to a POST request with both API key and bearer token?"
 
-The assistant uses actual documentation rather than training data, providing more accurate and current information.
+Referencing docs you include usually improves accuracy compared to relying solely on training data, but you should still verify the output against official documentation.
 
 ## Common Workflows
 
@@ -268,7 +268,7 @@ Calculate the return on investment for a code assistant subscription.
 
 **Your effective hourly rate:** Consider what you bill clients or the value of your time to your employer. For most operators, this is 50-150 dollars per hour.
 
-**Code assistant cost:** 10-20 dollars monthly.
+**Code assistant cost:** Typically ranges from free tiers to modest monthly subscriptions.
 
 **Break-even point:** If the assistant saves you 15-30 minutes per month, it pays for itself.
 

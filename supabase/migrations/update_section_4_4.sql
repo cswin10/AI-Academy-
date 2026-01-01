@@ -98,11 +98,11 @@ The same principles apply: clear input specification produces better output. Vag
 
 ### Midjourney
 
-Midjourney is the quality leader for artistic and photorealistic image generation. It operates through Discord, which creates an unusual but functional interface.
+Midjourney is a quality leader for artistic and photorealistic image generation. Historically, it has operated through Discord, though access methods may evolve, so check current onboarding documentation.
 
 **How it works:**
 
-You join the Midjourney Discord server. In chat, you type prompts beginning with /imagine followed by your description. The bot generates four image options. You select which to upscale or create variations of.
+The typical workflow involves typing prompts that describe your desired image. The system generates multiple options. You select which to upscale or create variations of.
 
 **Prompt structure applying I-T-O:**
 
@@ -122,13 +122,11 @@ Training material image: "Friendly customer service representative with headset,
 
 **Pricing:**
 
-Basic: 10 dollars monthly, approximately 200 images
-Standard: 30 dollars monthly, unlimited in relaxed mode
-Pro: 60 dollars monthly, faster generation and private mode
+Multiple tiers available, from basic plans with limited generations to higher tiers with more capacity and features. Check current pricing page for exact rates.
 
 **Best for:** High-quality marketing images, presentation visuals, social media content, concept visualization.
 
-**Limitations:** Discord-only interface is clunky. Difficult to make precise edits to generated images. Learning curve for effective prompting.
+**Limitations:** Interface may feel unfamiliar initially. Difficult to make precise edits to generated images. Learning curve for effective prompting.
 
 ### DALL-E (via ChatGPT)
 
@@ -195,10 +193,7 @@ Multilingual content: Same voice in multiple languages
 
 **Pricing:**
 
-Free tier: 10,000 characters monthly (approximately 10 minutes of audio)
-Starter: 5 dollars monthly, 30,000 characters
-Creator: 22 dollars monthly, 100,000 characters
-Pro: 99 dollars monthly, 500,000 characters
+Free tier available with limited characters monthly. Paid tiers scale with character allowance. Check current pricing page for exact rates and tier details.
 
 **Workflow integration:**
 
@@ -259,10 +254,7 @@ Prototype video concepts before production
 
 **Pricing:**
 
-Free tier: Limited credits
-Standard: 12 dollars monthly
-Pro: 28 dollars monthly
-Unlimited: 76 dollars monthly
+Free tier with limited credits. Multiple paid tiers with increasing capacity. Check current pricing page for exact rates.
 
 ### Descript
 
@@ -289,9 +281,7 @@ Non-editors who need to produce video content
 
 **Pricing:**
 
-Free: 1 hour transcription monthly
-Creator: 12 dollars monthly
-Pro: 24 dollars monthly
+Free tier with limited transcription. Paid tiers with increased capacity. Check current pricing page for exact rates.
 
 ### Short-Form Video Tools (OpusClip, Klap)
 
@@ -406,21 +396,22 @@ The hybrid approach: Use AI for first drafts and iteration, then human polish fo
 
 ## Budget Planning
 
-**Starter operator toolkit (40-50 dollars monthly):**
+**Starter operator toolkit:**
 
-ChatGPT Plus: 20 dollars (includes DALL-E)
-ElevenLabs Starter: 5 dollars
-Descript Creator: 12 dollars
-Total: 37 dollars
+One LLM platform with image generation (such as ChatGPT Plus with DALL-E)
+One voice tool at a basic tier
+One video editing tool at a basic tier
 
-**Professional operator toolkit (100-120 dollars monthly):**
+Expect modest monthly costs. Check current pricing for each tool to calculate your specific total.
 
-ChatGPT Plus: 20 dollars
-Claude Pro: 20 dollars (for text work)
-Midjourney Standard: 30 dollars
-ElevenLabs Creator: 22 dollars
-Descript Pro: 24 dollars
-Total: 116 dollars
+**Professional operator toolkit:**
+
+Multiple LLM platforms for different strengths
+Dedicated image generation tool
+Voice tool at a higher tier for more content
+Professional video editing tool
+
+Higher investment, but justified if you produce significant content volume.
 
 Start with what you will use regularly. Add tools as needs emerge rather than subscribing to everything immediately.
 
@@ -440,7 +431,7 @@ Each tool has prompting conventions and features. Invest time in learning rather
 
 **Mistake: Ignoring licensing terms**
 
-Check each tool''s terms of service for commercial use rights. Most allow commercial use of generated content, but verify.',
+Commercial use rights vary by tool and plan. Verify each tool''s terms of service before using generated content in client deliverables.',
 
 exercise_markdown = '## Exercise: Create Multi-Modal Content
 
