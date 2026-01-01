@@ -37,7 +37,7 @@ No-code platforms now embed AI capabilities directly, enabling you to build inte
 
 ## Definitions
 
-**No-Code Platform**: A visual tool for building automated workflows using drag-and-drop interfaces rather than programming. Examples include Zapier, Make (formerly Integromat), and n8n.
+**No-Code Platform**: A visual tool for building automated workflows using drag-and-drop interfaces rather than programming. Examples include Zapier and Make (formerly Integromat). Self-hosted options like n8n also exist for those needing more control.
 
 **AI Action**: A pre-built step in a no-code workflow that calls an AI model to process data. Examples include classification, extraction, summarization, and generation.
 
@@ -275,15 +275,19 @@ Subsequent actions use the processed data
 
 This captures no-code benefits (easy integration setup, visual workflow management) while allowing custom code where needed (complex AI processing, cost optimization at scale).
 
-**Cost comparison at 10,000 operations monthly:**
+**Cost comparison framework at scale:**
 
-Full Zapier with AI actions: Approximately 150-200 dollars monthly (plan plus AI credits)
+To compare approaches, calculate: platform subscription fee plus per-operation costs plus any AI API fees.
 
-Make with OpenAI API: Approximately 35-50 dollars monthly (Make plan plus API usage)
+Relative cost pattern at high volumes (10,000+ operations monthly):
 
-Hybrid with custom API: Approximately 20-30 dollars monthly (hosting plus API usage)
+Full no-code with built-in AI: Highest cost, but lowest development time. Platform fees plus AI credits add up.
 
-The right choice depends on your volume, technical capacity, and how you value development time versus ongoing costs.
+No-code with direct API integration: Moderate cost. Platform fee is lower tier, plus you pay API rates directly.
+
+Hybrid with custom code: Lowest ongoing cost, but requires development investment. Minimal hosting plus API rates.
+
+The right choice depends on your volume, technical capacity, and how you value development time versus ongoing costs. Check current pricing for each platform, as rates change.
 
 ## Applying Module 3 Principles
 

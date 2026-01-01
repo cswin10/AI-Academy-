@@ -33,7 +33,7 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 UPDATE sections
 SET content_markdown = '# Tool Selection Framework: Building Your AI Toolkit
 
-The AI tool landscape expands constantly. New tools launch weekly, existing tools add capabilities, and yesterday''s leader can become tomorrow''s also-ran. This section provides a systematic approach to tool selection that remains useful as the landscape evolves.
+The AI tool landscape expands constantly. New tools launch weekly, and existing tools add capabilities. This section provides a systematic approach to tool selection that remains useful as the landscape evolves.
 
 ## Definitions
 
@@ -102,39 +102,39 @@ These hard constraints filter out unsuitable options before detailed evaluation.
 
 ### Step 3: Evaluate Remaining Options
 
-For tools that pass your must-have filter, score on these dimensions:
+For tools that pass your must-have filter, score on these five dimensions (1-10 each, max 50 points total):
 
-**Fit for Purpose (weight: 30 percent)**
+**Fit for Purpose**
 
 Does the tool solve your specific problem well?
 Is this what the tool was designed for, or is it a workaround?
 How well does it handle your I-T-O requirements?
 
-**Ease of Use (weight: 20 percent)**
+**Ease of Use**
 
 Can you figure it out quickly enough?
 Is the learning curve acceptable for your timeline?
 How much support and documentation exists?
 
-**Cost (weight: 20 percent)**
+**Cost**
 
 What is the total cost at your expected usage?
 Is pricing predictable or highly variable?
 What is the ROI given time savings or output value?
 
-**Integration (weight: 15 percent)**
+**Integration**
 
 Does it work with your existing systems?
 Is API access available if needed?
 How much integration work is required?
 
-**Reliability and Longevity (weight: 15 percent)**
+**Reliability and Longevity**
 
 Is the tool stable and mature?
 What is the company''s track record?
 Is the tool likely to exist in two years?
 
-Score each dimension 1-10, apply weights, and calculate total.
+Score each dimension 1-10 and sum for a total (max 50).
 
 **Interpretation:**
 
@@ -191,13 +191,15 @@ Tool selection should match capability to requirement.
 
 Need: Classify emails into 5 categories
 
-Wrong approach: Use GPT-4 (Deep Reasoning tier) for simple classification
+Wrong approach: Use a Deep Reasoning tier model for simple classification
 
-Right approach: Use GPT-4o-mini (Fast/Cheap tier) for this simple task
+Right approach: Use a Fast/Cheap tier model for this simple task
 
-Wrong approach: Use GPT-4o-mini for complex contract analysis
+Need: Complex contract analysis
 
-Right approach: Use Claude Opus (Deep Reasoning tier) for complex legal analysis
+Wrong approach: Use a Fast/Cheap tier model for complex legal reasoning
+
+Right approach: Use a Deep Reasoning tier model for complex legal analysis
 
 Over-provisioning wastes money. Under-provisioning produces poor results. Match tier to task.
 
@@ -245,17 +247,17 @@ Map your tools to layers to identify gaps or overlaps.
 
 Step 1 (Define need): General-purpose AI assistant for text analysis, code help, and content drafting. Daily use, moderate volume, need long document handling and code quality.
 
-Step 2 (Must-haves): Under 30 dollars monthly, API access available (for future automation), context window at least 100k tokens.
+Step 2 (Must-haves): Reasonable monthly subscription cost, API access available (for future automation), large context window.
 
-Step 3 (Evaluate options):
+Step 3 (Evaluate options using 1-10 scores, summed):
 
-ChatGPT Plus: Fit 8, Ease 9, Cost 9, Integration 9, Reliability 9, Total 43
-Claude Pro: Fit 9, Ease 8, Cost 9, Integration 7, Reliability 8, Total 40
-Gemini Advanced: Fit 7, Ease 7, Cost 9, Integration 6, Reliability 7, Total 35
+ChatGPT Plus: Fit 8, Ease 9, Cost 9, Integration 9, Reliability 9, Total 44
+Claude Pro: Fit 9, Ease 8, Cost 9, Integration 7, Reliability 8, Total 41
+Gemini Advanced: Fit 7, Ease 7, Cost 9, Integration 6, Reliability 7, Total 36
 
 Step 4 (Test): Both ChatGPT and Claude score highly. Test both with your actual workflows for a week.
 
-**Likely outcome:** ChatGPT for general use, Claude for code-heavy and long-document work. The 40 dollars monthly for both is justified by the combined capabilities.
+**Likely outcome:** ChatGPT for general use, Claude for code-heavy and long-document work. Two subscriptions may be justified by the combined capabilities if you use both regularly.
 
 ### Scenario: No-Code versus Code for Automation
 
@@ -267,13 +269,13 @@ Step 1 (Define need): Receive 50-100 form submissions daily, classify into 3 cat
 
 Step 2 (Must-haves): Handle volume reliably, integrate with existing CRM and ticketing system, manageable ongoing cost.
 
-**Compare options:**
+**Compare options using 1-10 scores, summed:**
 
 **Option A: Zapier with AI actions**
 
 Fit 8: Handles the use case well
 Ease 9: No code, visual builder
-Cost 5: Higher cost at this volume (approximately 100+ dollars monthly)
+Cost 5: Higher cost at this volume
 Integration 9: Pre-built integrations exist
 Reliability 9: Mature platform
 Total: 40
@@ -282,7 +284,7 @@ Total: 40
 
 Fit 9: More control over AI prompts
 Ease 7: Steeper learning curve
-Cost 8: Lower cost (approximately 40 dollars monthly at volume)
+Cost 8: Lower cost at volume
 Integration 8: Good but requires more setup
 Reliability 8: Stable platform
 Total: 40
@@ -291,7 +293,7 @@ Total: 40
 
 Fit 10: Complete control
 Ease 3: Requires development time
-Cost 9: Lowest ongoing cost (approximately 15 dollars monthly)
+Cost 9: Lowest ongoing cost
 Integration 6: Must build integrations
 Reliability 7: Depends on your hosting and maintenance
 Total: 35
@@ -312,18 +314,18 @@ Step 1 (Define need): Generate 10-20 professional images monthly for client pres
 
 Step 2 (Must-haves): Commercial usage rights, business-appropriate content policies, reasonable quality for client-facing work.
 
-**Compare options:**
+**Compare options using 1-10 scores, summed:**
 
-**Midjourney Standard (30 dollars monthly)**
+**Midjourney (paid tier)**
 
-Fit 10: Highest quality for artistic and photorealistic images
-Ease 6: Discord interface is clunky
+Fit 10: High quality for artistic and photorealistic images
+Ease 6: Interface may feel unfamiliar
 Cost 8: Reasonable for this volume
-Integration 5: No API (Discord only)
+Integration 5: Limited API options
 Reliability 8: Consistent quality
 Total: 37
 
-**DALL-E via ChatGPT Plus (already paying 20 dollars)**
+**DALL-E via ChatGPT Plus (if already subscribed)**
 
 Fit 7: Good quality but not as artistic
 Ease 9: Integrated into existing workflow
