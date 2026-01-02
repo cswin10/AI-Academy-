@@ -11,229 +11,203 @@ AND order_index IN (5, 6, 7, 8);
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
 ((SELECT id FROM quizzes WHERE title = 'Communication Quiz'), 5,
 'What is the principle of writing for your "future self"?',
-'["Planning future projects", "Writing documentation that you will understand 6 months later when you have forgotten the context", "Predicting future requirements", "Setting future deadlines"]',
+'["Planning future projects", "Writing documentation that you will understand 6 months later without context", "Predicting future requirements", "Setting future deadlines"]',
 1,
-'Your future self is a stranger who has forgotten all context. Write documentation that explains the why, not just the what, so future-you can understand and maintain the work.'),
+'Your future self has forgotten everything. Write documentation that explains the why, not just the what.'),
 
 ((SELECT id FROM quizzes WHERE title = 'Communication Quiz'), 6,
 'What should decision documentation always include?',
-'["Just the final decision", "The decision, options considered, reasoning, and what to do if the decision proves wrong", "Only technical details", "A list of participants"]',
+'["Just the final decision", "The decision, options considered, reasoning, and fallback plan", "Only technical details", "A list of meeting attendees"]',
 1,
-'Decision documentation captures context, alternatives, reasoning, and fallback plans. Six months later when someone asks why you did it that way, you have the complete answer.'),
+'Decision docs capture context, alternatives, reasoning, and what to do if it proves wrong.'),
 
 ((SELECT id FROM quizzes WHERE title = 'Communication Quiz'), 7,
 'What is the difference between technical documentation and user guides?',
-'["They are the same thing", "Technical documentation explains how things work for maintainers, user guides explain how to use things for end users", "User guides are longer", "Technical documentation is for clients only"]',
+'["They are the same thing", "Technical docs explain how things work for maintainers; user guides explain how to use things for end users", "User guides are longer", "Technical docs are for clients only"]',
 1,
-'Different audiences need different documentation. Maintainers need technical details. End users need simple instructions. Write for your specific audience.'),
+'Different audiences need different documentation. Maintainers need technical details; users need simple instructions.'),
 
 ((SELECT id FROM quizzes WHERE title = 'Communication Quiz'), 8,
 'How should you handle documentation for a project that changes frequently?',
-'["Do not write documentation until the project is stable", "Document as you go and update when things change, keeping a changelog of significant changes", "Write once at the end", "Only document the final version"]',
+'["Wait until the project is stable", "Document as you go, update when things change, and keep a changelog", "Write once at the end", "Only document the final version"]',
 1,
-'Documentation should evolve with the project. Write as you build, update when things change, and note what changed. Living documentation beats outdated documentation.');
+'Living documentation evolves with the project. Write as you build, update when things change.');
 
 -- Update the section content with extensive modernized material
 UPDATE sections
 SET content_markdown = '# Effective Communication & Documentation
 
-**This is how operators ensure their work outlasts the project.**
-
-Great operators are great communicators. Your technical skills only matter if people understand your work. Documentation is not extra work; it is part of the work. Good documentation saves you time, protects your reputation, and enables others to succeed.
+Great operators are great communicators. Your technical skills only matter if people understand your work. Documentation is not extra work; it is part of the work.
 
 ## Definitions
 
-**Documentation**: Written records that explain how systems work, how to use them, and why decisions were made. Good documentation survives the original creator.
+**Documentation**: Written records that explain how systems work, how to use them, and why decisions were made.
 
-**Status Update**: Regular communication informing stakeholders of progress, issues, and next steps. Status updates prevent surprises.
+**Status Update**: Regular communication informing stakeholders of progress, issues, and next steps.
 
-**Technical Documentation**: Detailed explanation of how systems work, written for maintainers and developers.
+**Technical Documentation**: Detailed explanation of how systems work, written for maintainers.
 
-**User Guide**: Instructions for end users explaining how to accomplish tasks, written in simple, accessible language.
+**User Guide**: Instructions for end users explaining how to accomplish tasks.
 
-**Decision Documentation**: Record of why choices were made, what alternatives were considered, and what to do if the decision proves wrong.
+**Decision Documentation**: Record of why choices were made, what alternatives were considered, and fallback plans.
 
-**Handoff Documentation**: Complete package enabling someone else to take over responsibility for a system or project.
+**Handoff Documentation**: Package enabling someone else to take over responsibility for a system.
 
-**Changelog**: Record of what changed, when, and why. Changelogs help track evolution over time.
+**Changelog**: Record of what changed, when, and why.
 
-**Living Documentation**: Documentation that is updated as systems change, rather than becoming stale and misleading.
+**Living Documentation**: Documentation that is updated as systems change.
 
-## Why Communication Matters
+## The 5 Documents You Always Ship
 
-**Without good communication** your work goes unrecognized because no one knows what you did. Stakeholders feel uninformed and anxious. Knowledge is lost when you move on. You constantly answer the same questions. Projects feel chaotic to everyone involved.
+Every project needs these five documents. Skip any and you create problems for yourself later.
 
-**With good communication** everyone knows what is happening and why. Work is valued and visible. Knowledge is preserved for the future. Less time is spent on redundant explanations. Projects feel professional and controlled.
+**1. System Overview.** One page explaining what the automation does, why it exists, and how the pieces connect.
 
-Communication is not extra work. It is part of the work.
+**2. Technical Documentation.** How things work for maintainers, including configuration, data flow, and troubleshooting.
 
-## Types of Communication
+**3. User Guide.** How to use the system for end users, written in simple language with screenshots.
 
-### Status Updates
+**4. Runbook.** Step-by-step instructions for common operational tasks.
 
-**Purpose.** Keep stakeholders informed of progress.
+**5. Decision Log.** Why key choices were made, what alternatives were rejected, and what to do if decisions prove wrong.
 
-**Frequency.** Weekly minimum.
+**Real-world example: Ticketing ops.** An event company hires you to automate ticket reconciliation. Six months later, their new ops manager calls with questions. Because you shipped all five documents, she finds her answers in 10 minutes instead of scheduling a call with you.
 
-**Structure.** Progress This Week listing completed items. In Progress items with percentage complete. Coming Next Week listing planned items. Timeline status showing on track or days behind with explanation. Blockers listed with what you need and when. Metrics if applicable. Action Items for Stakeholders listing who needs to do what by when.
+## The Weekly Update That Stops 90% of Problems
 
-Status updates should take 10-15 minutes to write. If they take longer, you are overcomplicating them.
+Most client anxiety comes from not knowing what is happening. Weekly updates prevent this.
 
-### Technical Documentation
+**Structure.** Progress This Week listing completed items. In Progress items with percentage. Coming Next Week. Timeline status showing on track or days behind. Blockers. Action Items for Stakeholders.
 
-**Purpose.** Explain how things work for maintainers.
+**Rules.** Send every week, even when there is nothing new. Send on the same day every week. Keep it under 200 words. Take 10 to 15 minutes to write, no more.
 
-**Audience.** Future maintainers, including your future self.
+Consistent updates build trust. Sporadic updates create anxiety.
 
-**System Overview sections.** Purpose explaining what this automation does and why it exists. Components listing trigger, data sources, processing, outputs, and error handling. Architecture diagram showing visual representation. Data flow explaining how data moves through the system.
+## Decision Logs That Save You Months Later
 
-**Setup Instructions sections.** Prerequisites listing tools and access needed. Step-by-step setup with details. Configuration explaining settings and why they are set that way. Testing explaining how to verify it works. Troubleshooting covering common issues and solutions.
+When someone asks "why did we do it this way?" you need the answer.
 
-**Maintenance Guide sections.** Daily, weekly, and monthly tasks. Monitoring explaining what to watch, where to find it, what is normal, and what is a problem. Common issues in table format with issue, cause, and fix. When to call for help listing scenarios requiring escalation. Escalation contact information.
+**For each decision, record.** Decision topic and date. Context explaining what situation led to this. Options Considered with pros and cons. Decision stating what was chosen. Reasoning explaining why. Fallback explaining what to do if this proves wrong.
 
-### User Guides
+Six months from now, this log saves you hours of archaeology.
 
-**Purpose.** Help end users use the system.
+## Technical Documentation
 
-**Audience.** Non-technical users who need to accomplish tasks.
+**Purpose.** Enable future maintainers to understand and fix the system.
+
+**Audience.** Future you, colleagues, or whoever takes over.
+
+**Contents.** System purpose. Components and how they connect. Data flow. Configuration details. Error handling. Monitoring.
+
+**Setup Instructions.** Prerequisites. Step-by-step setup. Configuration with reasoning. Testing and verification. Troubleshooting.
+
+**Maintenance Guide.** Daily, weekly, and monthly tasks. What to monitor. Common issues with fixes. When to escalate.
+
+## User Guides
+
+**Purpose.** Help end users accomplish tasks.
+
+**Audience.** Non-technical users who need to get things done.
 
 **Tone.** Simple, friendly, clear. No jargon.
 
-**Structure.** What This Does in one sentence. Quick Start with 3 simple steps. Step-by-Step Guide for each common task with screenshots. Tips and Tricks with helpful hints. Frequently Asked Questions with clear answers. Need Help section with contact information.
+**Structure.** What This Does in one sentence. Quick Start in 3 steps. Step-by-Step for each common task. Tips and Tricks. Frequently Asked Questions. Need Help section.
+
+**Visual principle.** If it is visual, explain it visually. One screenshot can replace a paragraph.
 
 Write as if explaining to a smart person who has never seen this system before.
 
-### Decision Documentation
-
-**Purpose.** Record why choices were made.
-
-**Why it matters.** Six months later when someone asks "why did we do it this way?" you have the complete answer.
-
-**Structure.** Decision topic and date. Participants who were involved. Context explaining what situation led to this decision. Options Considered listing each option with pros and cons. Decision stating what was chosen. Reasoning explaining why this option was selected. Implications listing impacts. Alternatives if this does not work as a backup plan.
-
-### Handoff Documentation
-
-**Purpose.** Transfer project to client or team.
-
-**Structure.** Executive Summary covering what was built, why, and key outcomes. What Was Delivered listing deliverables with locations. How to Access with URLs and instructions. How It Works with high-level explanation. Daily Operations explaining what happens automatically. Monitoring and Maintenance with check frequencies. Troubleshooting covering common issues and fixes. Support with documentation links and contact info. Credentials and Access noting where they are stored. Future Enhancements with Phase 2 ideas. Known Limitations explaining what it does not do and why.
-
-## Writing Effective Documentation
-
-### Principles of Good Technical Writing
-
-**Clear beats clever.** Do not write "leverage the synergistic paradigm." Write "use this feature to."
-
-**Concise beats verbose.** Do not write "in order to be able to access the system." Write "to access the system."
-
-**Organized beats stream of consciousness.** Use logical flow, clear sections, and headers. Not random order.
-
-**Specific beats vague.** Do not write "it should work quickly." Write "processing completes in under 30 seconds."
-
-**Examples beat theory.** Do not write "configure the parameters appropriately." Write "set retry_count to 3 for most use cases."
-
-### Write for Your Future Self
-
-Your future self is a stranger who has forgotten all context. Write documentation that future-you will understand 6 months from now.
-
-**Ask yourself.** If I came back to this project in 6 months having forgotten everything, what would I need to know?
-
-**Include.** Why this exists, not just what it does. Why decisions were made, not just what was decided. What to do when things break, not just how it works normally.
-
-### Document As You Go
-
-Do not wait until the project is done. Document as you build.
-
-**Benefits.** Documentation is accurate because you remember the details. It takes less total time because you are not reconstructing from memory. You catch gaps in understanding early. Stakeholders can review documentation during the project.
-
-**Practical approach.** Spend 10-15 minutes at end of each work session updating documentation. Keep a running notes document for each project. Convert notes to formal documentation at project milestones.
-
-### Keep Documentation Alive
-
-Outdated documentation is worse than no documentation because it misleads.
-
-**Strategies.** Update documentation when you change code. Review documentation quarterly even if nothing changed. Add a "last updated" date to every document. Note what changed and when in a changelog section. Delete documentation for deprecated systems.
-
-## Documentation Templates
-
-### Project Documentation Template
-
-**Project Overview.** Project name, date, author. Purpose explaining what problem this solves. Scope referencing scope document if separate.
-
-**System Architecture.** Components listing each part of the system. Data flow explaining how information moves through the system. Integrations listing external systems and how they connect. Trigger explaining what starts the automation. Outputs explaining what the automation produces.
-
-**Technical Details.** Tools and platforms listing what is used. Configuration for each tool. API connections listing integrations with authentication details stored securely. Scheduling explaining when things run.
-
-**Operations.** Normal operation explaining what happens during typical use. Error handling explaining what happens when things fail. Monitoring explaining what to watch. Maintenance tasks with frequency.
-
-**Troubleshooting.** Common issues with symptoms, causes, and fixes. Escalation explaining when and how to get help.
-
-**Change Log.** Record of changes with date, description, and author.
-
-### Runbook Template
+## Runbook Template
 
 For each common operational task, create a runbook.
 
-**Task name.** When to perform. Who can perform. Prerequisites.
+**Task:** [What you are doing]
 
-**Steps.** Numbered, specific steps with expected result for each step.
+**When:** [Trigger or schedule]
 
-**Verification.** How to confirm success.
+**Steps:**
+1. [Step with expected result]
+2. [Step with expected result]
+3. [Step with expected result]
 
-**Rollback.** What to do if something goes wrong.
+**Expected Result:** [How you know it worked]
 
-**Notes.** Edge cases and warnings.
+**Rollback:** [What to do if something goes wrong]
 
-## Communication Best Practices
+**Escalate If:** [Conditions that require help]
 
-### Matching Channel to Message
+Keep runbooks simple. If someone cannot follow it at 2am while tired, it is too complex.
 
-**Email** for formal updates, decision requests, documentation, anything needing a paper trail.
+## Writing Principles
 
-**Slack or Chat** for quick questions, informal updates, rapid back-and-forth, team coordination.
+**Clear beats clever.** Write "use this feature" not "leverage the synergistic paradigm."
 
-**Calls and Meetings** for complex discussions, kickoffs, demos, problem-solving, relationship building.
+**Concise beats verbose.** Write "to access the system" not "in order to be able to access the system."
 
-**Video with screen share** for explanations of visual systems, training, debugging sessions.
+**Specific beats vague.** Write "processing completes in under 30 seconds" not "it should work quickly."
+
+**Examples beat theory.** Write "set retry_count to 3" not "configure the parameters appropriately."
+
+## Write for Your Future Self
+
+Your future self is a stranger who has forgotten all context.
+
+**Ask yourself.** If I came back to this project in 6 months having forgotten everything, what would I need to know?
+
+**Include.** Why this exists, not just what it does. Why decisions were made, not just what was decided. What to do when things break.
+
+## Document As You Go
+
+Do not wait until the project is done.
+
+**Benefits.** Documentation is accurate because you remember details. It takes less time because you are not reconstructing from memory. You catch gaps early.
+
+**Practical approach.** Spend 10 to 15 minutes at end of each work session. Keep running notes. Convert notes to formal documentation at milestones.
+
+## Keep Documentation Alive
+
+Outdated documentation misleads.
+
+**Strategies.** Update documentation when you change code. Review quarterly. Add a last updated date. Note what changed in a changelog. Delete documentation for deprecated systems.
+
+## Communication Channels
+
+**Email** for formal updates, decision requests, anything needing a paper trail.
+
+**Slack or Chat** for quick questions, informal updates, rapid back-and-forth.
+
+**Calls and Meetings** for complex discussions, kickoffs, demos, relationship building.
+
+**Video with screen share** for visual explanations, training, debugging sessions.
 
 Choose the right channel. Formal decisions belong in email. Quick clarifications belong in chat.
 
-### Avoiding Jargon
+## Quick Summary
 
-**Know your audience.** Technical documentation can use technical terms. User guides should not.
-
-**When in doubt, simplify.** Instead of "the webhook triggers the zap which updates the row in the base," say "when someone submits the form, the system automatically updates the database."
-
-**Define terms on first use.** If you must use technical terms, define them.
-
-### Giving and Receiving Feedback
-
-**Giving feedback on documentation.** Be specific about what is unclear. Suggest improvements, do not just critique. Acknowledge what works well.
-
-**Receiving feedback.** Do not get defensive. Ask clarifying questions. Thank reviewers for their time.
-
-**Test your documentation.** Have someone unfamiliar with the system follow your instructions. Watch them, note where they struggle. Update documentation based on observations.
+- Ship all five document types with every project.
+- Send weekly updates on the same day, every week.
+- Write for your future self who has forgotten everything.
 
 ## Operator Principles
 
-**Document as you build, not after.** Writing documentation at the end is painful and incomplete. Spend 10-15 minutes after each work session updating docs.
+- Document as you build, not after.
+- Write for someone who has zero context.
+- Match documentation type to audience needs.
+- Update documentation when the system changes.',
 
-**Write for your future self.** Six months from now you will have forgotten everything. Write documentation that future-you will understand without context.
+exercise_markdown = '## Exercise: Create Project Documentation
 
-**Match documentation type to audience.** Technical docs for maintainers, user guides for end users, decision docs for future questioners. One size does not fit all.
+**Timebox: 45 minutes | Stretch: 90 minutes**
 
-**Keep documentation alive.** Outdated documentation is worse than no documentation. Update when things change, review quarterly, delete what is deprecated.',
-
-exercise_markdown = '## Exercise: Create Complete Project Documentation
-
-**Objective:** Practice creating comprehensive documentation for the customer onboarding automation.
+Practice creating documentation for the customer onboarding automation.
 
 ### Part 1: Technical Documentation
 
-Write technical documentation that would enable another operator to understand and maintain the system.
+Write technical documentation that enables another operator to understand and maintain the system.
 
 ### Part 2: User Guide
 
-Write a user guide for the team who will interact with the automation daily.
+Write a user guide for the team who interacts with the automation daily.
 
 ### Part 3: Decision Documentation
 
@@ -249,11 +223,11 @@ Write a status update for a point mid-project.
 
 ### Deliverables
 
-Technical documentation covering architecture and maintenance. User guide suitable for non-technical users. Decision documentation with reasoning and alternatives. Complete handoff document. Sample status update.
+Technical documentation. User guide. Decision documentation. Handoff document. Status update.
 
 ### Success Criteria
 
-Technical documentation enables a new operator to maintain the system. User guide enables non-technical users to accomplish tasks. Decision documentation explains why, not just what. Handoff package is complete and professional. Status update is clear and actionable.',
+Technical documentation enables a new operator to maintain the system. User guide enables non-technical users to accomplish tasks. Decision documentation explains why, not just what. Handoff is professional. Status update is clear and actionable.',
 
 exercise_schema = '{
   "parts": [
@@ -266,25 +240,25 @@ exercise_schema = '{
           "id": "system_overview",
           "type": "textarea",
           "label": "System Overview:",
-          "placeholder": "# Customer Onboarding Automation\n\n## Purpose\nAutomatically onboards new customers when payment is received, eliminating manual data entry and ensuring consistent experience.\n\n## Components\n- Trigger: Stripe payment webhook\n- Data Sources: Stripe customer data\n- Processing: Validation, CRM creation, credential generation\n- Outputs: CRM record, welcome email, Drive folder, Slack invitation\n- Error Handling: Dead letter queue, admin alerts\n\n## Architecture\n[Describe how components connect]\n\n## Data Flow\n1. Stripe sends payment webhook\n2. Automation validates customer data\n3. Creates CRM record with customer info\n4. Generates login credentials\n5. Sends welcome email with credentials\n6. Creates Google Drive folder\n7. Sends Slack workspace invitation\n8. Notifies team in Slack channel",
+          "placeholder": "# Customer Onboarding Automation\n\n## Purpose\nAutomatically onboards new customers when payment is received.\n\n## Components\n- Trigger: Stripe payment webhook\n- Processing: Validation, CRM creation, credential generation\n- Outputs: CRM record, welcome email, Drive folder, Slack invitation\n- Error Handling: Dead letter queue, admin alerts\n\n## Data Flow\n1. Stripe sends payment webhook\n2. Automation validates customer data\n3. Creates CRM record\n4. Generates credentials\n5. Sends welcome email\n6. Creates Drive folder\n7. Sends Slack invitation\n8. Notifies team",
           "required": true,
-          "rows": 24
+          "rows": 20
         },
         {
           "id": "technical_details",
           "type": "textarea",
           "label": "Technical Details and Configuration:",
-          "placeholder": "## Tools and Platforms\n- Zapier: Automation orchestration\n- Stripe: Payment processing (webhook source)\n- [CRM Name]: Customer database\n- Google Workspace: Email and Drive\n- Slack: Team communication\n\n## Configuration\n\n### Stripe Webhook\n- Endpoint: [URL]\n- Events: checkout.session.completed\n- Secret: Stored in [password manager location]\n\n### CRM Integration\n- API key location: [password manager location]\n- Base/Table: [specific location]\n- Fields mapped: [list]\n\n### Error Handling\n- Retry: 3 attempts with exponential backoff\n- Dead letter: Failed items stored in [location]\n- Alerts: Sent to [channel/email]",
+          "placeholder": "## Tools and Platforms\n- Automation platform for orchestration\n- Stripe for payment processing\n- CRM for customer database\n- Google Workspace for email and Drive\n- Slack for team communication\n\n## Configuration\n\n### Stripe Webhook\n- Events: checkout.session.completed\n- Secret location: [password manager]\n\n### Error Handling\n- Retry: 3 attempts with backoff\n- Dead letter: Failed items in [location]\n- Alerts: Sent to [channel]",
           "required": true,
-          "rows": 22
+          "rows": 18
         },
         {
           "id": "maintenance_guide",
           "type": "textarea",
           "label": "Maintenance Guide:",
-          "placeholder": "## Daily Tasks\n- Check error queue for failed items (takes 2 minutes)\n- Review overnight automation runs\n\n## Weekly Tasks\n- Review automation metrics\n- Clear processed items from error queue\n- Spot check 2-3 customer records for accuracy\n\n## Monthly Tasks\n- Review and update email templates if needed\n- Check API usage against limits\n- Archive old logs\n\n## Monitoring\n- What to watch: Success rate, processing time, error count\n- Where: Zapier task history, error Slack channel\n- Normal: 99%+ success rate, <60s processing\n- Problem: <95% success or >5 min processing\n\n## Common Issues\n| Issue | Cause | Fix |\n| No webhook received | Stripe config | Check webhook settings |\n| CRM creation fails | API limit | Wait 1 hour, retry |\n| Email not sent | Template error | Check template syntax |",
+          "placeholder": "## Daily Tasks\n- Check error queue (2 minutes)\n\n## Weekly Tasks\n- Review automation metrics\n- Spot check 2-3 customer records\n\n## Common Issues\n| Issue | Cause | Fix |\n| No webhook | Config | Check webhook settings |\n| CRM fails | API limit | Wait 1 hour, retry |\n\n## Escalate If\n- Success rate drops below 95%\n- Errors persist after retry",
           "required": true,
-          "rows": 24
+          "rows": 16
         }
       ]
     },
@@ -296,10 +270,10 @@ exercise_schema = '{
         {
           "id": "user_guide",
           "type": "textarea",
-          "label": "Complete user guide:",
-          "placeholder": "# Customer Onboarding System - User Guide\n\n## What This Does\nWhen a customer pays, they are automatically added to our CRM, sent a welcome email with login credentials, given a Google Drive folder, and invited to Slack. You do not need to do anything manually.\n\n## What Happens Automatically\n1. Customer pays on our website\n2. Within 1 minute, all onboarding steps complete automatically:\n   - Customer appears in CRM\n   - Welcome email sent to customer\n   - Google Drive folder created\n   - Slack invitation sent\n3. Team notification appears in #new-customers\n\n## What You Need to Do\n- Nothing for normal onboardings!\n- Check #new-customers channel to see new signups\n- If you see an error notification, contact [admin]\n\n## Checking on a Customer\n1. Go to [CRM URL]\n2. Search for customer name or email\n3. Their record shows onboarding status\n\n## Something Went Wrong?\nIf a customer reports they did not receive their welcome email:\n1. Check CRM for their record\n2. Check if email shows as sent\n3. Ask customer to check spam folder\n4. If still missing, contact [admin]\n\n## Frequently Asked Questions\n\nQ: How long does onboarding take?\nA: Usually under 1 minute after payment.\n\nQ: Can I manually add a customer?\nA: Yes, but contact [admin] for instructions.\n\nQ: What if a customer needs different credentials?\nA: Contact [admin] to reset.\n\n## Need Help?\nContact [admin name] via Slack or email.",
+          "label": "User guide:",
+          "placeholder": "# Customer Onboarding - User Guide\n\n## What This Does\nWhen a customer pays, they are automatically added to CRM, sent a welcome email, given a Drive folder, and invited to Slack.\n\n## What Happens Automatically\n1. Customer pays\n2. Within 1 minute:\n   - Customer appears in CRM\n   - Welcome email sent\n   - Drive folder created\n   - Slack invitation sent\n3. Team notification in #new-customers\n\n## What You Need to Do\nNothing for normal onboardings.\n\n## Checking on a Customer\n1. Go to CRM\n2. Search for customer\n3. Record shows onboarding status\n\n## Something Went Wrong?\nContact [admin name] via Slack.",
           "required": true,
-          "rows": 36
+          "rows": 28
         }
       ]
     },
@@ -312,24 +286,24 @@ exercise_schema = '{
           "id": "decision_doc",
           "type": "textarea",
           "label": "Decision documentation:",
-          "placeholder": "# Decision: Credential Generation Method\n\nDate: [Date]\nParticipants: [You], [Client contact]\n\n## Context\nNew customers need login credentials for the platform. We needed to decide how to generate and deliver these credentials securely.\n\n## Options Considered\n\n1. Random password generation\n   - Pros: Simple to implement, no external dependencies\n   - Cons: Customers must reset password, extra friction\n\n2. Magic link / passwordless\n   - Pros: Better UX, more secure\n   - Cons: Requires platform support, more complex\n\n3. SSO with existing Google account\n   - Pros: Easiest for users, most secure\n   - Cons: Requires platform changes, not all users have Google\n\n## Decision\nOption 1: Random password generation with required reset on first login.\n\n## Reasoning\n- Platform does not currently support magic links or SSO\n- Random passwords can be implemented immediately\n- Password reset on first login adds security\n- Can upgrade to magic links in Phase 2\n\n## Implications\n- Welcome email must clearly explain first-login process\n- Need secure password generation (minimum 16 chars)\n- Need to track which users have completed first login\n\n## If This Does Not Work\nIf users struggle with password reset flow, we can:\n1. Add video tutorial in welcome email\n2. Implement magic links in Phase 2\n3. Offer manual credential delivery for problematic cases",
+          "placeholder": "# Decision: Credential Generation Method\n\nDate: [Date]\n\n## Context\nNew customers need login credentials. We needed to decide how to generate and deliver them securely.\n\n## Options Considered\n\n1. Random password with reset on first login\n   - Pros: Simple, immediate\n   - Cons: Extra friction for user\n\n2. Magic link / passwordless\n   - Pros: Better UX\n   - Cons: Requires platform changes\n\n## Decision\nOption 1: Random password with required reset.\n\n## Reasoning\nPlatform does not support magic links yet. Can upgrade in Phase 2.\n\n## Fallback\nIf users struggle, add video tutorial or implement magic links.",
           "required": true,
-          "rows": 36
+          "rows": 26
         }
       ]
     },
     {
       "id": "part4",
       "title": "Part 4: Handoff Document",
-      "description": "Create the complete handoff package.",
+      "description": "Create the handoff package.",
       "fields": [
         {
           "id": "handoff_doc",
           "type": "textarea",
           "label": "Handoff documentation:",
-          "placeholder": "# Project Handoff: Customer Onboarding Automation\n\n## Executive Summary\nWe built an automated customer onboarding system that triggers when a customer completes payment. The system eliminates 20 minutes of manual work per customer and ensures consistent onboarding experience. Processing time is under 1 minute with 99%+ success rate.\n\n## What Was Delivered\n1. Zapier automation workflow - [Link to Zapier]\n2. Technical documentation - [Link]\n3. User guide - [Link]\n4. Training video - [Link]\n5. This handoff document\n\n## How to Access\n- Zapier: [URL] - Login with [account]\n- CRM: [URL] - Your existing access works\n- Error notifications: #onboarding-errors Slack channel\n\n## How It Works\n1. Customer completes Stripe checkout\n2. Stripe sends webhook to Zapier\n3. Zapier validates data and creates CRM record\n4. Zapier generates credentials and sends welcome email\n5. Zapier creates Drive folder and sends Slack invite\n6. Team notified in #new-customers\n\n## Daily Operations\nThe system runs automatically. Check #onboarding-errors daily for any failures.\n\n## Monitoring and Maintenance\n- Daily: Check error channel (2 min)\n- Weekly: Review metrics in Zapier (5 min)\n- Monthly: Review and archive logs (15 min)\n\n## Troubleshooting\nSee Maintenance Guide section of technical documentation.\n\n## Support\n- First 30 days: Contact me for any issues\n- Documentation: [All links]\n- After 30 days: We can discuss ongoing support agreement\n\n## Credentials and Access\nAll API keys and credentials stored in [password manager].\n[Admin name] has access.\n\n## Future Enhancements (Phase 2 ideas)\n- Automated billing reminders\n- Customer satisfaction survey after 7 days\n- Usage tracking and reporting\n\n## Known Limitations\n- System requires valid email (no phone-only signups)\n- Slack invitation requires customer to have Slack account\n- Drive folder creation requires Google Workspace",
+          "placeholder": "# Project Handoff: Customer Onboarding\n\n## Summary\nAutomated customer onboarding that triggers on payment. Eliminates 20 minutes of manual work per customer.\n\n## Delivered\n1. Automation workflow\n2. Technical documentation\n3. User guide\n4. Training session\n5. This handoff document\n\n## How to Access\n- Automation platform: [URL]\n- Error notifications: #onboarding-errors\n\n## Daily Operations\nCheck #onboarding-errors daily for failures.\n\n## Support\n- First 30 days: Contact me\n- After: Discuss ongoing support\n\n## Credentials\nAll credentials in [password manager].\n\n## Future Ideas\n- Billing reminders\n- Customer survey after 7 days",
           "required": true,
-          "rows": 42
+          "rows": 28
         }
       ]
     },
@@ -341,27 +315,27 @@ exercise_schema = '{
         {
           "id": "status_update",
           "type": "textarea",
-          "label": "Sample status update:",
-          "placeholder": "Subject: Onboarding Automation - Week 3 Update\n\nHi [Name],\n\nQuick update on the customer onboarding automation:\n\n**Progress This Week:**\n✓ Completed Stripe webhook integration\n✓ Built CRM record creation flow\n✓ Implemented credential generation\n✓ Started welcome email automation (80% complete)\n\n**In Progress:**\n⏳ Welcome email automation - finishing template integration\n⏳ Google Drive folder creation - starting tomorrow\n\n**Coming Next Week:**\n📅 Complete email and Drive integrations\n📅 Add Slack invitation and team notification\n📅 Begin testing phase\n\n**Timeline Status:**\n🎯 On track for completion by [date]\n\n**Blockers:**\n❌ None currently\n\n**Metrics So Far:**\n- Processing time: 45 seconds (target: <60s) ✓\n- Test success rate: 100% on sample data ✓\n\n**Action Needed From You:**\n- Please review the welcome email draft I sent yesterday\n- Confirm Slack workspace for testing by Friday\n\nLet me know if you have questions!\n\nBest,\n[Your name]",
+          "label": "Status update:",
+          "placeholder": "Subject: Onboarding Automation - Week 3 Update\n\nHi [Name],\n\nProgress This Week:\n- Completed Stripe webhook integration\n- Built CRM record creation\n- Started welcome email automation (80%)\n\nIn Progress:\n- Welcome email - finishing template\n- Drive folder creation - starting tomorrow\n\nComing Next Week:\n- Complete email and Drive\n- Begin testing phase\n\nTimeline Status: On track\n\nBlockers: None\n\nAction Needed:\n- Please review welcome email draft by Friday\n\nBest,\n[Your name]",
           "required": true,
-          "rows": 30
+          "rows": 24
         }
       ]
     }
   ],
   "deliverables": [
-    "Technical documentation with architecture and maintenance",
-    "User guide for non-technical users",
-    "Decision documentation with reasoning",
-    "Complete handoff document",
-    "Sample status update"
+    "Technical documentation",
+    "User guide",
+    "Decision documentation",
+    "Handoff document",
+    "Status update"
   ],
   "success_criteria": [
-    "Technical docs enable new operator to maintain",
+    "Technical docs enable maintenance",
     "User guide enables non-technical users",
-    "Decision doc explains why not just what",
-    "Handoff is complete and professional",
-    "Status update is clear and actionable"
+    "Decision doc explains reasoning",
+    "Handoff is professional",
+    "Status update is actionable"
   ]
 }'
 
