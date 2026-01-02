@@ -348,6 +348,128 @@ Failure point analysis table for all workflow steps. Error handling strategy doc
 
 All failure points identified and documented. Retry mechanism handles transient errors appropriately. Dead letter queue captures permanent failures. Alerts fire for critical errors. Recovery process is documented and tested.',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Identify Failure Points",
+      "description": "Analyze every step that could fail in your lead intake automation.",
+      "fields": [
+        {
+          "id": "failure_analysis",
+          "type": "textarea",
+          "label": "Complete the failure analysis table:",
+          "placeholder": "| Step | What Could Fail | Error Type | Likelihood | Impact |\n| 1. Form trigger | Platform outage | Transient | Low | High |\n| 2. Validation | Invalid data | Permanent | Medium | Low |\n| 3. CRM creation | API timeout | Transient | Medium | High |\n| 4. Enrichment | Rate limit | Transient | Medium | Medium |\n| 5. Slack notify | API error | Transient | Low | Low |\n| 6. Email send | Delivery fail | Transient | Low | Medium |",
+          "required": true,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Design Error Handling Strategy",
+      "description": "Define handling approach for each failure.",
+      "fields": [
+        {
+          "id": "handling_strategy",
+          "type": "textarea",
+          "label": "Complete the strategy table:",
+          "placeholder": "| Failure | Strategy | Retry? | Alert? | Fallback |\n| CRM timeout | Retry + backoff | 3x | Slack if all fail | Dead letter queue |\n| Invalid data | Immediate fail | No | Log only | Reject record |\n| Enrichment limit | Exponential backoff | 5x | If threshold hit | Process without enrichment |\n| Slack error | Retry once | 1x | No | Email fallback |\n| Email fail | Retry | 3x | If all fail | Queue for manual |",
+          "required": true,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Implement Retry Logic",
+      "description": "Build a retry mechanism with exponential backoff.",
+      "fields": [
+        {
+          "id": "retry_implementation",
+          "type": "textarea",
+          "label": "Document your retry implementation:",
+          "placeholder": "Retry counter setup:\n- Variable/field name: ...\n- Initial value: 0\n- Maximum: 3\n\nRetry loop logic:\n1. Attempt operation\n2. If fails AND retries < max:\n   - Increment counter\n   - Wait: [1s, 2s, 4s...]\n   - Loop back\n3. If fails AND retries >= max:\n   - Add to dead letter queue\n   - Send alert\n\nPlatform-specific implementation:\n[describe how you built this in n8n/Make/Zapier]",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Build Dead Letter Queue",
+      "description": "Create a system for capturing failed operations.",
+      "fields": [
+        {
+          "id": "dlq_setup",
+          "type": "textarea",
+          "label": "Document your dead letter queue:",
+          "placeholder": "Failed Operations table columns:\n- timestamp: datetime\n- operation: text\n- input_data: JSON\n- error_message: text\n- error_code: text\n- retry_attempts: number\n- status: [pending_review/retrying/resolved/abandoned]\n\nAutomation to populate:\n- Trigger: ...\n- What it captures: ...\n\nReview process:\n- Frequency: [daily/on threshold]\n- Reprocessing: [manual trigger/batch process]\n- Who reviews: ...",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Error Notification System",
+      "description": "Set up alerts for critical errors.",
+      "fields": [
+        {
+          "id": "alert_setup",
+          "type": "textarea",
+          "label": "Document your notification system:",
+          "placeholder": "Alert thresholds:\n- Critical (immediate): [which errors]\n- Warning (threshold): [X errors in Y minutes]\n\nNotification content:\n- Channel: [Slack/email/SMS]\n- Includes: error type, count, affected items, suggested action\n\nTest results:\n- Triggered test error: [how]\n- Notification received: [Yes/No]\n- Information actionable: [Yes/No]",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Test Error Scenarios (Advanced)",
+      "description": "Force failures and verify handling works.",
+      "fields": [
+        {
+          "id": "error_tests",
+          "type": "textarea",
+          "label": "Document forced error testing:",
+          "placeholder": "Test 1: API Timeout\n- Method: [invalid endpoint/delay]\n- Expected: Retry 3x, then fail gracefully\n- Actual: ...\n- Verified: [error logged, alert sent, DLQ populated]\n\nTest 2: Invalid Data\n- Method: [malformed email]\n- Expected: Fail immediately, no retries\n- Actual: ...\n\nTest 3: Partial Failure\n- Method: [fail middle step]\n- Expected: Earlier steps succeed, alert sent\n- Actual: ...\n\nTest 4: Multiple Rapid Failures\n- Method: [5 errors in 1 minute]\n- Expected: Grouped alert, not 5 separate\n- Actual: ...",
+          "required": false,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Recovery Procedures (Advanced)",
+      "description": "Create a runbook for handling failures.",
+      "fields": [
+        {
+          "id": "runbook",
+          "type": "textarea",
+          "label": "Document recovery procedures:",
+          "placeholder": "CRM API Failures:\n1. Check API status page\n2. If outage: wait for resolution\n3. If credentials: refresh tokens\n4. Reprocess from DLQ\n\nInvalid Data Errors:\n1. Review failed records for patterns\n2. Improve source validation\n3. Manually process or abandon\n\nCascade Failures:\n1. Pause automation immediately\n2. Assess total impact\n3. Fix root cause\n4. Resume and reprocess",
+          "required": false,
+          "rows": 14
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Failure point analysis table",
+    "Error handling strategy document",
+    "Working retry mechanism",
+    "Functional dead letter queue",
+    "Alert system tested"
+  ],
+  "success_criteria": [
+    "All failure points identified",
+    "Retry handles transient errors",
+    "Dead letter queue captures failures",
+    "Alerts fire for critical errors",
+    "Recovery process documented"
+  ]
+}'
 
 WHERE slug = 'error-handling';

@@ -548,6 +548,272 @@ You have completed this exercise successfully when:
 - You can articulate when code assistants help most and when they struggle
 - You have a clear opinion on whether to subscribe based on your experience',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Environment Setup",
+      "description": "Choose and install a code assistant.",
+      "fields": [
+        {
+          "id": "tool_choice",
+          "type": "radio",
+          "label": "Which code assistant did you install?",
+          "options": ["Cursor", "GitHub Copilot with VS Code", "Cline with VS Code", "Claude Code", "Other"],
+          "required": true
+        },
+        {
+          "id": "setup_notes",
+          "type": "textarea",
+          "label": "Document your setup experience:",
+          "placeholder": "Why I chose this tool: ...\n\nSetup issues encountered: [none / describe issues]\n\nTime spent on setup: ~X minutes\n\nVerification test result: [worked / had issues]",
+          "required": true,
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: CSV Processor Script",
+      "description": "Build a CSV filter using I-T-O framework and iterative prompting.",
+      "fields": [
+        {
+          "id": "csv_prompts",
+          "type": "textarea",
+          "label": "Document the prompts you used for each iteration:",
+          "placeholder": "Step 1 prompt: \"Create a script that reads customers.csv and prints first 5 rows\"\nResult: [worked / needed adjustment]\n\nStep 2 prompt: \"Add filtering for country=UK and status=active\"\nResult: [worked / needed adjustment]\n\nStep 3 prompt: \"Add email validation...\"\n...\n\nStep 5 prompt: \"Add error handling for...\"\nResult: ...",
+          "required": true,
+          "rows": 12
+        },
+        {
+          "id": "csv_iterations",
+          "type": "text",
+          "label": "Total number of iterations needed:",
+          "placeholder": "e.g., 7",
+          "required": true
+        },
+        {
+          "id": "csv_time",
+          "type": "text",
+          "label": "Total time to complete (minutes):",
+          "placeholder": "e.g., 25",
+          "required": true
+        },
+        {
+          "id": "csv_manual_fixes",
+          "type": "textarea",
+          "label": "What did you have to manually fix or adjust?",
+          "placeholder": "List any issues the assistant got wrong that you had to fix yourself...",
+          "required": true,
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Webhook Handler",
+      "description": "Build a Flask webhook server using iterative development.",
+      "fields": [
+        {
+          "id": "webhook_prompts",
+          "type": "textarea",
+          "label": "Document your prompts and results:",
+          "placeholder": "Step 1: Minimal Flask server\nPrompt: ...\nResult: ...\n\nStep 2: JSON parsing and logging\nPrompt: ...\nResult: ...\n\nStep 3-5: ...",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "webhook_testing",
+          "type": "textarea",
+          "label": "Document your testing results:",
+          "placeholder": "Valid payload test: [passed / failed]\nMissing fields test: [returned 400 / failed]\nMalformed JSON test: [handled / crashed]\nLog file verification: [correct / issues]",
+          "required": true,
+          "rows": 5
+        },
+        {
+          "id": "webhook_time",
+          "type": "text",
+          "label": "Total time to complete (minutes):",
+          "placeholder": "e.g., 30",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Modify Existing Code",
+      "description": "Use your assistant to improve problematic code.",
+      "fields": [
+        {
+          "id": "code_analysis",
+          "type": "textarea",
+          "label": "What issues did your assistant identify in the problematic code?",
+          "placeholder": "1. No error handling for...\n2. No input validation for...\n3. Type hints missing...\n4. No documentation...\n5. Other: ...",
+          "required": true,
+          "rows": 5
+        },
+        {
+          "id": "improvements_made",
+          "type": "textarea",
+          "label": "Summarize the improvements made:",
+          "placeholder": "Type hints added: [describe]\nError handling: [describe what cases are handled]\nDocstring: [summarize what it says]\nTests suggested: [list test cases]",
+          "required": true,
+          "rows": 6
+        },
+        {
+          "id": "understood_improvements",
+          "type": "radio",
+          "label": "Did you understand all the improvements (not just accept them)?",
+          "options": ["Yes, understood everything", "Mostly, had to ask for clarification on some parts", "Partially, some improvements are unclear", "No, just accepted the output"],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Learn Something New",
+      "description": "Use your assistant to learn an unfamiliar technology.",
+      "fields": [
+        {
+          "id": "technology_chosen",
+          "type": "text",
+          "label": "What technology did you choose to learn?",
+          "placeholder": "e.g., requests library, pandas, an API integration",
+          "required": true
+        },
+        {
+          "id": "mini_project",
+          "type": "textarea",
+          "label": "Describe the mini project you built:",
+          "placeholder": "Project: [what it does]\n\nProcess:\n1. Asked for explanation of...\n2. Got minimal example of...\n3. Added feature: ...\n4. Asked for clarification on...\n5. Modified [what] myself to verify understanding",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "learning_assessment",
+          "type": "textarea",
+          "label": "Assess what you learned:",
+          "placeholder": "Key concepts learned: ...\n\nMost helpful explanation: ...\n\nCould extend without assistance: [Yes / Partially / No]\n\nQuestions that remain: ...",
+          "required": true,
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Time Comparison",
+      "description": "Compare AI-assisted vs manual development time.",
+      "fields": [
+        {
+          "id": "csv_time_comparison",
+          "type": "textarea",
+          "label": "CSV Processor time comparison:",
+          "placeholder": "Without assistant (estimate): X hours\nWith assistant (actual): X minutes\nTime saved: X hours",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "webhook_time_comparison",
+          "type": "textarea",
+          "label": "Webhook Handler time comparison:",
+          "placeholder": "Without assistant (estimate): X hours\nWith assistant (actual): X minutes\nTime saved: X hours",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "learning_time_comparison",
+          "type": "textarea",
+          "label": "Learning New Technology time comparison:",
+          "placeholder": "Traditional learning (estimate): X hours\nWith assistant: X minutes\nTime saved: X hours",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "annual_value",
+          "type": "textarea",
+          "label": "Calculate annual value:",
+          "placeholder": "Total time savings this exercise: X hours\nIf done monthly, annual savings: X hours\nAt hourly rate of $X: $X annual value",
+          "required": true,
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Self-Assessment",
+      "description": "Honestly assess your experience with code assistants.",
+      "fields": [
+        {
+          "id": "code_understanding",
+          "type": "rating",
+          "label": "Did you understand the code that was generated? (1=not at all, 10=completely)",
+          "required": true,
+          "min": 1,
+          "max": 10
+        },
+        {
+          "id": "can_debug",
+          "type": "radio",
+          "label": "Could you debug it if something broke?",
+          "options": ["Yes", "Partially", "No"],
+          "required": true
+        },
+        {
+          "id": "can_modify",
+          "type": "radio",
+          "label": "Could you modify it for slightly different requirements?",
+          "options": ["Yes", "Partially", "No"],
+          "required": true
+        },
+        {
+          "id": "lessons_learned",
+          "type": "textarea",
+          "label": "What did you learn that helps with future projects?",
+          "placeholder": "1. ...\n2. ...\n3. ...",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "effective_prompting",
+          "type": "textarea",
+          "label": "What was the most effective prompting approach you discovered?",
+          "placeholder": "Describe your best prompting strategy...",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "assistant_struggles",
+          "type": "textarea",
+          "label": "Where did the assistant struggle or produce poor results?",
+          "placeholder": "Describe situations where it failed or gave bad output...",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "would_pay",
+          "type": "radio",
+          "label": "Would you pay for this tool?",
+          "options": ["Yes, at full price", "Yes, but only at lower price", "Maybe, need more experience", "No, not worth it for my use case"],
+          "required": true
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Working CSV processor script",
+    "Working webhook handler",
+    "Improved version of problematic code",
+    "Learning project with new technology",
+    "Time comparison calculations",
+    "Self-assessment answers"
+  ],
+  "success_criteria": [
+    "All four code projects work correctly",
+    "Can explain each script without looking at comments",
+    "Documented prompts that could reproduce results",
+    "Time comparison shows measurable savings",
+    "Can articulate when assistants help vs struggle"
+  ]
+}'
 
 WHERE slug = 'ai-code-assistants';

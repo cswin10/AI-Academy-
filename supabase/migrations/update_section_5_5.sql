@@ -813,6 +813,183 @@ You have completed this exercise successfully when:
 - Action plan is prioritized and actionable
 - Standards document could be used by your organization',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: System Documentation",
+      "description": "Document the system you will audit.",
+      "fields": [
+        {
+          "id": "system_choice",
+          "type": "radio",
+          "label": "Which type of system are you auditing?",
+          "options": ["Real system I use/manage", "Hypothetical system I designed"],
+          "required": true
+        },
+        {
+          "id": "system_overview",
+          "type": "textarea",
+          "label": "Document the system:",
+          "placeholder": "System name and purpose: ...\n\nWhat it does: ...\n\nWho uses it: ...\n\nData collected:\n- [field]: PII? [Yes/No], Source: [user/derived/third-party]\n- [field]: ...\n\nData storage:\n- Where stored: ...\n- Who has access: ...\n- Retention period: ...\n\nData flows:\n- Entry points: ...\n- Internal destinations: ...\n- Third parties: ...",
+          "required": true,
+          "rows": 20
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Legal Basis Assessment",
+      "description": "Assess legal basis for each data category.",
+      "fields": [
+        {
+          "id": "legal_basis",
+          "type": "textarea",
+          "label": "Assess legal basis for data processing:",
+          "placeholder": "Customer contact info:\n- Purpose: ...\n- Legal basis: [consent/contract/legitimate interest]\n- If consent: how obtained? documented?\n- Assessment: [Adequate/Needs improvement]\n\nUsage analytics:\n- Purpose: ...\n- Legal basis: ...\n- Assessment: ...\n\nMarketing preferences:\n- Purpose: ...\n- Legal basis: ...\n- Opt-out method: ...\n- Assessment: ...\n\n[Continue for all data categories]",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Consent Audit",
+      "description": "Evaluate consent mechanisms.",
+      "fields": [
+        {
+          "id": "consent_audit",
+          "type": "textarea",
+          "label": "Evaluate consent collection and management:",
+          "placeholder": "Collection method: ...\n\nConsent quality:\n- Freely given (not bundled): [Yes/No]\n- Specific (defined purposes): [Yes/No]\n- Informed (clear explanation): [Yes/No]\n- Unambiguous (affirmative action): [Yes/No]\n\nDocumentation:\n- Timestamp recorded: [Yes/No]\n- Terms version recorded: [Yes/No]\n- Can demonstrate if challenged: [Yes/No]\n\nWithdrawal:\n- How to withdraw: ...\n- As easy as giving consent: [Yes/No]\n- Data handling on withdrawal: ...\n\nCurrent rating (1-10): ...\nImprovements needed: ...",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Privacy Policy Audit",
+      "description": "Evaluate the privacy policy.",
+      "fields": [
+        {
+          "id": "policy_audit",
+          "type": "textarea",
+          "label": "Evaluate privacy policy content and accessibility:",
+          "placeholder": "Content checklist:\n- What data collected: [Yes/No/Partial]\n- Why collected: [Yes/No/Partial]\n- How used: [Yes/No/Partial]\n- Who shared with: [Yes/No/Partial]\n- Retention periods: [Yes/No/Partial]\n- Individual rights: [Yes/No/Partial]\n- Contact info: [Yes/No/Partial]\n- How to exercise rights: [Yes/No/Partial]\n\nAccessibility:\n- Linked from collection points: [Yes/No]\n- Clear language: [Yes/No]\n- Available in relevant languages: [Yes/No]\n\nCurrent rating (1-10): ...\nImprovements needed: ...",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Security Audit",
+      "description": "Evaluate security controls.",
+      "fields": [
+        {
+          "id": "security_audit",
+          "type": "textarea",
+          "label": "Audit security across categories:",
+          "placeholder": "Access Control (1-10): ...\n- RBAC implemented: ...\n- Permissions documented: ...\n- Periodic review: ...\n- Offboarding process: ...\n\nData Protection (1-10): ...\n- Encrypted at rest: ...\n- Encrypted in transit: ...\n- Backup encryption: ...\n- Key management: ...\n\nAccount Security (1-10): ...\n- Strong passwords: ...\n- 2FA available/required: ...\n- Session timeouts: ...\n\nApplication Security (1-10): ...\n- Input validation: ...\n- Rate limiting: ...\n- Dependency updates: ...\n\nMonitoring (1-10): ...\n- Access logs: ...\n- Security event monitoring: ...\n- Anomaly alerts: ...\n\nOverall security rating: ...",
+          "required": true,
+          "rows": 26
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Vendor Audit",
+      "description": "Audit third-party services with data access.",
+      "fields": [
+        {
+          "id": "vendor_audit",
+          "type": "textarea",
+          "label": "List and assess all vendors with personal data access:",
+          "placeholder": "Vendor 1:\n- Name: ...\n- Purpose: ...\n- Data received: ...\n- Data accessible: ...\n- Storage location: ...\n- Security certs: ...\n- DPA in place: [Yes/No]\n- Last reviewed: ...\n- Risk: [Low/Medium/High]\n\nVendor 2:\n[same format]\n\nVendor 3:\n[same format]\n\nManagement improvements needed: ...",
+          "required": true,
+          "rows": 20
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Data Subject Rights (Advanced)",
+      "description": "Assess ability to fulfill data subject rights.",
+      "fields": [
+        {
+          "id": "rights_audit",
+          "type": "textarea",
+          "label": "Assess each right:",
+          "placeholder": "Right to Access (1-10): ...\n- Can provide copy: [Yes/No]\n- Time required: ...\n- Documented process: [Yes/No]\n\nRight to Rectification (1-10): ...\n- Can correct: [Yes/No]\n- Time required: ...\n\nRight to Erasure (1-10): ...\n- Can delete: [Yes/No]\n- From all systems/backups: [Yes/No]\n- Time required: ...\n\nRight to Portability (1-10): ...\n- Can export: [Yes/No]\n- Format: ...\n\nOverall rating: ...\nImprovements needed: ...",
+          "required": false,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part8",
+      "title": "Part 8: Retention Policy (Advanced)",
+      "description": "Design or assess retention policy.",
+      "fields": [
+        {
+          "id": "retention_policy",
+          "type": "textarea",
+          "label": "Design retention schedule:",
+          "placeholder": "Current state:\n- Documented policy: [Yes/No]\n- Periods defined: [Yes/No]\n- Deletion automated: [Yes/No]\n\nRetention schedule:\n| Data Category | Period | Justification | Deletion Method |\n| Customer contacts | ... | ... | ... |\n| Transactions | ... | ... | ... |\n| Marketing | ... | ... | ... |\n| Support tickets | ... | ... | ... |\n| Analytics | ... | ... | ... |\n\nImplementation plan: ...",
+          "required": false,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part9",
+      "title": "Part 9: Breach Response (Advanced)",
+      "description": "Design breach response plan.",
+      "fields": [
+        {
+          "id": "breach_plan",
+          "type": "textarea",
+          "label": "Design breach response procedures:",
+          "placeholder": "Detection:\n- How would you know: ...\n- Monitoring in place: ...\n- Who is alerted: ...\n\nContainment:\n- Immediate steps: ...\n- Authority to act: ...\n- Communication chain: ...\n\nAssessment:\n- Determine affected data: ...\n- Identify affected individuals: ...\n- Assess harm: ...\n\nNotification:\n- Regulators to notify: ...\n- Timeframe: ...\n- Template prepared: [Yes/No]\n\nIndividual communication:\n- Method: ...\n- Content: ...\n- Remediation offered: ...\n\nRemediation:\n- Prevention steps: ...\n- Responsible party: ...",
+          "required": false,
+          "rows": 24
+        }
+      ]
+    },
+    {
+      "id": "part10",
+      "title": "Part 10: Action Plan",
+      "description": "Create prioritized action plan.",
+      "fields": [
+        {
+          "id": "action_plan",
+          "type": "textarea",
+          "label": "Prioritize all findings:",
+          "placeholder": "Critical (immediately):\n1. Issue: ... | Action: ... | Owner: ...\n2. Issue: ... | Action: ... | Owner: ...\n\nHigh (30 days):\n1. Issue: ... | Action: ... | Owner: ...\n2. Issue: ... | Action: ... | Owner: ...\n\nMedium (90 days):\n1. Issue: ... | Action: ... | Owner: ...\n\nOngoing improvements:\n1. Area: ... | Improvement: ...",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "System documentation with data flows",
+    "Legal basis assessment",
+    "Consent audit with ratings",
+    "Privacy policy audit",
+    "Security audit across categories",
+    "Vendor audit with risk assessment",
+    "Prioritized action plan"
+  ],
+  "success_criteria": [
+    "System thoroughly documented",
+    "Legal basis assessed for all processing",
+    "Consent mechanisms evaluated with improvements",
+    "Security controls assessed across categories",
+    "Vendors inventoried with risk assessment",
+    "Action plan is prioritized and actionable"
+  ]
+}'
 
 WHERE slug = 'privacy-security-compliance';

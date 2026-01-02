@@ -696,6 +696,236 @@ You have completed this exercise successfully when:
 - Have cost and time comparisons
 - Designed a practical workflow for your content needs',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Image Generation Challenge",
+      "description": "Create 5 presentation images using Midjourney or DALL-E.",
+      "fields": [
+        {
+          "id": "image_tool",
+          "type": "radio",
+          "label": "Which image generation tool did you use?",
+          "options": ["Midjourney", "DALL-E", "Other"],
+          "required": true
+        },
+        {
+          "id": "image_results",
+          "type": "textarea",
+          "label": "Document each image creation:",
+          "placeholder": "Image 1 (Hero slide):\n- Initial prompt: ...\n- First result quality: X/10\n- Issue with first attempt: ...\n- Revised prompt: ...\n- Iterations needed: X\n- Final quality: X/10\n- Would use in presentation: [Yes/No]\n\nImage 2 (Problem state):\n[same format]\n\n...",
+          "required": true,
+          "rows": 20
+        },
+        {
+          "id": "style_consistency",
+          "type": "radio",
+          "label": "Were all 5 images consistent in style?",
+          "options": ["Yes, very consistent", "Mostly consistent", "Somewhat inconsistent", "Very inconsistent"],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Voice Content Creation",
+      "description": "Create a 1-minute narration for training content.",
+      "fields": [
+        {
+          "id": "script_text",
+          "type": "textarea",
+          "label": "Paste your narration script (150-200 words):",
+          "placeholder": "Your training narration script...",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "voice_selected",
+          "type": "text",
+          "label": "Which ElevenLabs voice did you select?",
+          "placeholder": "e.g., Rachel, professional female",
+          "required": true
+        },
+        {
+          "id": "audio_quality",
+          "type": "textarea",
+          "label": "Evaluate the audio result:",
+          "placeholder": "Natural sounding: [Yes/Somewhat/No]\nPronunciation issues: [none/list them]\nPacing appropriate: [Yes/Too fast/Too slow]\nWould use in real training: [Yes/With edits/No]\n\nIterations needed: X\nChanges made: ...",
+          "required": true,
+          "rows": 8
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Content Pipeline",
+      "description": "Create a complete content package for a single topic.",
+      "fields": [
+        {
+          "id": "pipeline_outputs",
+          "type": "textarea",
+          "label": "Document your content pipeline for the topic:",
+          "placeholder": "Topic: \"3 signs your business process needs automation\"\n\nArticle outline (time: X min):\n[brief summary of structure]\n\nFeatured image (time: X min):\n[prompt used, iterations needed]\n\nPull quote graphic (time: X min):\n[quote selected, tool used]\n\nAudio version (time: X min):\n[voice used, quality assessment]",
+          "required": true,
+          "rows": 12
+        },
+        {
+          "id": "total_pipeline_time",
+          "type": "text",
+          "label": "Total time for complete content package:",
+          "placeholder": "e.g., 45 minutes",
+          "required": true
+        },
+        {
+          "id": "traditional_comparison",
+          "type": "textarea",
+          "label": "How long would this take with traditional methods?",
+          "placeholder": "Stock photos: X hours\nHiring voiceover: X days + $X\nTraditional design: X hours\n\nTotal traditional time: ...\nCost savings: ...",
+          "required": true,
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Rapid Prototyping",
+      "description": "Create a training video prototype for client feedback.",
+      "fields": [
+        {
+          "id": "prototype_components",
+          "type": "textarea",
+          "label": "Document your prototype components:",
+          "placeholder": "Sample script (2-min module): [summarize content]\n\nSample visual: [describe what you created]\n\nVoiceover sample (30 sec): [voice used, quality]\n\nStoryboard: [describe flow]",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "prototype_time",
+          "type": "text",
+          "label": "Total time to create prototype:",
+          "placeholder": "e.g., 30 minutes",
+          "required": true
+        },
+        {
+          "id": "prototype_value",
+          "type": "textarea",
+          "label": "What feedback would help before full production?",
+          "placeholder": "Questions for client:\n1. ...\n2. ...\n\nWhat would change between prototype and production:\n...",
+          "required": true,
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Quality Comparison",
+      "description": "Compare AI-generated content to alternatives.",
+      "fields": [
+        {
+          "id": "image_comparison",
+          "type": "textarea",
+          "label": "Compare your AI image to alternatives:",
+          "placeholder": "AI-generated:\n- Relevance: X/10\n- Uniqueness: X/10\n- Quality: X/10\n- Cost: $X\n- Time: X minutes\n\nStock photo (Unsplash/Pexels):\n- Relevance: X/10\n- Uniqueness: X/10\n- Quality: X/10\n- Cost: $0\n- Time: X minutes\n\nProfessional designer (estimate):\n- Cost: $X\n- Time: X days",
+          "required": true,
+          "rows": 12
+        },
+        {
+          "id": "audio_comparison",
+          "type": "textarea",
+          "label": "Compare your AI audio to alternatives:",
+          "placeholder": "AI-generated:\n- Quality: X/10\n- Naturalness: X/10\n- Cost: $X\n- Time: X minutes\n\nYour own voice recording:\n- Quality: X/10\n- Time: X minutes\n\nVoice actor (estimate):\n- Cost: $X\n- Time: X days",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "decision_matrix",
+          "type": "textarea",
+          "label": "When would you use each option?",
+          "placeholder": "Use AI-generated when: ...\nUse stock when: ...\nUse professional when: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Budget Analysis",
+      "description": "Design your specialized tools budget.",
+      "fields": [
+        {
+          "id": "content_needs",
+          "type": "textarea",
+          "label": "Inventory your monthly content needs:",
+          "placeholder": "Images created monthly: X\nMinutes of audio content: X\nVideo clips needed: X",
+          "required": true,
+          "rows": 3
+        },
+        {
+          "id": "tool_costs",
+          "type": "textarea",
+          "label": "Calculate tool costs vs alternatives:",
+          "placeholder": "Image generation: [tool] at $X/month\nVoice generation: [tool] at $X/month\nVideo generation: [tool] at $X/month\nTotal monthly: $X\n\nAlternative costs:\n- Stock photos: $X/month\n- Freelancer equivalent: $X/month",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "roi_justified",
+          "type": "radio",
+          "label": "Is the tool subscription justified?",
+          "options": ["Yes, clear ROI", "Maybe, close to break-even", "No, alternatives are better value"],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Workflow Design",
+      "description": "Design your content creation workflows.",
+      "fields": [
+        {
+          "id": "presentation_workflow",
+          "type": "textarea",
+          "label": "Workflow for presentation creation:",
+          "placeholder": "Step 1: [tool] for [purpose]\nStep 2: [tool] for [purpose]\nStep 3: [tool] for [purpose]\nEstimated time: X minutes",
+          "required": true,
+          "rows": 5
+        },
+        {
+          "id": "training_workflow",
+          "type": "textarea",
+          "label": "Workflow for training content:",
+          "placeholder": "Step 1: [tool] for [purpose]\nStep 2: [tool] for [purpose]\nStep 3: [tool] for [purpose]\nEstimated time: X minutes",
+          "required": true,
+          "rows": 5
+        },
+        {
+          "id": "automation_opportunities",
+          "type": "textarea",
+          "label": "Which steps could be automated?",
+          "placeholder": "Automatable steps: ...\nTrigger: ...\nManual review points needed: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "5 presentation images with iteration documentation",
+    "Audio narration file with script",
+    "Complete content pipeline outputs",
+    "Prototype materials for training video",
+    "Quality comparison analysis",
+    "Budget analysis and workflow design"
+  ],
+  "success_criteria": [
+    "Created content using at least 2 specialized tools",
+    "Applied I-T-O framework to non-text prompts",
+    "Iterated to improve initial results",
+    "Can assess quality honestly",
+    "Have cost and time comparisons",
+    "Designed practical workflow for content needs"
+  ]
+}'
 
 WHERE slug = 'specialized-ai-tools';

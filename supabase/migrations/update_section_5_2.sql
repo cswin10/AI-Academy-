@@ -620,6 +620,170 @@ You have completed this exercise successfully when:
 - Future-proofing identifies realistic growth scenarios
 - Automations demonstrate why storage choice matters for the execution layer',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Scenario Analysis",
+      "description": "Recommend storage tools for 5 different scenarios.",
+      "fields": [
+        {
+          "id": "scenario_a",
+          "type": "textarea",
+          "label": "Scenario A: Freelance Designer Project Tracker (30-50 projects, 1 user)",
+          "placeholder": "Recommended tool: ...\nJustification: ...\nWhat would change recommendation: ...",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "scenario_b",
+          "type": "textarea",
+          "label": "Scenario B: Startup Customer Database (2,000+ customers, 5 users, integrations)",
+          "placeholder": "Recommended tool: ...\nJustification: ...\nWhat would change recommendation: ...",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "scenario_c",
+          "type": "textarea",
+          "label": "Scenario C: Content Marketing Calendar (50+ pieces, 3 users, visual calendar)",
+          "placeholder": "Recommended tool: ...\nJustification: ...\nWhat would change recommendation: ...",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "scenario_d",
+          "type": "textarea",
+          "label": "Scenario D: E-commerce Inventory (8,000+ SKUs, real-time, API, multi-user)",
+          "placeholder": "Recommended tool: ...\nJustification: ...\nWhat would change recommendation: ...",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "scenario_e",
+          "type": "textarea",
+          "label": "Scenario E: Team Meeting Notes (5+/week, searchable, 10 users)",
+          "placeholder": "Recommended tool: ...\nJustification: ...\nWhat would change recommendation: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Comparative Design",
+      "description": "Design Scenario B in both Google Sheets and Airtable.",
+      "fields": [
+        {
+          "id": "sheets_design",
+          "type": "textarea",
+          "label": "Design in Google Sheets:",
+          "placeholder": "Sheet 1 - Customers: [columns]\n\nSheet 2 - Support Tickets: [columns]\n- Link to customers: [how]\n\nSheet 3 - Usage Metrics: [structure]\n\nLimitations:\n- At 5,000 customers: ...\n- Concurrent editing: ...\n- Automation integrations: ...",
+          "required": true,
+          "rows": 14
+        },
+        {
+          "id": "airtable_design",
+          "type": "textarea",
+          "label": "Design in Airtable:",
+          "placeholder": "Table 1 - Customers: [fields with types]\n\nTable 2 - Support Tickets: [fields]\n- Link field: ...\n- Rollup for ticket count: ...\n\nTable 3 - Usage Metrics: [fields]\n\nViews: [what each team needs]\n\nAdvantages over Sheets: ...\n\nRemaining limitations: ...",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Migration Planning",
+      "description": "Plan migration from Google Sheet to new tool for marketing agency.",
+      "fields": [
+        {
+          "id": "assessment",
+          "type": "textarea",
+          "label": "Step 1-2: Assessment and Destination Selection",
+          "placeholder": "Current problems: ...\nData quality: ...\nExisting integrations: ...\n\nRecommended destination: ...\nWhy this over alternatives: ...",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "migration_plan",
+          "type": "textarea",
+          "label": "Steps 3-5: Schema, Process, and Post-Migration",
+          "placeholder": "Schema:\n- Tables needed: ...\n- Relationships: ...\n- Views per user: ...\n\nMigration process:\n- Export method: ...\n- Data cleaning needed: ...\n- Validation approach: ...\n- Transition period handling: ...\n\nPost-migration:\n- Training needed: ...\n- What stays in Sheets: ...\n- Success metrics: ...",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Hybrid Architecture",
+      "description": "Design multi-tool architecture for consulting firm.",
+      "fields": [
+        {
+          "id": "tool_selection",
+          "type": "textarea",
+          "label": "Tool selection for each need:",
+          "placeholder": "Structured data (projects, clients, time): [tool + justification]\n\nDocuments and files: [tool + how it connects to project data]\n\nKnowledge base: [tool + organization approach]\n\nAutomation platform: [tool + key triggers/actions]",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "integration_architecture",
+          "type": "textarea",
+          "label": "Integration architecture:",
+          "placeholder": "How tools connect: ...\nSource of truth for each data type: ...\nHow to avoid data silos: ...\nData flow between tools: ...",
+          "required": true,
+          "rows": 8
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Future-Proofing",
+      "description": "Identify growth triggers for each scenario.",
+      "fields": [
+        {
+          "id": "future_proofing",
+          "type": "textarea",
+          "label": "For each scenario, what growth requires tool change?",
+          "placeholder": "Scenario A (Freelancer):\n- Growth trigger: ...\n- Migrate to: ...\n\nScenario B (Startup):\n- Airtable limits at: ...\n- Enterprise needs: ...\n\nScenario C (Content):\n- Team size that strains it: ...\n- Larger scale needs: ...\n\nScenario D (E-commerce):\n- Additional requirements: ...\n- Extensibility: ...\n\nScenario E (Meeting Notes):\n- AI/search features needed: ...\n- Knowledge graph impact: ...",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Automation Connection",
+      "description": "Design automations for Scenario B.",
+      "fields": [
+        {
+          "id": "automations",
+          "type": "textarea",
+          "label": "Design 3 automations with storage implications:",
+          "placeholder": "Automation 1: New customer onboarding\n- Trigger: ...\n- Actions: ...\n- Storage implications: ...\n\nAutomation 2: Churn risk alert\n- Trigger (risk indicators): ...\n- Logic (risk calculation): ...\n- Action: ...\n- Why this storage supports it: ...\n\nAutomation 3: Monthly usage report\n- Data needed: ...\n- Aggregation: ...\n- Output format: ...\n- Why this storage makes it possible: ...",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "5 scenario analyses with justifications",
+    "Comparative designs in Sheets and Airtable",
+    "Complete migration plan",
+    "Hybrid architecture with integration diagram",
+    "Future-proofing analysis",
+    "3 automation designs with storage implications"
+  ],
+  "success_criteria": [
+    "Tool recommendations match requirements with justification",
+    "Comparative designs reveal specific differences",
+    "Migration plan is actionable and realistic",
+    "Hybrid architecture addresses all needs without silos",
+    "Automations demonstrate why storage choice matters"
+  ]
+}'
 
 WHERE slug = 'databases-spreadsheets-documents';

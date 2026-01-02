@@ -724,6 +724,148 @@ You have completed this exercise successfully when:
 - Documentation is developer-ready
 - Design decisions are justified',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Requirements Analysis",
+      "description": "Identify all entities in the freelance marketplace scenario.",
+      "fields": [
+        {
+          "id": "entities",
+          "type": "textarea",
+          "label": "List every entity (noun) that needs tracking:",
+          "placeholder": "List all entities:\n- Users (freelancers and clients)\n- FreelancerProfiles\n- Services\n- Jobs\n- Proposals\n- ...\n\nGrouped related concepts:\n...\n\nDistinct tables vs attributes:\n...",
+          "required": true,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Table Design",
+      "description": "Design complete tables with fields.",
+      "fields": [
+        {
+          "id": "users_table",
+          "type": "textarea",
+          "label": "Users Table design:",
+          "placeholder": "Single table with role OR separate tables? [decision + justification]\n\nFields:\n- Authentication: [list with types]\n- Profile: [list with types]\n- Verification: [list with types]\n- Timestamps: [list with types]",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "core_tables",
+          "type": "textarea",
+          "label": "Core transaction tables (Jobs, Proposals, Contracts, Milestones, Payments):",
+          "placeholder": "Jobs table:\n- Fields: [list with types]\n- Required: ...\n- Status options: ...\n\nProposals table:\n- Fields: [list]\n- Status options: ...\n- Relationships: ...\n\nContracts table:\n- What happens when proposal accepted: ...\n- Fields: ...\n- Status tracking: ...\n\nMilestones table:\n- How work is broken into milestones: ...\n- Fields: ...\n- Payment status: ...\n\nPayments table:\n- Fields: ...\n- Status: ...\n- Relation to Milestones: ...",
+          "required": true,
+          "rows": 24
+        },
+        {
+          "id": "supporting_tables",
+          "type": "textarea",
+          "label": "Supporting tables (Reviews, Messages, Services):",
+          "placeholder": "Reviews table:\n- Who reviews whom: ...\n- Fields: ...\n- Rating system: ...\n- Bidirectional handling: ...\n\nMessages table:\n- Fields: ...\n- Thread grouping: ...\n- Relationships: ...\n\nServices table:\n- What is a service: ...\n- Fields: ...\n- Relation to freelancers: ...\n\nAdditional tables needed:\n...",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Relationships",
+      "description": "Document all table relationships.",
+      "fields": [
+        {
+          "id": "relationships",
+          "type": "textarea",
+          "label": "Document all relationships:",
+          "placeholder": "Format: Table A to Table B: [type], [FK location], [junction table?]\n\n- Users to Jobs: one-to-many, Jobs.client_id FK\n- Users to Proposals: ...\n- Jobs to Proposals: ...\n- Proposals to Contracts: ...\n- Contracts to Milestones: ...\n- Milestones to Payments: ...\n- Users to Reviews: ...\n- Users to Messages: ...\n- (continue for all relationships)",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Constraints",
+      "description": "Define constraints for key tables.",
+      "fields": [
+        {
+          "id": "constraints",
+          "type": "textarea",
+          "label": "Define constraints for each table:",
+          "placeholder": "Users:\n- NOT NULL: ...\n- UNIQUE: ...\n- CHECK: ...\n- Defaults: ...\n\nJobs:\n- NOT NULL: ...\n- CHECK (budget positive): ...\n- Status transitions: [valid changes]\n\nContracts:\n- NOT NULL: ...\n- Referential integrity: [what must exist first]\n\nPayments:\n- NOT NULL: ...\n- Amount validation: ...\n- Status rules: ...",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Indexes",
+      "description": "Design indexes for common queries.",
+      "fields": [
+        {
+          "id": "indexes",
+          "type": "textarea",
+          "label": "Design indexes for 5 common queries:",
+          "placeholder": "Query 1: Find open jobs in category\n- Tables: ...\n- Filter fields: ...\n- Index: ...\n\nQuery 2: Find freelancer by skills\n- Implementation: ...\n- Index strategy: ...\n\nQuery 3: Get proposals for job\n- Index: ...\n\nQuery 4: Calculate freelancer earnings\n- Tables: ...\n- Aggregation: ...\n\nQuery 5: Get conversation thread\n- Tables: ...\n- Index: ...",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Automation Support",
+      "description": "Design schema additions for automation.",
+      "fields": [
+        {
+          "id": "automation_support",
+          "type": "textarea",
+          "label": "Design automation support:",
+          "placeholder": "Notification triggers:\n- Events that trigger notifications: ...\n- Fields supporting triggers: ...\n\nStatus workflow:\n- Valid Job transitions: ...\n- Prevent invalid transitions: ...\n- State history tracking: ...\n\nLogging/audit:\n- Actions to log: ...\n- Activity log structure: ...\n\nScheduled jobs:\n- Time-based automation: ...\n- Supporting fields: ...",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Edge Cases",
+      "description": "Handle design edge cases.",
+      "fields": [
+        {
+          "id": "edge_cases",
+          "type": "textarea",
+          "label": "Address these edge cases:",
+          "placeholder": "Freelancer withdraws after acceptance:\n- Contract record handling: ...\n- Event tracking: ...\n- Constraints preventing inconsistency: ...\n\nClient disputes milestone:\n- Status for dispute: ...\n- Dispute details fields: ...\n- Payment effect: ...\n\nUser account deletion:\n- Soft vs hard delete: ...\n- Effect on jobs/proposals/contracts/reviews: ...\n- GDPR handling: ...\n\nUser as both freelancer and client:\n- Schema support: [Yes/No]\n- Changes needed: ...\n\nTiered service pricing:\n- Model approach: ...\n- Part of Services or separate: ...",
+          "required": true,
+          "rows": 20
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Complete entity identification",
+    "All tables with fields and types",
+    "Relationship documentation",
+    "Constraints for all tables",
+    "Index design for common queries",
+    "Automation support design",
+    "Edge case handling"
+  ],
+  "success_criteria": [
+    "All entities modeled as tables",
+    "Field types are appropriate",
+    "Relationships correctly model domain",
+    "Constraints enforce integrity",
+    "Indexes support query patterns",
+    "Automation needs addressed",
+    "Edge cases handled"
+  ]
+}'
 
 WHERE slug = 'schema-design';

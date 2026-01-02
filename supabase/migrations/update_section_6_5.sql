@@ -405,6 +405,158 @@ Documentation shows clear before and after comparison.
 
 Connection to I-T-O framework and capability tiers explicit in analysis.',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Establish Baseline",
+      "description": "Measure current performance of an existing automation.",
+      "fields": [
+        {
+          "id": "execution_time",
+          "type": "textarea",
+          "label": "Measure execution time per step:",
+          "placeholder": "| Step | Description | Duration (ms) |\n| 1 | Trigger | 100 |\n| 2 | Validation | 50 |\n| 3 | CRM creation | 1500 |\n| 4 | Enrichment | 2000 |\n| 5 | Email send | 800 |\n| 6 | Slack notify | 500 |\n| TOTAL | | 4950 |\n\nBottleneck: Step 4 (Enrichment) - 40% of total time",
+          "required": true,
+          "rows": 12
+        },
+        {
+          "id": "cost_analysis",
+          "type": "textarea",
+          "label": "Calculate costs:",
+          "placeholder": "| Component | Cost/Run | Runs/Month | Monthly Cost |\n| Platform | $0.01 | 1000 | $10 |\n| API calls | $0.005 | 1000 | $5 |\n| AI (if used) | $0.02 | 1000 | $20 |\n| TOTAL | $0.035 | | $35 |",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "throughput",
+          "type": "textarea",
+          "label": "Measure throughput:",
+          "placeholder": "Current capacity: X runs/hour\nCurrent volume: X runs/day",
+          "required": true,
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Identify Opportunities",
+      "description": "Analyze each step using I-T-O thinking.",
+      "fields": [
+        {
+          "id": "opportunities",
+          "type": "textarea",
+          "label": "Identify optimization opportunities:",
+          "placeholder": "| Step | Current | Opportunity | Technique | Savings |\n| CRM | 1500ms | Use batch API | Batching | 80% |\n| Enrichment | 2000ms | Add caching | Caching | 70% |\n| Email+Slack | 1300ms | Run together | Parallel | 50% |\n| Validation | 50ms | N/A | Already fast | 0% |\n\nTop 3 to implement:\n1. Caching for enrichment (highest impact)\n2. Parallel email+slack (easy win)\n3. Batch CRM (for high volume)",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Implement Optimizations",
+      "description": "Apply at least 3 optimization techniques.",
+      "fields": [
+        {
+          "id": "optimization1",
+          "type": "textarea",
+          "label": "Optimization 1:",
+          "placeholder": "Technique: [name]\nCurrent state: ...\nProposed change: ...\nImplementation steps:\n1. ...\n2. ...\nMeasured result: [before] -> [after]",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "optimization2",
+          "type": "textarea",
+          "label": "Optimization 2:",
+          "placeholder": "Technique: [name]\nCurrent state: ...\nProposed change: ...\nImplementation steps:\n1. ...\n2. ...\nMeasured result: [before] -> [after]",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "optimization3",
+          "type": "textarea",
+          "label": "Optimization 3:",
+          "placeholder": "Technique: [name]\nCurrent state: ...\nProposed change: ...\nImplementation steps:\n1. ...\n2. ...\nMeasured result: [before] -> [after]",
+          "required": true,
+          "rows": 8
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Measure Improvements",
+      "description": "Re-measure after optimizations.",
+      "fields": [
+        {
+          "id": "improvements",
+          "type": "textarea",
+          "label": "Compare before and after:",
+          "placeholder": "Execution Time:\n| Step | Before | After | Improvement |\n| CRM | 1500ms | 300ms | 80% |\n| Enrichment | 2000ms | 600ms | 70% |\n| Email+Slack | 1300ms | 650ms | 50% |\n| TOTAL | 4950ms | 1700ms | 66% |\n\nCost:\n| Component | Before | After | Savings |\n| API | $5/mo | $2/mo | 60% |\n| TOTAL | $35/mo | $22/mo | 37% |\n\nThroughput:\n- Before: 100/hour\n- After: 300/hour\n- Improvement: 3x",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Cost-Benefit Analysis",
+      "description": "Calculate ROI for each optimization.",
+      "fields": [
+        {
+          "id": "roi_analysis",
+          "type": "textarea",
+          "label": "Calculate ROI:",
+          "placeholder": "| Optimization | Time (hrs) | Monthly Savings | Payback |\n| Caching | 2 | $10 | 0.2 months |\n| Parallel | 0.5 | $3 | 0.17 months |\n| Batching | 4 | $5 | 0.8 months |\n\nBest ROI: Parallel (easiest, fastest payback)\nNot worth it: None\nWould do differently: Start with parallel first",
+          "required": true,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: AI Optimization (Advanced)",
+      "description": "Apply capability tier right-sizing if using AI.",
+      "fields": [
+        {
+          "id": "ai_optimization",
+          "type": "textarea",
+          "label": "Optimize AI usage:",
+          "placeholder": "Current AI usage:\n- Model: [tier]\n- Avg tokens: X\n- Cost/call: $X\n\nTier analysis:\n| Task | Current | Min Required | Savings |\n| Lead scoring | Balanced | Fast/Cheap | 90% |\n| Enrichment | Deep | Balanced | 50% |\n\nTests:\n1. Cheaper tier: [acceptable quality? savings?]\n2. Shorter prompt: [X tokens -> Y tokens, quality?]\n3. Batching: [X calls -> Y calls, savings?]",
+          "required": false,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Optimization Playbook (Advanced)",
+      "description": "Document reusable strategies.",
+      "fields": [
+        {
+          "id": "playbook",
+          "type": "textarea",
+          "label": "Create your optimization playbook:",
+          "placeholder": "Quick Wins (<1 hour):\n1. Parallelize independent actions\n2. Add simple caching\n3. Remove unused steps\n\nMedium Effort (1-4 hours):\n1. Implement batching\n2. Add smart retries\n\nMajor (4+ hours):\n1. Architecture redesign\n\nOngoing monitoring:\n- Weekly: Check times and errors\n- Monthly: Review costs\n- Quarterly: Re-evaluate opportunities",
+          "required": false,
+          "rows": 14
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Baseline measurements documented",
+    "3+ optimizations implemented",
+    "Before/after measurements",
+    "ROI analysis"
+  ],
+  "success_criteria": [
+    "Measurable improvement in at least one metric",
+    "Functionality still works correctly",
+    "Clear before/after comparison",
+    "I-T-O and capability tier connections explicit"
+  ]
+}'
 
 WHERE slug = 'optimization-performance';

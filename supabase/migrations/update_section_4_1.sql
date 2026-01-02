@@ -394,6 +394,208 @@ You have achieved the exercise objectives when:
 - You can recommend platforms to others based on their needs
 - You understand how platform choice connects to the 4-layer model',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Identical Task Across Platforms",
+      "description": "Test the same process analysis prompt on multiple platforms to compare outputs.",
+      "fields": [
+        {
+          "id": "platforms_tested",
+          "type": "checkbox_group",
+          "label": "Which platforms did you test?",
+          "options": ["ChatGPT", "Claude", "Gemini", "Perplexity", "Other"],
+          "required": true
+        },
+        {
+          "id": "platform_comparison",
+          "type": "textarea",
+          "label": "Document results for each platform tested (response time, structure, quality, 4-layer model usage, capability tier recommendations, overall rating 1-10):",
+          "placeholder": "Platform 1: ChatGPT\n- Response time: ~X seconds\n- Response structure: [well organized / disorganized]\n- Practical applicability: [high / medium / low]\n- 4-layer model usage: [correct / incorrect / missing]\n- Capability tier recommendations: [appropriate / inappropriate]\n- Overall rating: X/10\n- Notes: ...\n\nPlatform 2: Claude\n- Response time: ...\n- Response structure: ...\n...",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Code Generation Comparison",
+      "description": "Compare code generation quality between platforms.",
+      "fields": [
+        {
+          "id": "code_comparison",
+          "type": "textarea",
+          "label": "Test the Python CSV processing prompt on ChatGPT and Claude. Compare code correctness, error handling, readability, and production-readiness:",
+          "placeholder": "ChatGPT Code Quality:\n- Code correctness: [works / has bugs]\n- Error handling: [comprehensive / basic / missing]\n- Readability: [well commented / sparse comments]\n- Production trust: [high / medium / low]\n\nClaude Code Quality:\n- Code correctness: [works / has bugs]\n- Error handling: [comprehensive / basic / missing]\n- Readability: [well commented / sparse comments]\n- Production trust: [high / medium / low]\n\nWinner for code tasks: [ChatGPT / Claude / Tie]\nReason: ...",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Long Document Analysis",
+      "description": "Test context window differences with a 20+ page document (if you have Claude Pro).",
+      "fields": [
+        {
+          "id": "document_test",
+          "type": "textarea",
+          "label": "If tested, compare how ChatGPT and Claude handled the long document:",
+          "placeholder": "Document used: [title, ~X pages]\n\nChatGPT:\n- Struggled with length: [Yes / No]\n- Summary quality: [1-10]\n- Action items found: [complete / partial / missed]\n\nClaude:\n- Struggled with length: [Yes / No]\n- Summary quality: [1-10]\n- Action items found: [complete / partial / missed]\n\nWinner for long documents: ...\n\n(Skip if you did not have access to test this)",
+          "required": false,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Research with Sources",
+      "description": "Test citation and research capabilities (if you have Perplexity).",
+      "fields": [
+        {
+          "id": "research_test",
+          "type": "textarea",
+          "label": "If tested, compare Perplexity vs ChatGPT web browsing for research quality:",
+          "placeholder": "Perplexity:\n- Source quality: [high / medium / low]\n- Depth of information: [comprehensive / adequate / shallow]\n- Ease of verification: [easy / moderate / difficult]\n- Client-facing trust: [high / medium / low]\n\nChatGPT with browsing:\n- Source quality: ...\n- Depth of information: ...\n\nWinner for research: ...\n\n(Skip if you did not have access to test this)",
+          "required": false,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Platform Feature Setup",
+      "description": "Set up organization features on your primary platform.",
+      "fields": [
+        {
+          "id": "primary_platform",
+          "type": "radio",
+          "label": "Which platform did you set up as primary?",
+          "options": ["ChatGPT (Custom GPT)", "Claude (Project)", "Other"],
+          "required": true
+        },
+        {
+          "id": "feature_setup",
+          "type": "textarea",
+          "label": "Document your Custom GPT or Project setup:",
+          "placeholder": "Feature created: [Custom GPT name / Project name]\n\nConfiguration:\n- Instructions set: [describe]\n- Documents uploaded: [list if any]\n- Special settings: [describe]\n\nTest results:\n- Test 1: [process description] -> [worked correctly? Y/N]\n- Test 2: [process description] -> [worked correctly? Y/N]\n- Test 3: [process description] -> [worked correctly? Y/N]\n\nSetup time: ~X minutes\nContext remembered correctly: [Yes / No]\nUseful for your work: [Yes / No / Maybe]",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Cost-Benefit Analysis",
+      "description": "Calculate your personal ROI for platform subscriptions.",
+      "fields": [
+        {
+          "id": "hours_per_week",
+          "type": "text",
+          "label": "Hours per week using AI:",
+          "placeholder": "e.g., 10",
+          "required": true
+        },
+        {
+          "id": "primary_tasks",
+          "type": "textarea",
+          "label": "Primary tasks you use AI for:",
+          "placeholder": "e.g., Writing, code review, research, data analysis...",
+          "required": true,
+          "rows": 2
+        },
+        {
+          "id": "current_cost",
+          "type": "text",
+          "label": "Current monthly cost for AI platforms:",
+          "placeholder": "e.g., $20",
+          "required": true
+        },
+        {
+          "id": "time_saved_hours",
+          "type": "text",
+          "label": "Hours saved per week by using AI (vs doing manually):",
+          "placeholder": "e.g., 5",
+          "required": true
+        },
+        {
+          "id": "hourly_rate",
+          "type": "text",
+          "label": "Your effective hourly rate:",
+          "placeholder": "e.g., $50",
+          "required": true
+        },
+        {
+          "id": "roi_calculation",
+          "type": "textarea",
+          "label": "Calculate your monthly ROI:",
+          "placeholder": "Time saved: X hours/week x 4 weeks = X hours/month\nValue of time saved: X hours x $X/hour = $X/month\nCurrent AI cost: $X/month\nNet monthly benefit: $X - $X = $X\nROI: (benefit - cost) / cost = X%\n\nConclusion: [Worth it / Not worth it / Break-even]",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "upgrade_decision",
+          "type": "radio",
+          "label": "Based on your analysis, should you upgrade or change platforms?",
+          "options": ["Yes, upgrade to paid tier", "Yes, add second platform", "No, current setup is optimal", "Need to reduce spending"],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Personal Workflow Design",
+      "description": "Design your multi-platform workflow based on testing.",
+      "fields": [
+        {
+          "id": "primary_platform_choice",
+          "type": "text",
+          "label": "Primary platform for everyday use:",
+          "placeholder": "e.g., Claude",
+          "required": true
+        },
+        {
+          "id": "primary_reason",
+          "type": "textarea",
+          "label": "Why this is your primary platform:",
+          "placeholder": "Reason based on testing...",
+          "required": true,
+          "rows": 2
+        },
+        {
+          "id": "task_routing",
+          "type": "textarea",
+          "label": "Which platform for each task type:",
+          "placeholder": "Code generation: [platform]\nLong document analysis: [platform]\nStructured data extraction: [platform]\nResearch requiring sources: [platform]\nQuick general questions: [platform]\nCreative writing: [platform]",
+          "required": true,
+          "rows": 6
+        },
+        {
+          "id": "monthly_budget",
+          "type": "textarea",
+          "label": "Monthly budget allocation:",
+          "placeholder": "Primary platform: $X\nSecondary platform: $X\nAPI credits: $X\nTotal: $X",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Platform comparison results with scores",
+    "Code quality comparison notes",
+    "Custom GPT or Project configuration",
+    "Cost-benefit calculation with ROI",
+    "Personal platform workflow design"
+  ],
+  "success_criteria": [
+    "Tested at least 2 platforms with identical prompts",
+    "Can articulate specific strengths and weaknesses",
+    "Have justified workflow based on evidence",
+    "Cost-benefit shows clear ROI (positive or negative)",
+    "Understand how platform choice connects to 4-layer model"
+  ]
+}'
 
 WHERE slug = 'llm-platforms';
