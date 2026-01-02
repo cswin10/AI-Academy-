@@ -1,6 +1,35 @@
 -- ============================================================================
 -- MODULE 3: Prompt Engineering Mastery
 -- ============================================================================
+-- This file contains the complete Module 3 with all quizzes, sections, and resources
+-- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
+
+-- First, remove any existing Module 3 data to avoid duplicates
+DELETE FROM external_resources WHERE section_id IN (
+  SELECT id FROM sections WHERE module_id IN (
+    SELECT id FROM modules WHERE slug = 'prompt-engineering-mastery'
+  )
+);
+DELETE FROM sections WHERE module_id IN (
+  SELECT id FROM modules WHERE slug = 'prompt-engineering-mastery'
+);
+DELETE FROM quiz_questions WHERE quiz_id IN (
+  SELECT id FROM quizzes WHERE title IN (
+    'Zero-Shot Few-Shot Quiz',
+    'Structured Output Quiz',
+    'Prompt Chaining Quiz',
+    'Self-Critique Quiz',
+    'Edge Cases Quiz'
+  )
+);
+DELETE FROM quizzes WHERE title IN (
+  'Zero-Shot Few-Shot Quiz',
+  'Structured Output Quiz',
+  'Prompt Chaining Quiz',
+  'Self-Critique Quiz',
+  'Edge Cases Quiz'
+);
+DELETE FROM modules WHERE slug = 'prompt-engineering-mastery';
 
 -- Insert Module 3
 INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)

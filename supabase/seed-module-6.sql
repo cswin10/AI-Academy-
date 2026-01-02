@@ -1,6 +1,35 @@
 -- ============================================================================
 -- MODULE 6: Automation Fundamentals
 -- ============================================================================
+-- This file contains the complete Module 6 with all quizzes, sections, and resources
+-- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
+
+-- First, remove any existing Module 6 data to avoid duplicates
+DELETE FROM external_resources WHERE section_id IN (
+  SELECT id FROM sections WHERE module_id IN (
+    SELECT id FROM modules WHERE slug = 'automation-fundamentals'
+  )
+);
+DELETE FROM sections WHERE module_id IN (
+  SELECT id FROM modules WHERE slug = 'automation-fundamentals'
+);
+DELETE FROM quiz_questions WHERE quiz_id IN (
+  SELECT id FROM quizzes WHERE title IN (
+    'Triggers and Actions Quiz',
+    'Conditions and Logic Quiz',
+    'Error Handling Quiz',
+    'Testing and Debugging Quiz',
+    'Optimization Quiz'
+  )
+);
+DELETE FROM quizzes WHERE title IN (
+  'Triggers and Actions Quiz',
+  'Conditions and Logic Quiz',
+  'Error Handling Quiz',
+  'Testing and Debugging Quiz',
+  'Optimization Quiz'
+);
+DELETE FROM modules WHERE slug = 'automation-fundamentals';
 
 -- Insert Module 6
 INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)

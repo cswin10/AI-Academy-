@@ -1,6 +1,35 @@
 -- ============================================================================
 -- MODULE 7: Project Management for Operators
 -- ============================================================================
+-- This file contains the complete Module 7 with all quizzes, sections, and resources
+-- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
+
+-- First, remove any existing Module 7 data to avoid duplicates
+DELETE FROM external_resources WHERE section_id IN (
+  SELECT id FROM sections WHERE module_id IN (
+    SELECT id FROM modules WHERE slug = 'project-management-operators'
+  )
+);
+DELETE FROM sections WHERE module_id IN (
+  SELECT id FROM modules WHERE slug = 'project-management-operators'
+);
+DELETE FROM quiz_questions WHERE quiz_id IN (
+  SELECT id FROM quizzes WHERE title IN (
+    'Scoping and Planning Quiz',
+    'Estimation Quiz',
+    'Stakeholder Management Quiz',
+    'Communication Quiz',
+    'Delivery and Handoff Quiz'
+  )
+);
+DELETE FROM quizzes WHERE title IN (
+  'Scoping and Planning Quiz',
+  'Estimation Quiz',
+  'Stakeholder Management Quiz',
+  'Communication Quiz',
+  'Delivery and Handoff Quiz'
+);
+DELETE FROM modules WHERE slug = 'project-management-operators';
 
 -- Insert Module 7
 INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)

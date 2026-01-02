@@ -1,6 +1,37 @@
 -- ============================================================================
 -- MODULE 2: LLM Mastery - GPT & Claude
 -- ============================================================================
+-- This file contains the complete Module 2 with all quizzes, sections, and resources
+-- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
+
+-- First, remove any existing Module 2 data to avoid duplicates
+DELETE FROM external_resources WHERE section_id IN (
+  SELECT id FROM sections WHERE module_id IN (
+    SELECT id FROM modules WHERE slug = 'llm-mastery'
+  )
+);
+DELETE FROM sections WHERE module_id IN (
+  SELECT id FROM modules WHERE slug = 'llm-mastery'
+);
+DELETE FROM quiz_questions WHERE quiz_id IN (
+  SELECT id FROM quizzes WHERE title IN (
+    'What LLMs Are Quiz',
+    'Prompt Patterns Quiz',
+    'Chain-of-Thought Quiz',
+    'System Prompts Quiz',
+    'Model Selection Quiz',
+    'Context Windows Quiz'
+  )
+);
+DELETE FROM quizzes WHERE title IN (
+  'What LLMs Are Quiz',
+  'Prompt Patterns Quiz',
+  'Chain-of-Thought Quiz',
+  'System Prompts Quiz',
+  'Model Selection Quiz',
+  'Context Windows Quiz'
+);
+DELETE FROM modules WHERE slug = 'llm-mastery';
 
 -- Insert Module 2
 INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
