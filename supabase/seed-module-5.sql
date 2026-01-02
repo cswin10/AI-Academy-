@@ -1,8 +1,6 @@
 -- ============================================================================
 -- MODULE 5: Data & Information Architecture
 -- ============================================================================
--- This file contains the complete Module 5 with all quizzes, sections, and resources
--- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
 
 -- First, remove any existing Module 5 data to avoid duplicates
 -- Use PL/pgSQL to properly capture quiz IDs via module association before cleanup

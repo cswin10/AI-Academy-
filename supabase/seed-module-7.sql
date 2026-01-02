@@ -1,8 +1,6 @@
 -- ============================================================================
 -- MODULE 7: Project Management for Operators
 -- ============================================================================
--- This file contains the complete Module 7 with all quizzes, sections, and resources
--- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
 
 -- First, remove any existing Module 7 data to avoid duplicates
 DELETE FROM external_resources WHERE section_id IN (
@@ -5503,7 +5501,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Project Handoff Best Practices',
-  'https://www.youtube.com/watch?v=hNHMHTRE8Kg',
+  'https://www.youtube.com/watch?v=cO40QYXVvZs',
   'video',
   1
 FROM sections WHERE slug = 'delivery-handoff'
@@ -5511,7 +5509,7 @@ UNION ALL
 SELECT
   id,
   'Client Training and Onboarding',
-  'https://www.youtube.com/watch?v=RwN4E2bptHw',
+  'https://www.youtube.com/watch?v=2z2U6hDh05A',
   'video',
   2
 FROM sections WHERE slug = 'delivery-handoff';
