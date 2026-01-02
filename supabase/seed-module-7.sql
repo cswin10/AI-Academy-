@@ -933,7 +933,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'How to Scope Projects Effectively',
-  'https://www.youtube.com/watch?v=DRkjRlajAkc',
+  'https://www.youtube.com/watch?v=MqBWD3l5rKo',
   'video',
   1
 FROM sections WHERE slug = 'scoping-requirements'
@@ -941,7 +941,7 @@ UNION ALL
 SELECT
   id,
   'Requirements Gathering Best Practices',
-  'https://www.youtube.com/watch?v=N7o2syzQo4w',
+  'https://www.youtube.com/watch?v=7GnMQ_H4s34',
   'video',
   2
 FROM sections WHERE slug = 'scoping-requirements';
@@ -1864,7 +1864,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'How to Estimate Project Time Accurately',
-  'https://www.youtube.com/watch?v=v21jg8wb1eU',
+  'https://www.youtube.com/watch?v=6pJB2ovPY_g',
   'video',
   1
 FROM sections WHERE slug = 'estimating-time-effort'
@@ -1872,7 +1872,7 @@ UNION ALL
 SELECT
   id,
   'Project Estimation Techniques',
-  'https://www.youtube.com/watch?v=6A5EpqqDOdk',
+  'https://www.youtube.com/watch?v=1HXp9d8k4KQ',
   'video',
   2
 FROM sections WHERE slug = 'estimating-time-effort';
@@ -2920,7 +2920,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Stakeholder Management Essentials',
-  'https://www.youtube.com/watch?v=XIhfqA54gEs',
+  'https://www.youtube.com/watch?v=z7Nw8lEAGvc',
   'video',
   1
 FROM sections WHERE slug = 'stakeholder-management'
@@ -2928,7 +2928,7 @@ UNION ALL
 SELECT
   id,
   'Managing Difficult Stakeholders',
-  'https://www.youtube.com/watch?v=v0FfzJZhCcg',
+  'https://www.youtube.com/watch?v=dyzRHU_NLpE',
   'video',
   2
 FROM sections WHERE slug = 'stakeholder-management';
@@ -4183,7 +4183,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Technical Writing Fundamentals',
-  'https://www.youtube.com/watch?v=8vS0vPJpyZU',
+  'https://www.youtube.com/watch?v=FtV5h9rTBn0',
   'video',
   1
 FROM sections WHERE slug = 'communication-documentation'
@@ -4191,7 +4191,7 @@ UNION ALL
 SELECT
   id,
   'Creating Effective Documentation',
-  'https://www.youtube.com/watch?v=t4vKPhjcMZg',
+  'https://www.youtube.com/watch?v=R6zeIBvs4Ls',
   'video',
   2
 FROM sections WHERE slug = 'communication-documentation';
@@ -5474,7 +5474,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Project Handoff Best Practices',
-  'https://www.youtube.com/watch?v=cO40QYXVvZs',
+  'https://www.youtube.com/watch?v=hNHMHTRE8Kg',
   'video',
   1
 FROM sections WHERE slug = 'delivery-handoff'
@@ -5482,7 +5482,7 @@ UNION ALL
 SELECT
   id,
   'Client Training and Onboarding',
-  'https://www.youtube.com/watch?v=2z2U6hDh05A',
+  'https://www.youtube.com/watch?v=RwN4E2bptHw',
   'video',
   2
 FROM sections WHERE slug = 'delivery-handoff';

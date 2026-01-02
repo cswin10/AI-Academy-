@@ -460,7 +460,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'ChatGPT vs Claude vs Gemini - Which is Best?',
-  'https://www.youtube.com/watch?v=IqWJK3W5w2k',
+  'https://www.youtube.com/watch?v=e5dOpTEhLjI',
   'video',
   1
 FROM sections WHERE slug = 'llm-platforms'
@@ -468,7 +468,7 @@ UNION ALL
 SELECT
   id,
   'How to Use ChatGPT Custom GPTs',
-  'https://www.youtube.com/watch?v=3V52J7cvcmo',
+  'https://www.youtube.com/watch?v=pGOyw_M1mNE',
   'video',
   2
 FROM sections WHERE slug = 'llm-platforms';
@@ -1004,7 +1004,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Cursor AI - Complete Beginner''s Guide',
-  'https://www.youtube.com/watch?v=yXsD2xkN6Y8',
+  'https://www.youtube.com/watch?v=gqUQbjsYZLQ',
   'video',
   1
 FROM sections WHERE slug = 'ai-code-assistants'
@@ -1012,7 +1012,7 @@ UNION ALL
 SELECT
   id,
   'GitHub Copilot Tutorial',
-  'https://www.youtube.com/watch?v=tG8HC3xF83E',
+  'https://www.youtube.com/watch?v=Fi3AJZZregI',
   'video',
   2
 FROM sections WHERE slug = 'ai-code-assistants';
@@ -1506,7 +1506,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Zapier AI Features Tutorial',
-  'https://www.youtube.com/watch?v=V7vZWC5JHfs',
+  'https://www.youtube.com/watch?v=JtdUgJGI_Oo',
   'video',
   1
 FROM sections WHERE slug = 'no-code-ai-tools'
@@ -1514,7 +1514,7 @@ UNION ALL
 SELECT
   id,
   'Make + OpenAI Integration Guide',
-  'https://www.youtube.com/watch?v=tGYfp_AqUTA',
+  'https://www.youtube.com/watch?v=JSA2oezQWOU',
   'video',
   2
 FROM sections WHERE slug = 'no-code-ai-tools';
@@ -2071,7 +2071,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Midjourney for Beginners - Complete Guide',
-  'https://www.youtube.com/watch?v=sT7YMZwe0yY',
+  'https://www.youtube.com/watch?v=9WVZbitXbck',
   'video',
   1
 FROM sections WHERE slug = 'specialized-ai-tools'
@@ -2079,7 +2079,7 @@ UNION ALL
 SELECT
   id,
   'ElevenLabs Tutorial - AI Voice Generation',
-  'https://www.youtube.com/watch?v=jLeC_D66W7c',
+  'https://www.youtube.com/watch?v=ZDUDAArXwWI',
   'video',
   2
 FROM sections WHERE slug = 'specialized-ai-tools';
@@ -2612,7 +2612,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'How to Choose the Right AI Tools',
-  'https://www.youtube.com/watch?v=KN0VfV-Dw8w',
+  'https://www.youtube.com/watch?v=l2dpxspED1s',
   'video',
   1
 FROM sections WHERE slug = 'tool-selection';
