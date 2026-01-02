@@ -1,6 +1,35 @@
 -- ============================================================================
 -- MODULE 5: Data & Information Architecture
 -- ============================================================================
+-- This file contains the complete Module 5 with all quizzes, sections, and resources
+-- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
+
+-- First, remove any existing Module 5 data to avoid duplicates
+DELETE FROM external_resources WHERE section_id IN (
+  SELECT id FROM sections WHERE module_id IN (
+    SELECT id FROM modules WHERE slug = 'data-information-architecture'
+  )
+);
+DELETE FROM sections WHERE module_id IN (
+  SELECT id FROM modules WHERE slug = 'data-information-architecture'
+);
+DELETE FROM quiz_questions WHERE quiz_id IN (
+  SELECT id FROM quizzes WHERE title IN (
+    'Data Flow Quiz',
+    'Data Structures Quiz',
+    'Schema Design Quiz',
+    'Data Quality Quiz',
+    'Privacy and Security Quiz'
+  )
+);
+DELETE FROM quizzes WHERE title IN (
+  'Data Flow Quiz',
+  'Data Structures Quiz',
+  'Schema Design Quiz',
+  'Data Quality Quiz',
+  'Privacy and Security Quiz'
+);
+DELETE FROM modules WHERE slug = 'data-information-architecture';
 
 -- Insert Module 5
 INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
