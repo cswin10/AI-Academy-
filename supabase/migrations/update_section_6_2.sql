@@ -475,6 +475,136 @@ Can explain the difference between AND, OR, and NOT with examples.
 
 Can identify and fix common logic bugs.',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Design Logic for Scenarios",
+      "description": "Design conditional logic for three business scenarios.",
+      "fields": [
+        {
+          "id": "expense_logic",
+          "type": "textarea",
+          "label": "Scenario 1: Expense Approval Routing",
+          "placeholder": "Condition order (why this order):\n1. ...\n2. ...\n\nMultiple condition handling:\n- $600 with missing receipt: [which path]\n\nDefault path: ...\n\nDecision tree:\n...",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "ticket_logic",
+          "type": "textarea",
+          "label": "Scenario 2: Support Ticket Routing",
+          "placeholder": "Priority order:\n1. VIP vs angry: [which wins]\n2. ...\n\nMultiple matches (VIP + billing):\n- Resolution: ...\n\nAngry sentiment detection:\n- Method: [AI classification tier]\n\nLogic with priorities:\n...",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "order_logic",
+          "type": "textarea",
+          "label": "Scenario 3: E-commerce Order Processing",
+          "placeholder": "Distinct paths count: X\n\nCheck order:\n- First: [inventory or payment]\n- Why: ...\n\nPath matrix:\n| Stock | Payment | Location | Action |\n| In | Paid | US | Ship next-day |\n| In | Paid | Intl | Ship 3-5 days |\n| ... | ... | ... | ... |\n\nNotifications per path:\n...",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Build One Scenario",
+      "description": "Implement one scenario in your platform.",
+      "fields": [
+        {
+          "id": "scenario_choice",
+          "type": "radio",
+          "label": "Which scenario did you implement?",
+          "options": ["Expense Approval", "Support Tickets", "Order Processing"],
+          "required": true
+        },
+        {
+          "id": "implementation",
+          "type": "textarea",
+          "label": "Document your implementation:",
+          "placeholder": "Platform used: ...\n\nConditional setup:\n- First condition: ...\n- Second condition: ...\n- (continue)\n\nActions per path:\n- Path A: ...\n- Path B: ...\n\nDefault path:\n- What happens: ...",
+          "required": true,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Test Cases",
+      "description": "Create test cases for all branches.",
+      "fields": [
+        {
+          "id": "test_matrix",
+          "type": "textarea",
+          "label": "Create your test matrix:",
+          "placeholder": "| Test # | Input | Expected Path | Expected Outcome |\n| 1 | [data] | Path A | [outcome] |\n| 2 | [data] | Path B | [outcome] |\n| ... | ... | ... | ... |\n\nEdge cases:\n| EC-1 | [boundary value] | ... | ... |\n| EC-2 | [empty field] | ... | ... |\n\nDefault path test:\n| D-1 | [no match data] | Default | ... |\n\nOverlapping conditions:\n| O-1 | [matches multiple] | [priority path] | ... |",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Execute and Document",
+      "description": "Run tests and document results.",
+      "fields": [
+        {
+          "id": "test_results",
+          "type": "textarea",
+          "label": "Document test execution results:",
+          "placeholder": "| Test # | Expected | Actual | Status |\n| 1 | Path A | Path A | PASS |\n| 2 | Path B | Path C | FAIL |\n| ... | ... | ... | ... |\n\nBugs found:\n- Test 2 failed because: ...\n- Fix applied: ...\n- Retest result: ...",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Debug Broken Logic",
+      "description": "Find and fix bugs in the discount calculator.",
+      "fields": [
+        {
+          "id": "bug_fixes",
+          "type": "textarea",
+          "label": "Find and fix the bugs:",
+          "placeholder": "Bug 1: $250 order\n- Current behavior: [what discount]\n- Problem: [order of conditions]\n- Fix: ...\n\nBug 2: VIP with $300\n- Current behavior: ...\n- Problem: ...\n- Fix: ...\n\nBug 3: $49.99 order\n- Current behavior: [no path]\n- Problem: [missing default]\n- Fix: ...\n\nCorrected logic:\n1. If VIP: 25% (check first)\n2. If > 200: 15%\n3. If > 100: 10%\n4. If > 50: 5%\n5. Default: 0%",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Simplify Complex Logic",
+      "description": "Rewrite nested logic to be more readable.",
+      "fields": [
+        {
+          "id": "simplified_logic",
+          "type": "textarea",
+          "label": "Simplify the nested customer routing logic:",
+          "placeholder": "Simplified version using early exits:\n\n1. If not Enterprise AND not Small Business: -> Self-service (exit)\n\n2. If Enterprise AND not Active contract: -> Sales outreach (exit)\n\n3. If Enterprise AND Active AND recent purchase (< 30 days): -> Priority support (exit)\n\n4. If Enterprise AND Active AND Premium tier: -> Standard support (exit)\n\n5. If Enterprise AND Active: -> Basic support (exit)\n\n6. If Small Business AND has subscription: -> Standard support (exit)\n\n7. Default: -> Self-service\n\nWhy this is better:\n...",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Logic designs for all 3 scenarios",
+    "One implemented and tested automation",
+    "Test case matrix with results",
+    "Bug fixes with explanations",
+    "Simplified logic version"
+  ],
+  "success_criteria": [
+    "All scenarios have complete logic designs",
+    "At least one automation built and tested",
+    "All branches tested with documented results",
+    "Can explain AND, OR, NOT differences",
+    "Can identify and fix common logic bugs"
+  ]
+}'
 
 WHERE slug = 'conditional-logic-branching';

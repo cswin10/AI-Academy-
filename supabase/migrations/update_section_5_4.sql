@@ -740,6 +740,136 @@ You have completed this exercise successfully when:
 - Standards document is usable by others
 - Automation design connects to 4-layer model',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Create Sample Dataset",
+      "description": "Build a messy customer database with intentional quality issues.",
+      "fields": [
+        {
+          "id": "dataset_issues",
+          "type": "textarea",
+          "label": "Document the issues you intentionally included:",
+          "placeholder": "Format issues (10-15 records):\n- Emails without @: X records\n- Inconsistent phone formats: X records\n- Inconsistent name case: X records\n\nMissing data (10-15 records):\n- No email: X records\n- No phone: X records\n- No company: X records\n\nDuplicate issues (5-10 records):\n- Same email, different name: X records\n- Same name+company, different email: X records\n\nInvalid data (5-10 records):\n- Fake emails: X records\n- Invalid phone length: X records\n- Future dates: X records",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Quality Assessment",
+      "description": "Profile your dataset and calculate metrics.",
+      "fields": [
+        {
+          "id": "field_metrics",
+          "type": "textarea",
+          "label": "Assess each field:",
+          "placeholder": "Total records: X\n\nEmail field:\n- With value: X (X%)\n- Valid format: X (X%)\n- Unique: X (X%)\n- Variations: ...\n\nPhone field:\n- With value: X (X%)\n- Valid format: X (X%)\n- Variations: ...\n\nFirst/Last name:\n- With value: X (X%)\n- Case variations: ...\n\nCompany:\n- With value: X (X%)\n- Issues: ...\n\nCreated_at:\n- Valid dates: X (X%)\n- Impossible dates: X",
+          "required": true,
+          "rows": 20
+        },
+        {
+          "id": "quality_scores",
+          "type": "textarea",
+          "label": "Calculate overall quality scores:",
+          "placeholder": "Completeness score: X% (formula: ...)\nValidity score: X% (formula: ...)\nUniqueness score: X% (formula: ...)\nCombined score: X%",
+          "required": true,
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Design Validation Rules",
+      "description": "Design validation rules for future data entry.",
+      "fields": [
+        {
+          "id": "validation_rules",
+          "type": "textarea",
+          "label": "Define validation rules for each field:",
+          "placeholder": "Email:\n- Required: [Yes/No]\n- Format validation: ...\n- Domain validation: ...\n- Disposable blocking: ...\n- Duplicate behavior: ...\n- Normalization: ...\n- Error message: ...\n\nPhone:\n- Required: [Yes/No]\n- Accepted formats: ...\n- Normalization target: ...\n- Country code handling: ...\n\nName:\n- Required: [Yes/No]\n- Min length: ...\n- Character restrictions: ...\n- Case normalization: ...\n\nCompany:\n- Required: [Yes/No]\n- Enrichment source: ...\n\nCreated_at:\n- Default: now\n- Valid range: ...",
+          "required": true,
+          "rows": 24
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Execute Cleaning",
+      "description": "Clean your dataset in phases.",
+      "fields": [
+        {
+          "id": "cleaning_results",
+          "type": "textarea",
+          "label": "Document cleaning results for each phase:",
+          "placeholder": "Phase 1: Critical format fixes\nEmail fixes:\n- Records fixed: X\n- Method: ...\n- Unfixable: X (action taken: ...)\n\nPhone normalization:\n- Target format: ...\n- Records normalized: X\n- Unable to normalize: X\n\nPhase 2: Standardization\nName capitalization:\n- Records changed: X\n- Rule: ...\n\nEmail case:\n- Records changed: X\n\nPhase 3: Deduplication\nExact email matches: X\nFuzzy matches: X\nMerge decisions:\n- Set 1: kept [which], merged [what], lost [what]\n- Set 2: ...\n\nPhase 4: Missing data handling\n- Kept: X records\n- Flagged: X records\n- Deleted: X records\n- Justifications: ...",
+          "required": true,
+          "rows": 28
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Calculate Improvement",
+      "description": "Measure before and after.",
+      "fields": [
+        {
+          "id": "improvement_metrics",
+          "type": "textarea",
+          "label": "Compare before and after metrics:",
+          "placeholder": "Email:\n- Before: X% complete, X% valid, X% unique\n- After: X% complete, X% valid, X% unique\n- Improvement: ...\n\nPhone:\n- Before: X% complete, X% valid, X% normalized\n- After: X% complete, X% valid, X% normalized\n- Improvement: ...\n\nOverall:\n- Before quality score: X%\n- After quality score: X%\n- Total improvement: X%\n- Records removed: X\n- Records merged: X\n- Final count: X",
+          "required": true,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Monitoring Plan (Advanced)",
+      "description": "Design ongoing data quality monitoring.",
+      "fields": [
+        {
+          "id": "monitoring_plan",
+          "type": "textarea",
+          "label": "Design monitoring at each frequency:",
+          "placeholder": "Daily checks:\n- Metrics: ...\n- Alert thresholds: ...\n- Recipients: ...\n\nWeekly audit:\n- What to review: ...\n- Report format: ...\n\nMonthly deep dive:\n- Analysis: ...\n- Trends: ...\n\nDashboard:\n- Visualizations: ...\n- Metrics displayed: ...\n- Refresh frequency: ...",
+          "required": false,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Standards Document (Advanced)",
+      "description": "Create data quality standards.",
+      "fields": [
+        {
+          "id": "standards_outline",
+          "type": "textarea",
+          "label": "Outline your standards document:",
+          "placeholder": "1. Purpose: ...\n2. Scope: ...\n3. Field Standards: [summary per field]\n4. Entry Procedures: ...\n5. Quality Metrics & Targets: ...\n6. Cleaning Procedures: ...\n7. Escalation: ...",
+          "required": false,
+          "rows": 12
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Sample dataset with documented issues",
+    "Quality assessment with metrics",
+    "Validation rules for all fields",
+    "Cleaning documentation with decisions",
+    "Improvement calculations"
+  ],
+  "success_criteria": [
+    "Dataset contains realistic variety of issues",
+    "Assessment uses specific metrics",
+    "Validation rules are implementable",
+    "Cleaning decisions documented and justified",
+    "Improvement is quantified"
+  ]
+}'
 
 WHERE slug = 'data-validation-quality';

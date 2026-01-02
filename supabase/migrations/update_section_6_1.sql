@@ -408,6 +408,127 @@ Documented trigger, actions, and conditions clearly.
 
 Explicitly mapped automation to 4-layer model from Module 2.',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Design a Lead Intake Automation",
+      "description": "Map the lead intake automation to the 4-layer model.",
+      "fields": [
+        {
+          "id": "layer_mapping",
+          "type": "textarea",
+          "label": "Map your automation to the 4-layer model:",
+          "placeholder": "Trigger Layer:\n- Type: [form submission/webhook/etc]\n- Platform: ...\n- Data provided: ...\n\nLogic Layer:\n- Conditions to evaluate: ...\n- Routing decisions: ...\n- Default path: ...\n\nExecution Layer:\n- Actions in order: ...\n- Data each needs: ...\n- What each produces: ...\n\nOutput Layer:\n- Notifications sent: ...\n- Records created: ...\n- Lead receives: ...",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Build the Automation",
+      "description": "Implement the automation in n8n, Make, or Zapier.",
+      "fields": [
+        {
+          "id": "platform_choice",
+          "type": "radio",
+          "label": "Which platform did you use?",
+          "options": ["n8n", "Make", "Zapier", "Other"],
+          "required": true
+        },
+        {
+          "id": "implementation",
+          "type": "textarea",
+          "label": "Document your implementation for each step:",
+          "placeholder": "Step 1 (Trigger): [description]\n\nStep 2 (Validation): [how you validate required fields]\n\nStep 3 (CRM/Spreadsheet): [how you store the lead]\n\nStep 4 (Routing): [how you route by service type]\n\nStep 5 (Email): [confirmation email setup]\n\nStep 6 (Slack): [notification setup]",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Test Scenarios",
+      "description": "Test your automation with multiple scenarios.",
+      "fields": [
+        {
+          "id": "test_results",
+          "type": "textarea",
+          "label": "Document results for each test scenario:",
+          "placeholder": "Scenario A (Normal lead):\n- Input: John Smith, john@company.com, Consulting\n- Expected: CRM + email + Slack + Consulting path\n- Actual: [what happened]\n- Status: [PASS/FAIL]\n\nScenario B (Empty optional fields):\n- Input: Jane Doe, jane@test.com, Training, no phone\n- Expected: Still works with empty phone\n- Actual: ...\n- Status: ...\n\nScenario C (Invalid data):\n- Input: empty name, not-an-email\n- Expected: Validation catches, no CRM record\n- Actual: ...\n- Status: ...\n\nScenario D (Volume - 5 rapid submissions):\n- All captured: [Yes/No]\n- Duplicates: [Yes/No]\n- Failures: [count]",
+          "required": true,
+          "rows": 20
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Add Error Handling",
+      "description": "Identify and handle failure points.",
+      "fields": [
+        {
+          "id": "error_handling",
+          "type": "textarea",
+          "label": "For each action, document failure handling:",
+          "placeholder": "Action 1: [name]\n- What could fail: ...\n- Detection: ...\n- Response: [retry/log/alert/skip]\n\nAction 2: [name]\n- What could fail: ...\n- Detection: ...\n- Response: ...\n\n(continue for all actions)\n\nError path added:\n- What it handles: ...\n- Why you chose this: ...",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Additional Automations",
+      "description": "Design two more automations with 4-layer mapping.",
+      "fields": [
+        {
+          "id": "automation2",
+          "type": "textarea",
+          "label": "Automation 2: Customer Onboarding",
+          "placeholder": "Trigger Layer:\n- Trigger: New customer in CRM\n\nLogic Layer:\n- Conditions: Different paths for Basic/Pro/Enterprise\n\nExecution Layer:\n- Actions: Welcome email, Create folder, Schedule meeting\n\nOutput Layer:\n- Notifications sent: ...",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "automation3",
+          "type": "textarea",
+          "label": "Automation 3: Daily Scheduled Report",
+          "placeholder": "Trigger Layer:\n- Trigger: Every day at 9am\n\nLogic Layer:\n- Conditions: Only send if data exists, weekday vs weekend\n\nExecution Layer:\n- Actions: Query data, Format report, Send\n\nOutput Layer:\n- Report delivered via: ...",
+          "required": true,
+          "rows": 10
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Documentation",
+      "description": "Create documentation for each automation.",
+      "fields": [
+        {
+          "id": "documentation",
+          "type": "textarea",
+          "label": "Document your main automation:",
+          "placeholder": "Purpose: [problem it solves]\n\nTrigger: [what starts it, when]\n\nLogic: [decisions made]\n\nActions: [what happens in order]\n\nError Handling: [what happens on failure]\n\nTesting: [how you verified it works]",
+          "required": true,
+          "rows": 12
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "4-layer model mapping for 3 automations",
+    "At least 1 fully built automation",
+    "Test results for all scenarios",
+    "Error handling documentation"
+  ],
+  "success_criteria": [
+    "Built at least 1 working automation",
+    "Tested with normal, edge, and error scenarios",
+    "Handled at least 1 error gracefully",
+    "Documented trigger, actions, and conditions",
+    "Mapped to 4-layer model explicitly"
+  ]
+}'
 
 WHERE slug = 'triggers-actions-conditions';

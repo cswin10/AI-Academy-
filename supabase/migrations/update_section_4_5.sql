@@ -756,6 +756,259 @@ You have completed this exercise successfully when:
 - Have a concrete implementation plan
 - Can explain your choices to someone else',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Audit Current State",
+      "description": "Inventory all AI tools you currently have access to.",
+      "fields": [
+        {
+          "id": "tool_inventory",
+          "type": "textarea",
+          "label": "List every AI tool you have access to (include free tools and trials):",
+          "placeholder": "Tool 1: [name]\n- Category: [LLM/Code/No-Code/Specialized]\n- Monthly cost: $X\n- Last used: [date]\n- Primary use: [what you use it for]\n- Satisfaction: X/10\n\nTool 2: [name]\n...",
+          "required": true,
+          "rows": 12
+        },
+        {
+          "id": "current_totals",
+          "type": "textarea",
+          "label": "Calculate current totals:",
+          "placeholder": "Total monthly cost: $X\nTools used in last 7 days: X\nTools used in last 30 days: X\nTools not used in 30+ days: X",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "elimination_candidates",
+          "type": "textarea",
+          "label": "Tools to consider eliminating:",
+          "placeholder": "Paid but unused: ...\nFree but unused: ...\nDuplicates of other tools: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Define Requirements",
+      "description": "List your top AI-assisted tasks and identify gaps.",
+      "fields": [
+        {
+          "id": "top_tasks",
+          "type": "textarea",
+          "label": "Your top 5 most frequent AI-assisted tasks:",
+          "placeholder": "Task 1: [description]\n- Frequency: [daily/weekly/monthly]\n- Current tool: [name]\n- I-T-O: Input=[type], Task=[what], Output=[format]\n- Satisfaction: X/10\n\nTask 2: ...",
+          "required": true,
+          "rows": 15
+        },
+        {
+          "id": "gaps_identified",
+          "type": "textarea",
+          "label": "Identify gaps in your current setup:",
+          "placeholder": "Tasks I struggle with: ...\nTasks that take too long: ...\nLower quality outputs: ...\nManual work that could be automated: ...",
+          "required": true,
+          "rows": 5
+        },
+        {
+          "id": "must_haves",
+          "type": "textarea",
+          "label": "Your must-have requirements:",
+          "placeholder": "Budget ceiling: $X/month\nRequired integrations: ...\nCompliance requirements: ...\nTechnical requirements: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: 4-Layer Model Mapping",
+      "description": "Map your tools to each automation layer.",
+      "fields": [
+        {
+          "id": "layer_mapping",
+          "type": "textarea",
+          "label": "Current and ideal tools for each layer:",
+          "placeholder": "TRIGGER LAYER:\n- Current tools: ...\n- Gaps: ...\n- Ideal: ...\n\nLOGIC LAYER:\n- Current tools: ...\n- Gaps: ...\n- Ideal: ...\n\nEXECUTION LAYER:\n- Current tools: ...\n- Gaps: ...\n- Ideal: ...\n\nOUTPUT LAYER:\n- Current tools: ...\n- Gaps: ...\n- Ideal: ...",
+          "required": true,
+          "rows": 16
+        },
+        {
+          "id": "biggest_gap",
+          "type": "text",
+          "label": "Which layer is least well-served?",
+          "placeholder": "e.g., Logic layer - no good AI routing tool",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Evaluate Key Decisions",
+      "description": "Score and compare options for your 3 most important categories.",
+      "fields": [
+        {
+          "id": "llm_evaluation",
+          "type": "textarea",
+          "label": "Primary LLM evaluation (score each 1-10):",
+          "placeholder": "Option 1: ChatGPT Plus\n- Fit for my tasks: X\n- Ease of use: X\n- Cost vs budget: X\n- Integrations: X\n- Reliability: X\n- Total: XX\n\nOption 2: Claude Pro\n[same format]\n\nDecision: [choice] because [reason]",
+          "required": true,
+          "rows": 12
+        },
+        {
+          "id": "second_category",
+          "type": "textarea",
+          "label": "Second category evaluation (Code Assistant or No-Code Platform):",
+          "placeholder": "Category: [Code Assistant / No-Code Platform]\n\nOption 1: [name]\n- Scores...\n\nOption 2: [name]\n- Scores...\n\nDecision: [choice] because [reason]",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "third_category",
+          "type": "textarea",
+          "label": "Third category evaluation (Specialized Tool):",
+          "placeholder": "Category: [Image/Voice/Other]\n\nOption 1: [name]\n- Scores...\n\nOption 2: [name]\n- Scores...\n\nDecision: [choice] because [reason]",
+          "required": true,
+          "rows": 10
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Test Decisions",
+      "description": "Test each decision with a real task.",
+      "fields": [
+        {
+          "id": "test_results",
+          "type": "textarea",
+          "label": "Document test results for each tool decision:",
+          "placeholder": "Test 1: Primary LLM\n- Real task used: [describe]\n- Quality: X/10\n- Speed: [fast/medium/slow]\n- Satisfaction: X/10\n- Decision confirmed: [Yes/No, revised to...]\n\nTest 2: Second tool\n[same format]\n\nTest 3: Third tool\n[same format]",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Design Your Stack",
+      "description": "Organize your final toolkit in tiers.",
+      "fields": [
+        {
+          "id": "tier1_core",
+          "type": "textarea",
+          "label": "Tier 1: Core tools (daily use, essential):",
+          "placeholder": "Tool 1: [name] for [purpose]\n- Monthly cost: $X\n- Justification: ...\n\nTool 2: [name] for [purpose]\n- Monthly cost: $X\n- Justification: ...\n\nTool 3: [name] for [purpose]\n- Monthly cost: $X\n- Justification: ...",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "tier2_regular",
+          "type": "textarea",
+          "label": "Tier 2: Regular tools (weekly use, valuable):",
+          "placeholder": "Tool 1: [name] for [purpose]\n- Monthly cost: $X\n- Justification: ...\n\nTool 2: [name] for [purpose]\n- Monthly cost: $X\n- Justification: ...",
+          "required": true,
+          "rows": 6
+        },
+        {
+          "id": "tier3_occasional",
+          "type": "textarea",
+          "label": "Tier 3: Occasional tools (as needed):",
+          "placeholder": "Tool 1: [name] for [purpose]\n- Cost approach: [Free tier / Pay when needed]\n\nTool 2: ...",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "stack_changes",
+          "type": "textarea",
+          "label": "Changes from current state:",
+          "placeholder": "Tools to add: ...\nTools to cancel: ...\nTools to upgrade: ...\nTools to downgrade: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Calculate ROI",
+      "description": "Estimate the value your stack creates.",
+      "fields": [
+        {
+          "id": "hourly_value",
+          "type": "text",
+          "label": "Your hourly value (billing rate or equivalent):",
+          "placeholder": "e.g., $75",
+          "required": true
+        },
+        {
+          "id": "time_savings",
+          "type": "textarea",
+          "label": "Calculate time savings:",
+          "placeholder": "Time saved by Tier 1 tools: X hours/month\nTime saved by Tier 2 tools: X hours/month\nTotal time saved: X hours/month\nValue of time saved: X hours x $X = $X/month",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "roi_calculation",
+          "type": "textarea",
+          "label": "Calculate ROI:",
+          "placeholder": "Total stack cost: $X/month\nValue created: $X/month\nROI ratio: X (value / cost)\n\nIs this a good investment? [Yes/No]\nWhat would change this assessment? ...",
+          "required": true,
+          "rows": 6
+        }
+      ]
+    },
+    {
+      "id": "part8",
+      "title": "Part 8: Implementation Plan",
+      "description": "Plan how to implement changes to your stack.",
+      "fields": [
+        {
+          "id": "week1_actions",
+          "type": "textarea",
+          "label": "Week 1 actions:",
+          "placeholder": "Cancellations: ...\nNew signups: ...\nImmediate changes: ...",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "month1_actions",
+          "type": "textarea",
+          "label": "Week 2-4 actions:",
+          "placeholder": "Learning priorities: ...\nIntegration work: ...\nWorkflow updates: ...",
+          "required": true,
+          "rows": 4
+        },
+        {
+          "id": "review_plan",
+          "type": "textarea",
+          "label": "30-day review plan:",
+          "placeholder": "What will I measure: ...\nWhat would trigger changes: ...\nSpecific review date: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Tool inventory with usage and cost data",
+    "Requirements with I-T-O specifications",
+    "4-layer model mapping",
+    "Evaluation matrices for 3 categories",
+    "Test results with real tasks",
+    "Tiered tool stack with justifications",
+    "ROI analysis",
+    "Implementation plan"
+  ],
+  "success_criteria": [
+    "Audited current tool usage honestly",
+    "Defined requirements using I-T-O framework",
+    "Applied 4-layer model to organize toolkit",
+    "Evaluated 3 tool decisions with scoring",
+    "Tested decisions with real tasks",
+    "Created justified, organized tool stack",
+    "Calculated ROI showing return",
+    "Have concrete implementation plan"
+  ]
+}'
 
 WHERE slug = 'tool-selection';

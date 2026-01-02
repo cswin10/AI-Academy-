@@ -689,6 +689,172 @@ You have completed this exercise successfully when:
 - Documentation could be handed to a developer to build
 - Design connects explicitly to I-T-O framework and 4-layer model',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Source Catalog",
+      "description": "Identify and document all data sources for the marketing agency scenario.",
+      "fields": [
+        {
+          "id": "additional_sources",
+          "type": "textarea",
+          "label": "Add two more data sources the agency might have (with same detail level):",
+          "placeholder": "Source 6: [name]\n- Data format: [structured/unstructured]\n- Fields: [list]\n- Volume: [estimate]\n- Current handling: [describe]\n\nSource 7: [name]\n- Data format: ...\n- Fields: ...\n- Volume: ...\n- Current handling: ...",
+          "required": true,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Validation Rules Design",
+      "description": "Design validation rules for the website contact form.",
+      "fields": [
+        {
+          "id": "validation_rules",
+          "type": "textarea",
+          "label": "Define validation rules for each field:",
+          "placeholder": "Name field:\n- Required: [Yes/No + why]\n- Min/Max length: [values + why]\n- Format rules: [patterns]\n- Failure action: [reject/flag/accept with warning]\n\nEmail field:\n- Required: [Yes/No + why]\n- Format validation: [what to check]\n- Domain validation: [block disposable? MX check?]\n- Duplicate handling: [what if exists?]\n\nPhone field:\n...\n\nMessage field:\n...",
+          "required": true,
+          "rows": 20
+        },
+        {
+          "id": "validation_strategy",
+          "type": "textarea",
+          "label": "Overall validation strategy:",
+          "placeholder": "Expected pass rate: X%\nWhat happens on failure: ...\nHow to prevent losing valid leads: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Transformation Pipeline",
+      "description": "Design transformations for each field.",
+      "fields": [
+        {
+          "id": "transformations",
+          "type": "textarea",
+          "label": "Design transformations for each field:",
+          "placeholder": "Name transformation:\n- Input: Raw string\n- Steps: 1. [step], 2. [step], ...\n- Output: Structured name\n\nEmail transformation:\n- Input: Raw string\n- Steps: ...\n- Output: Standardized email\n\nCompany transformation:\n- Input: Raw name\n- Enrichment sources: [what to look up]\n- Data to add: [fields to append]\n- Output: Enriched record\n\nLead scoring:\n- Input: All fields\n- Scoring criteria: [factors]\n- Classification: [Hot/Warm/Cold thresholds]\n- Capability tier for AI scoring: [Fast/Balanced/Deep]",
+          "required": true,
+          "rows": 18
+        },
+        {
+          "id": "transformation_order",
+          "type": "textarea",
+          "label": "Why does transformation order matter? What must happen first?",
+          "placeholder": "Order rationale: ...",
+          "required": true,
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Storage Schema Design",
+      "description": "Design the database structure.",
+      "fields": [
+        {
+          "id": "schema_design",
+          "type": "textarea",
+          "label": "Design all tables with fields:",
+          "placeholder": "Leads table:\n- Fields: [list with data types]\n- Primary key: ...\n- Required vs optional: ...\n\nCompanies table:\n- Fields from lead in separate table: ...\n- Link to Leads: ...\n\nInteractions table:\n- Fields for each touchpoint: ...\n- Link to Leads: ...\n\nSources table:\n- Separate table or field? Why?\n- Metadata to track: ...",
+          "required": true,
+          "rows": 16
+        },
+        {
+          "id": "schema_justification",
+          "type": "textarea",
+          "label": "Justify your schema decisions:",
+          "placeholder": "Why separate tables vs single table: ...\nWhy these relationships: ...\nWhat queries this makes easy/hard: ...",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Output Design",
+      "description": "Define all outputs from the data flow.",
+      "fields": [
+        {
+          "id": "outputs",
+          "type": "textarea",
+          "label": "Design 4 outputs plus 2 additional ones:",
+          "placeholder": "Output 1: Sales notification\n- Trigger: ...\n- Destination: ...\n- Content: ...\n- Timing: [immediate/batched/scheduled]\n\nOutput 2: Lead confirmation email\n- Trigger: ...\n- Personalization: ...\n\nOutput 3: Dashboard update\n- Metrics: ...\n- Frequency: ...\n\nOutput 4: Nurture sequence\n- Trigger condition: ...\n- Destination system: ...\n\nOutput 5 (your addition): ...\n\nOutput 6 (your addition): ...",
+          "required": true,
+          "rows": 20
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Flow Diagram",
+      "description": "Create a visual representation of the complete flow.",
+      "fields": [
+        {
+          "id": "flow_diagram",
+          "type": "textarea",
+          "label": "Describe or outline the complete flow diagram:",
+          "placeholder": "Entry points: ...\n\nValidation stage: ...\n\nTransformation stage: ...\n\nStorage (tables): ...\n\nOutputs: ...\n\nDecision points: ...\n\nError paths: ...\n\nRetry loops: ...",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Failure Analysis",
+      "description": "Design handling for failure points.",
+      "fields": [
+        {
+          "id": "failure_handling",
+          "type": "textarea",
+          "label": "Design handling for 4 failure points plus 2 additional:",
+          "placeholder": "Failure 1: Server outage during submission\n- Detection: ...\n- User experience: ...\n- Recovery: ...\n\nFailure 2: Email parsing fails\n- Detection: ...\n- Fallback: ...\n- Escalation: ...\n\nFailure 3: Enrichment API timeout\n- Detection: ...\n- Retry logic: ...\n- Degraded operation: ...\n\nFailure 4: Slack notification fails\n- Impact: ...\n- Fallback: ...\n\nFailure 5 (your addition): ...\n\nFailure 6 (your addition): ...",
+          "required": true,
+          "rows": 22
+        }
+      ]
+    },
+    {
+      "id": "part8",
+      "title": "Part 8: 4-Layer Model Mapping",
+      "description": "Map your flow to the 4-layer automation model.",
+      "fields": [
+        {
+          "id": "layer_mapping",
+          "type": "textarea",
+          "label": "Map to each layer:",
+          "placeholder": "Trigger Layer:\n- Triggers: ...\n- Event-based vs scheduled: ...\n\nLogic Layer:\n- Conditional logic: ...\n- Decisions: ...\n\nExecution Layer:\n- Actions: ...\n- Systems written to: ...\n\nOutput Layer:\n- Notifications: ...\n- Reports: ...",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Source catalog with 7+ sources",
+    "Validation rules for all fields",
+    "Transformation pipeline with order",
+    "Storage schema with relationships",
+    "Output design for 6+ outputs",
+    "Flow diagram",
+    "Failure handling for 6+ scenarios",
+    "4-layer model mapping"
+  ],
+  "success_criteria": [
+    "All sources documented with volume estimates",
+    "Validation rules are specific and actionable",
+    "Transformations clearly specified with order",
+    "Storage schema complete with relationships",
+    "Flow diagram is clear and complete",
+    "Failure handling addresses realistic scenarios",
+    "Design connects to I-T-O and 4-layer model"
+  ]
+}'
 
 WHERE slug = 'data-flow';

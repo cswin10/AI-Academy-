@@ -633,6 +633,201 @@ You have completed this exercise successfully when:
 - Have cost calculations for different scales
 - Can advise when no-code is appropriate versus when to use code',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Lead Classification (Zapier)",
+      "description": "Build an AI-powered lead classification workflow.",
+      "fields": [
+        {
+          "id": "form_created",
+          "type": "radio",
+          "label": "Which form tool did you use?",
+          "options": ["Tally", "Google Forms", "Typeform", "Other"],
+          "required": true
+        },
+        {
+          "id": "classification_prompt",
+          "type": "textarea",
+          "label": "Document the exact prompt you used for classification:",
+          "placeholder": "Paste your full classification prompt here...",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "test_results",
+          "type": "textarea",
+          "label": "Test results for each scenario:",
+          "placeholder": "Test 1 (urgent + budget): Expected HOT, Got: [result]\nTest 2 (interested, Q2): Expected WARM, Got: [result]\nTest 3 (just curious): Expected COLD, Got: [result]\n\nAccuracy: X/3",
+          "required": true,
+          "rows": 5
+        },
+        {
+          "id": "iterations_needed",
+          "type": "text",
+          "label": "How many prompt iterations were needed?",
+          "placeholder": "e.g., 3",
+          "required": true
+        },
+        {
+          "id": "estimated_cost",
+          "type": "text",
+          "label": "Estimated cost for 100 leads monthly:",
+          "placeholder": "e.g., $15",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Data Extraction (Make)",
+      "description": "Build structured data extraction from unstructured text.",
+      "fields": [
+        {
+          "id": "extraction_prompt",
+          "type": "textarea",
+          "label": "Document your extraction prompt:",
+          "placeholder": "Paste your JSON extraction prompt...",
+          "required": true,
+          "rows": 8
+        },
+        {
+          "id": "extraction_tests",
+          "type": "textarea",
+          "label": "Test results for 3 different messages:",
+          "placeholder": "Message 1 (formal, all details):\n- Extracted correctly: [Yes/Partially/No]\n- Issues: ...\n\nMessage 2 (casual, some missing):\n- Extracted correctly: [Yes/Partially/No]\n- Issues: ...\n\nMessage 3 (minimal info):\n- Extracted correctly: [Yes/Partially/No]\n- Issues: ...",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "parsing_issues",
+          "type": "textarea",
+          "label": "Any JSON parsing issues encountered?",
+          "placeholder": "Describe any issues with parsing the AI output...",
+          "required": true,
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Content Generation Pipeline",
+      "description": "Generate platform-specific content from a single topic.",
+      "fields": [
+        {
+          "id": "content_outputs",
+          "type": "textarea",
+          "label": "Document your generated content for each platform:",
+          "placeholder": "Topic: \"5 ways AI is transforming customer support\"\n\nTwitter/X post:\n[paste output]\nPlatform-appropriate: [Yes/No]\nWould post as-is: [Yes/Needs editing]\n\nLinkedIn post:\n[paste output]\nPlatform-appropriate: [Yes/No]\nWould post as-is: [Yes/Needs editing]\n\nInstagram caption:\n[paste output]\nPlatform-appropriate: [Yes/No]\nWould post as-is: [Yes/Needs editing]",
+          "required": true,
+          "rows": 16
+        },
+        {
+          "id": "generation_time",
+          "type": "text",
+          "label": "Total time to generate all 3 posts:",
+          "placeholder": "e.g., 5 minutes",
+          "required": true
+        },
+        {
+          "id": "cost_per_set",
+          "type": "text",
+          "label": "Estimated cost per set of posts:",
+          "placeholder": "e.g., $0.05",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Platform Comparison",
+      "description": "Compare the same workflow on two platforms.",
+      "fields": [
+        {
+          "id": "platforms_compared",
+          "type": "checkbox_group",
+          "label": "Which platforms did you compare?",
+          "options": ["Zapier", "Make", "n8n", "Other"],
+          "required": true
+        },
+        {
+          "id": "sentiment_comparison",
+          "type": "textarea",
+          "label": "Compare platform results for sentiment analysis:",
+          "placeholder": "Platform 1: [name]\n- Setup time: X minutes\n- Accuracy on 5 tests: X/5\n- Cost at 1000/month: $X\n- Ease of debugging: [easy/moderate/difficult]\n\nPlatform 2: [name]\n- Setup time: X minutes\n- Accuracy on 5 tests: X/5\n- Cost at 1000/month: $X\n- Ease of debugging: [easy/moderate/difficult]\n\nPreference: [Platform] because...",
+          "required": true,
+          "rows": 12
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Agent Workflow (Optional)",
+      "description": "Build a research agent if you want to explore agent capabilities.",
+      "fields": [
+        {
+          "id": "agent_built",
+          "type": "radio",
+          "label": "Did you build the research agent?",
+          "options": ["Yes", "No, skipped this part"],
+          "required": true
+        },
+        {
+          "id": "agent_results",
+          "type": "textarea",
+          "label": "If yes, document your agent results:",
+          "placeholder": "Agent configuration: ...\n\nTest 1 (company name): [result quality 1-10]\nTest 2 (company name): [result quality 1-10]\nTest 3 (company name): [result quality 1-10]\n\nWould use for real research: [Yes/No]",
+          "required": false,
+          "rows": 8
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Cost and Graduation Analysis",
+      "description": "Calculate when to stay no-code vs move to code.",
+      "fields": [
+        {
+          "id": "cost_at_scales",
+          "type": "textarea",
+          "label": "Estimate costs at different scales:",
+          "placeholder": "10 leads/month:\n- Zapier: $X | Make: $X | Custom code: $X | Best: [choice]\n\n100 leads/month:\n- Zapier: $X | Make: $X | Custom code: $X | Best: [choice]\n\n1,000 leads/month:\n- Zapier: $X | Make: $X | Custom code: $X | Best: [choice]\n\n10,000 leads/month:\n- Zapier: $X | Make: $X | Custom code: $X | Best: [choice]",
+          "required": true,
+          "rows": 12
+        },
+        {
+          "id": "graduation_threshold",
+          "type": "text",
+          "label": "At what volume does custom code become worthwhile?",
+          "placeholder": "e.g., 2,000 operations/month",
+          "required": true
+        },
+        {
+          "id": "development_roi",
+          "type": "textarea",
+          "label": "Calculate development cost ROI:",
+          "placeholder": "If custom code takes 20 hours to build\nAt hourly rate of $X = $X development cost\nMonthly savings vs no-code: $X\nPayback period: X months",
+          "required": true,
+          "rows": 4
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Working lead classification workflow with screenshots",
+    "Data extraction workflow with test results",
+    "Content generation pipeline outputs",
+    "Platform comparison analysis",
+    "Cost calculations at multiple scales"
+  ],
+  "success_criteria": [
+    "Built at least 2 working AI workflows",
+    "Applied I-T-O framework to structure prompts",
+    "Tested with realistic scenarios",
+    "Can articulate platform tradeoffs",
+    "Have cost calculations showing graduation threshold"
+  ]
+}'
 
 WHERE slug = 'no-code-ai-tools';

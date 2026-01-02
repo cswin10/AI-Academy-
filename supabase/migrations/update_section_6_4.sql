@@ -376,6 +376,144 @@ Complete test plan with 20 or more test cases. Test execution results for all ca
 
 Comprehensive test plan covering all scenario types. All tests executed and documented. All failures investigated and fixed. Error handling verified through forced failures. Regression suite ready for future use.',
 
-exercise_schema = NULL
+exercise_schema = '{
+  "parts": [
+    {
+      "id": "part1",
+      "title": "Part 1: Create Test Plan",
+      "description": "Design comprehensive test cases for your automation.",
+      "fields": [
+        {
+          "id": "happy_path",
+          "type": "textarea",
+          "label": "Happy Path Tests (5-10 tests):",
+          "placeholder": "| Test ID | Description | Input Data | Expected Output |\n| HP-001 | Standard lead | valid name, email, company | CRM + email + Slack |\n| HP-002 | Consulting route | service=Consulting | Routed to consulting path |\n| HP-003 | Training route | service=Training | Routed to training path |\n| HP-004 | With phone | all fields + phone | Phone stored correctly |\n| HP-005 | With message | includes long message | Message truncated/stored |",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "edge_cases",
+          "type": "textarea",
+          "label": "Edge Case Tests (5-10 tests):",
+          "placeholder": "| Test ID | Description | Input Data | Expected Output |\n| EC-001 | Long company | 200-char name | Truncated gracefully |\n| EC-002 | Intl chars | José García | Encoded correctly |\n| EC-003 | Empty optional | no phone | Works with empty |\n| EC-004 | Min values | 1-char name | Accepted or rejected |\n| EC-005 | Special chars | name with quotes | Handled safely |",
+          "required": true,
+          "rows": 10
+        },
+        {
+          "id": "error_scenarios",
+          "type": "textarea",
+          "label": "Error Scenario Tests (5-10 tests):",
+          "placeholder": "| Test ID | Description | Input Data | Expected Output |\n| ER-001 | Invalid email | not-an-email | Validation error |\n| ER-002 | CRM API down | valid + mock fail | Error logged, retry queued |\n| ER-003 | Empty required | no name | Rejected cleanly |\n| ER-004 | Rate limited | rapid submissions | Backoff activated |\n| ER-005 | Timeout | slow API | Retry with backoff |",
+          "required": true,
+          "rows": 10
+        }
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Part 2: Execute Test Plan",
+      "description": "Run all tests and record results.",
+      "fields": [
+        {
+          "id": "test_execution",
+          "type": "textarea",
+          "label": "Document test results:",
+          "placeholder": "Environment setup:\n- Test credentials: [configured]\n- Test data prepared: [Yes]\n\nResults:\n| Test ID | Status | Notes |\n| HP-001 | PASS | |\n| HP-002 | PASS | |\n| EC-001 | FAIL | Crashed on long name |\n| ER-001 | PASS | |\n\nSummary:\n- Total: X tests\n- Passed: X\n- Failed: X",
+          "required": true,
+          "rows": 14
+        }
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Part 3: Debug Failed Tests",
+      "description": "Investigate and fix failures.",
+      "fields": [
+        {
+          "id": "debugging",
+          "type": "textarea",
+          "label": "Document debugging for each failure:",
+          "placeholder": "Failure: EC-001 (Long company name)\n\nWhat was expected: Truncated to 100 chars\nWhat happened: Workflow crashed\nError message: Field length exceeded\n\nDebugging steps:\n1. Reproduced consistently: [Yes]\n2. Isolated to step: CRM creation\n3. Root cause: No length check before insert\n\nFix applied:\n- Added substring(0,100) before CRM insert\n\nRetest result: PASS\n\n---\n\nFailure: [next failure]\n...",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Part 4: Forced Error Testing",
+      "description": "Intentionally break things to verify error handling.",
+      "fields": [
+        {
+          "id": "forced_errors",
+          "type": "textarea",
+          "label": "Document forced error tests:",
+          "placeholder": "Test 1: API Timeout\n- Method: Invalid endpoint\n- Expected: Retry, then graceful fail\n- Verified: [error logged, alert sent, DLQ populated]\n- Result: [PASS/FAIL]\n\nTest 2: Invalid Data\n- Method: Malformed email\n- Expected: Validation catches early\n- Verified: [clear error, no partial data]\n- Result: ...\n\nTest 3: Network Failure\n- Method: [disconnect/mock]\n- Expected: Handles gracefully, can resume\n- Result: ...\n\nTest 4: Rate Limits\n- Method: Rapid operations\n- Expected: Backoff activates\n- Result: ...",
+          "required": true,
+          "rows": 18
+        }
+      ]
+    },
+    {
+      "id": "part5",
+      "title": "Part 5: Integration Testing (Advanced)",
+      "description": "Test each external connection.",
+      "fields": [
+        {
+          "id": "integration_tests",
+          "type": "textarea",
+          "label": "Document integration test results:",
+          "placeholder": "CRM Integration:\n| Test | Method | Result |\n| Create record | Submit form | PASS |\n| Duplicate handling | Same email | PASS |\n| Field mapping | All fields | PASS |\n\nEmail Integration:\n| Test | Method | Result |\n| Delivery | Check inbox | PASS |\n| Formatting | Visual check | PASS |\n| Personalization | Name inserted | PASS |\n\nSlack Integration:\n| Test | Method | Result |\n| Notification | Check channel | PASS |\n| Message format | Readable | PASS |",
+          "required": false,
+          "rows": 16
+        }
+      ]
+    },
+    {
+      "id": "part6",
+      "title": "Part 6: Performance Testing (Advanced)",
+      "description": "Test under realistic load.",
+      "fields": [
+        {
+          "id": "performance_tests",
+          "type": "textarea",
+          "label": "Document performance test results:",
+          "placeholder": "| Scenario | Count | Time | Success | Fail | Avg Time |\n| Normal | 10 | 1 hour | 10 | 0 | 2.5s |\n| Peak | 10 | 5 min | 10 | 0 | 3.1s |\n| Stress | 50 | 10 min | 48 | 2 | 4.2s |\n\nBreaking point: ~X/minute\nBehavior under stress: [queuing/failures/delays]\nBottleneck identified: [which step]",
+          "required": false,
+          "rows": 10
+        }
+      ]
+    },
+    {
+      "id": "part7",
+      "title": "Part 7: Regression Suite (Advanced)",
+      "description": "Build reusable test suite.",
+      "fields": [
+        {
+          "id": "regression_suite",
+          "type": "textarea",
+          "label": "Document your regression suite:",
+          "placeholder": "Core tests (must pass before any change):\n\n| Priority | Test ID | Description | Last Run | Result |\n| Critical | HP-001 | Standard lead | [date] | PASS |\n| Critical | ER-001 | Invalid email | [date] | PASS |\n| Critical | EC-002 | Intl chars | [date] | PASS |\n| High | HP-003 | Routing works | [date] | PASS |\n| High | ER-002 | Error handling | [date] | PASS |\n| Medium | EC-001 | Long names | [date] | PASS |\n\nRun frequency: Before each change\nAutomation: [Yes/No, how]",
+          "required": false,
+          "rows": 14
+        }
+      ]
+    }
+  ],
+  "deliverables": [
+    "Test plan with 20+ test cases",
+    "Test execution results",
+    "Debug documentation for failures",
+    "Forced error test results",
+    "Regression suite"
+  ],
+  "success_criteria": [
+    "Comprehensive test plan covering all types",
+    "All tests executed and documented",
+    "All failures investigated and fixed",
+    "Error handling verified through forced failures",
+    "Regression suite ready for future use"
+  ]
+}'
 
 WHERE slug = 'testing-debugging';
