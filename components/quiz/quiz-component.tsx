@@ -169,38 +169,29 @@ export function QuizComponent({
           .single()
 
         if (profile) {
-          const today = new Date().toISOString().split('T')[0]
+          // Use local date to properly track streaks across timezones
+          const now = new Date()
+          const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
           const lastActive = profile.last_active_date
           let newStreak = profile.current_streak
 
           if (!lastActive || lastActive !== today) {
             const yesterday = new Date()
             yesterday.setDate(yesterday.getDate() - 1)
-            const yesterdayStr = yesterday.toISOString().split('T')[0]
+            const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`
 
             if (lastActive === yesterdayStr) {
               newStreak = profile.current_streak + 1
-            } else if (lastActive !== today) {
+            } else {
+              // Streak broken or first activity - start fresh
               newStreak = 1
             }
           }
 
-          await supabase
-            .from('profiles')
-            .update({
-              xp_total: profile.xp_total + xpEarned,
-              total_quizzes_passed: profile.total_quizzes_passed + 1,
-              total_sections_completed: profile.total_sections_completed + 1,
-              perfect_quiz_count: isPerfect
-                ? profile.perfect_quiz_count + 1
-                : profile.perfect_quiz_count,
-              current_streak: newStreak,
-              longest_streak: Math.max(newStreak, profile.longest_streak),
-              last_active_date: today,
-            })
-            .eq('id', userId)
+          // Check module completion BEFORE updating profile to calculate total XP correctly
+          let moduleCompleted = false
+          let moduleXpReward = 0
 
-          // Update module progress
           const { data: sectionData } = await supabase
             .from('sections')
             .select('module_id')
@@ -222,8 +213,20 @@ export function QuizComponent({
 
             const sectionsCompleted = completedSections?.length || 0
             const totalSections = allSections?.length || 0
-            const moduleCompleted = sectionsCompleted === totalSections
+            moduleCompleted = sectionsCompleted === totalSections
 
+            // Get module XP reward if completing module
+            if (moduleCompleted) {
+              const { data: moduleInfo } = await supabase
+                .from('modules')
+                .select('xp_reward')
+                .eq('id', sectionData.module_id)
+                .single()
+
+              moduleXpReward = moduleInfo?.xp_reward || 0
+            }
+
+            // Update module progress
             const { data: moduleProgress } = await supabase
               .from('user_module_progress')
               .select('*')
@@ -257,26 +260,27 @@ export function QuizComponent({
                 completed_at: moduleCompleted ? new Date().toISOString() : null,
               })
             }
-
-            // Award module completion XP
-            if (moduleCompleted) {
-              const { data: moduleInfo } = await supabase
-                .from('modules')
-                .select('xp_reward')
-                .eq('id', sectionData.module_id)
-                .single()
-
-              if (moduleInfo) {
-                await supabase
-                  .from('profiles')
-                  .update({
-                    xp_total: profile.xp_total + xpEarned + moduleInfo.xp_reward,
-                    total_modules_completed: profile.total_modules_completed + 1,
-                  })
-                  .eq('id', userId)
-              }
-            }
           }
+
+          // Single profile update with all XP combined (quiz XP + module XP if applicable)
+          const totalXpToAdd = xpEarned + moduleXpReward
+          await supabase
+            .from('profiles')
+            .update({
+              xp_total: profile.xp_total + totalXpToAdd,
+              total_quizzes_passed: profile.total_quizzes_passed + 1,
+              total_sections_completed: profile.total_sections_completed + 1,
+              total_modules_completed: moduleCompleted
+                ? profile.total_modules_completed + 1
+                : profile.total_modules_completed,
+              perfect_quiz_count: isPerfect
+                ? profile.perfect_quiz_count + 1
+                : profile.perfect_quiz_count,
+              current_streak: newStreak,
+              longest_streak: Math.max(newStreak, profile.longest_streak),
+              last_active_date: today,
+            })
+            .eq('id', userId)
         }
       }
 

@@ -1,5 +1,10 @@
 import { LevelInfo, StreakInfo, Profile, Achievement } from '@/lib/types'
 
+// Helper to get local date string in YYYY-MM-DD format
+function getLocalDateString(date: Date = new Date()): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+}
+
 // XP thresholds for each level
 const LEVEL_THRESHOLDS = [
   0,      // Level 1: 0-100
@@ -41,7 +46,8 @@ export function calculateLevel(xp: number): LevelInfo {
 }
 
 export function getStreakInfo(profile: Profile): StreakInfo {
-  const today = new Date().toISOString().split('T')[0]
+  // Use local date to properly track streaks across timezones
+  const today = getLocalDateString()
   const isActiveToday = profile.last_active_date === today
 
   return {
@@ -57,17 +63,15 @@ export function shouldUpdateStreak(lastActiveDate: string | null): 'increment' |
     return 'increment'
   }
 
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+  // Use local dates for proper timezone handling
+  const today = getLocalDateString()
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
+  const yesterdayStr = getLocalDateString(yesterday)
 
-  const lastActive = new Date(lastActiveDate)
-  lastActive.setHours(0, 0, 0, 0)
-
-  const diffDays = Math.floor((today.getTime() - lastActive.getTime()) / (1000 * 60 * 60 * 24))
-
-  if (diffDays === 0) {
+  if (lastActiveDate === today) {
     return 'none' // Already active today
-  } else if (diffDays === 1) {
+  } else if (lastActiveDate === yesterdayStr) {
     return 'increment' // Consecutive day
   } else {
     return 'reset' // Streak broken

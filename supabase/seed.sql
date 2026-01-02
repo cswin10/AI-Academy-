@@ -5,7 +5,7 @@
 -- TRACKS
 -- ============================================
 INSERT INTO tracks (slug, name, description, icon, color, order_index, estimated_hours, is_required, is_active) VALUES
-('core-foundation', 'Core Foundation', 'Master the fundamentals of AI operations, systems thinking, and the tools that power modern automation. Required for all learners.', '🎯', '#7c3aed', 1, 25, true, true),
+('core-foundation', 'Core Foundation', 'Master the fundamentals of AI operations, systems thinking, and the tools that power modern automation. Required for all learners.', '🎯', '#7c3aed', 1, 39, true, true),
 ('builder-track', 'Builder Track', 'Deep dive into no-code automation platforms and workflow design. Build hands-on projects with Zapier, Make, n8n, and more.', '🛠️', '#3b82f6', 2, 30, false, true),
 ('business-track', 'Business Track', 'Apply AI operations to real business challenges. Learn client management, pricing, proposals, and entrepreneurship.', '💼', '#10b981', 3, 28, false, true),
 ('creator-track', 'Creator Track', 'Build AI-powered content workflows. From writing assistance to multimedia production and distribution.', '🎨', '#f59e0b', 4, 18, false, true),

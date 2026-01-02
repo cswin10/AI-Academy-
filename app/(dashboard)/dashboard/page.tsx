@@ -18,6 +18,7 @@ export default async function DashboardPage() {
     { data: sectionProgress },
     { data: moduleProgress },
     { data: recentAchievements },
+    { data: allSections },
   ] = await Promise.all([
     supabase
       .from('profiles')
@@ -49,6 +50,9 @@ export default async function DashboardPage() {
       .eq('user_id', user.id)
       .order('earned_at', { ascending: false })
       .limit(3),
+    supabase
+      .from('sections')
+      .select('id, module_id'),
   ])
 
   // Get last accessed section with module and track info
@@ -81,6 +85,7 @@ export default async function DashboardPage() {
     <DashboardContent
       profile={profile}
       tracks={tracks || []}
+      sections={allSections || []}
       sectionProgress={sectionProgress || []}
       moduleProgress={moduleProgress || []}
       recentAchievements={recentAchievements || []}

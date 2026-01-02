@@ -31,6 +31,7 @@ import { calculateTrackProgress, calculateModuleProgress } from '@/lib/utils/pro
 interface DashboardContentProps {
   profile: Profile | null
   tracks: (Track & { modules: Module[] })[]
+  sections: { id: string; module_id: string }[]
   sectionProgress: UserSectionProgress[]
   moduleProgress: UserModuleProgress[]
   recentAchievements: (UserAchievement & { achievement: Achievement })[]
@@ -40,6 +41,7 @@ interface DashboardContentProps {
 export function DashboardContent({
   profile,
   tracks,
+  sections,
   sectionProgress,
   moduleProgress,
   recentAchievements,
@@ -275,11 +277,19 @@ export function DashboardContent({
             {tracks.map((track) => {
               const modules = track.modules || []
               const allModuleIds = modules.map((m) => m.id)
-              const completedModules = moduleProgress.filter(
-                (mp) => allModuleIds.includes(mp.module_id) && mp.is_completed
+
+              // Calculate section-based progress for more granular tracking
+              const trackSections = sections.filter((s) => allModuleIds.includes(s.module_id))
+              const trackSectionIds = new Set(trackSections.map((s) => s.id))
+              const completedSectionIds = new Set(
+                sectionProgress.filter((sp) => sp.is_completed).map((sp) => sp.section_id)
+              )
+              const completedSectionsInTrack = Array.from(completedSectionIds).filter((id) =>
+                trackSectionIds.has(id)
               ).length
-              const progress = modules.length > 0
-                ? Math.round((completedModules / modules.length) * 100)
+              const totalSections = trackSections.length
+              const progress = totalSections > 0
+                ? Math.round((completedSectionsInTrack / totalSections) * 100)
                 : 0
 
               return (
@@ -291,7 +301,7 @@ export function DashboardContent({
                         <div>
                           <div className="font-medium">{track.name}</div>
                           <div className="text-sm text-muted-foreground">
-                            {completedModules} / {modules.length} modules
+                            {completedSectionsInTrack} / {totalSections} sections
                           </div>
                         </div>
                       </div>
