@@ -1416,8 +1416,8 @@ WHERE m.slug = 'data-information-architecture';
 INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
 SELECT
   id,
-  'Data Validation Best Practices',
-  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  'Data Validation in Excel - Complete Tutorial',
+  'https://www.youtube.com/watch?v=2_Ux5y4A-Y8',
   'video',
   1
 FROM sections WHERE slug = 'data-validation-quality';
