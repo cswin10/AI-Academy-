@@ -1,8 +1,6 @@
 -- ============================================================================
 -- MODULE 6: Automation Fundamentals
 -- ============================================================================
--- This file contains the complete Module 6 with all quizzes, sections, and resources
--- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
 
 -- First, remove any existing Module 6 data to avoid duplicates
 DELETE FROM external_resources WHERE section_id IN (

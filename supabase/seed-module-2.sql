@@ -1,8 +1,6 @@
 -- ============================================================================
 -- MODULE 2: LLM Mastery - GPT & Claude
 -- ============================================================================
--- This file contains the complete Module 2 with all quizzes, sections, and resources
--- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
 
 -- First, remove any existing Module 2 data to avoid duplicates
 DELETE FROM external_resources WHERE section_id IN (
