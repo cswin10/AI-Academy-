@@ -5,14 +5,44 @@
 -- Run this AFTER schema.sql and the base seed.sql (which creates tracks)
 
 -- First, remove any existing Module 4 data to avoid duplicates
-DELETE FROM external_resources WHERE section_id IN (
-  SELECT id FROM sections WHERE module_id IN (
+-- Use PL/pgSQL to properly capture quiz IDs via module association before cleanup
+DO $$
+DECLARE
+  v_quiz_ids UUID[];
+BEGIN
+  -- Capture quiz IDs linked to this module before cleanup
+  SELECT array_agg(s.quiz_id) INTO v_quiz_ids
+  FROM sections s
+  INNER JOIN modules m ON s.module_id = m.id
+  WHERE m.slug = 'ai-tools-ecosystem' AND s.quiz_id IS NOT NULL;
+
+  -- Delete quiz_questions for captured quizzes
+  IF v_quiz_ids IS NOT NULL THEN
+    DELETE FROM quiz_questions WHERE quiz_id = ANY(v_quiz_ids);
+  END IF;
+
+  -- Delete external_resources
+  DELETE FROM external_resources WHERE section_id IN (
+    SELECT id FROM sections WHERE module_id IN (
+      SELECT id FROM modules WHERE slug = 'ai-tools-ecosystem'
+    )
+  );
+
+  -- Delete sections
+  DELETE FROM sections WHERE module_id IN (
     SELECT id FROM modules WHERE slug = 'ai-tools-ecosystem'
-  )
-);
-DELETE FROM sections WHERE module_id IN (
-  SELECT id FROM modules WHERE slug = 'ai-tools-ecosystem'
-);
+  );
+
+  -- Delete quizzes by captured IDs
+  IF v_quiz_ids IS NOT NULL THEN
+    DELETE FROM quizzes WHERE id = ANY(v_quiz_ids);
+  END IF;
+
+  -- Delete module
+  DELETE FROM modules WHERE slug = 'ai-tools-ecosystem';
+END $$;
+
+-- Also cleanup any orphaned quizzes by title (in case they exist from failed runs)
 DELETE FROM quiz_questions WHERE quiz_id IN (
   SELECT id FROM quizzes WHERE title IN (
     'LLM Platforms Quiz',
@@ -29,7 +59,6 @@ DELETE FROM quizzes WHERE title IN (
   'Specialized AI Tools Quiz',
   'Tool Selection Quiz'
 );
-DELETE FROM modules WHERE slug = 'ai-tools-ecosystem';
 
 -- Insert Module 4
 INSERT INTO modules (track_id, slug, title, short_description, order_index, estimated_hours, level, xp_reward, is_active)
