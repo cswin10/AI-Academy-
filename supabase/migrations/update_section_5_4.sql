@@ -3,7 +3,11 @@
 -- Modernized with extensive content, 8 quiz questions, and exercise_schema
 -- ============================================================================
 
--- First, add 4 more quiz questions to reach 8 total
+-- First, remove any existing questions 5-8 to allow clean re-runs, then add 4 more to reach 8 total
+DELETE FROM quiz_questions
+WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Data Quality Quiz')
+AND order_index IN (5, 6, 7, 8);
+
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
 ((SELECT id FROM quizzes WHERE title = 'Data Quality Quiz'), 5,
 'How does validation connect to the validation stage of data flow from Section 5.1?',
@@ -33,7 +37,9 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 UPDATE sections
 SET content_markdown = '# Data Validation & Quality Control
 
-Bad data in equals bad data out. This principle applies regardless of how sophisticated your automation or AI processing is. A Deep Reasoning tier model fed garbage data produces sophisticated garbage. This section teaches you to prevent bad data from entering and to systematically improve data quality.
+This section builds on the validation stage introduced in Section 5.1. There, we established validation as a quality gate in the data flow. Here, we focus on designing and operating validation systems in practice.
+
+The core principle: bad data in equals bad data out. This applies regardless of how sophisticated your automation or AI processing is. Data quality is infrastructure, not a nice-to-have.
 
 ## Definitions
 
@@ -232,6 +238,50 @@ Quality is not a one-time effort. Continuous monitoring catches drift.
 **Scheduled audits** check quality regularly. Weekly data quality report. Monthly duplicate scan. Quarterly completeness audit.
 
 **Quality dashboards** visualize trends. Connect to output layer for visibility.
+
+## Automation vs Manual Review
+
+Not everything can or should be automated. Knowing the boundary helps you allocate resources.
+
+### What Should Always Be Automated
+
+**Format validation.** Checking email patterns, phone formats, date structures. Machines do this perfectly every time.
+
+**Required field checks.** Verifying mandatory fields are present. No judgment required.
+
+**Normalization.** Lowercase emails, standardize phone formats, trim whitespace. Consistent, repeatable transformations.
+
+**High-confidence deduplication.** Exact email matches, identical phone numbers. When certainty is high, automate the merge.
+
+**Threshold alerts.** Monitoring quality metrics and notifying on degradation. Humans should not watch dashboards.
+
+### What Often Requires Human Review
+
+**Low-confidence fuzzy matches.** "Jon Smith at Acme" vs "John Smith at ACME Inc" might be the same person. Might not. Humans decide edge cases.
+
+**Semantic validation.** Is this job title plausible for this company size? Does this order quantity make sense for this customer? Business judgment required.
+
+**Missing critical data.** When essential fields are empty, should you reject the record, attempt enrichment, or accept with a flag? Depends on context.
+
+**Conflicting enrichment sources.** Two APIs return different company information. Which is correct? Human verification needed.
+
+**Merge conflicts.** Two duplicate records have different phone numbers. Which to keep? Often requires customer contact.
+
+### Failure Cost Prioritization
+
+When deciding what to fix first, consider failure costs:
+
+**Bad email.** Wasted sales time, bounced campaigns, lost opportunities. Medium-high cost.
+
+**Duplicate customer.** Broken CRM history, fragmented communications, confused support. High cost.
+
+**Invalid status field.** Automation failures, incorrect reporting, workflow breakage. High cost.
+
+**Missing consent record.** Legal liability, compliance risk, potential fines. Very high cost.
+
+**Inconsistent formatting.** Ugly reports, minor inefficiencies. Low cost.
+
+Prioritize fixes by impact, not by count.
 
 ## Data Cleaning Strategies
 
@@ -660,6 +710,10 @@ What quality information should be output?
 - Quality dashboard updates
 - Alert notifications
 - Quality reports
+
+### Scope Note
+
+This exercise is comprehensive. For core mastery, prioritize Parts 1-5 (dataset creation, assessment, validation rules, cleaning, and improvement calculation). Parts 6-8 (monitoring, standards, automation) are valuable for production readiness but can be completed in a second pass.
 
 ### Deliverable
 

@@ -3,7 +3,11 @@
 -- Modernized with extensive content, 8 quiz questions, and exercise_schema
 -- ============================================================================
 
--- First, add 4 more quiz questions to reach 8 total
+-- First, remove any existing questions 5-8 to allow clean re-runs, then add 4 more to reach 8 total
+DELETE FROM quiz_questions
+WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Privacy and Security Quiz')
+AND order_index IN (5, 6, 7, 8);
+
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
 ((SELECT id FROM quizzes WHERE title = 'Privacy and Security Quiz'), 5,
 'How does data flow design from Section 5.1 relate to privacy compliance?',
@@ -33,7 +37,9 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 UPDATE sections
 SET content_markdown = '# Privacy, Security & Compliance Basics
 
-As an operator handling data, you bear responsibility for protecting it. Privacy and security are not someone else''s problem. Violations result in fines, lawsuits, and destroyed trust. This section provides the foundation for handling data responsibly.
+This section does not make you a lawyer. It makes you a competent operator who knows when to escalate.
+
+As an operator handling data, you bear responsibility for protecting it. Privacy and security are not someone else''s problem. Violations result in fines, lawsuits, and destroyed trust. This section provides the foundation for handling data responsibly and recognizing when you need professional help.
 
 ## Definitions
 
@@ -76,6 +82,36 @@ This is not theoretical. Real consequences follow from mishandling data.
 **Business relationships require compliance.** Enterprise clients mandate vendor security assessments. Failing assessment means losing the contract.
 
 **Personal responsibility applies.** You can be personally liable for decisions you make about data handling.
+
+## Compliance Maturity Ladder
+
+Understanding where you are helps you prioritize what to do next.
+
+**Level 1: Awareness.** You know what personal data you collect and where it is stored. This is the minimum starting point.
+
+**Level 2: Basic Controls.** You have access controls, encryption, and consent mechanisms in place. You can respond to basic data requests.
+
+**Level 3: Documented Compliance.** You have written policies, defined retention periods, conduct audits, and can demonstrate compliance if asked.
+
+**Level 4: Enterprise-Ready.** You have formal certifications (SOC 2, ISO 27001), conduct Data Protection Impact Assessments, and can satisfy enterprise vendor requirements.
+
+Most solo operators and small teams should aim for Level 2-3. Level 4 becomes relevant when selling to enterprise clients or handling high-risk data.
+
+## Privacy vs Security: Different Failures
+
+These terms are related but distinct. Understanding the difference helps you address problems correctly.
+
+**Privacy failure:** Unlawful or inappropriate collection, use, or disclosure of personal data.
+- Prevention: Consent, minimization, purpose limitation
+- Detection: Audit logs, access reviews, complaint monitoring
+- Response: Correct the practice, notify if required, document
+
+**Security failure:** Unauthorized access to, theft of, or destruction of data.
+- Prevention: Encryption, access control, patching, monitoring
+- Detection: Intrusion detection, anomaly alerts, log analysis
+- Response: Contain, assess, notify, remediate
+
+A system can be secure but not privacy-compliant (encrypted data collected without consent). A system can be privacy-compliant but insecure (properly consented data stored without encryption). You need both.
 
 ## Core Privacy Concepts
 
@@ -378,6 +414,8 @@ Privacy considerations map to Section 5.1''s data flow stages.
 **Validation stage:** No privacy-specific concerns, but validation logs should not expose personal data.
 
 **Transformation stage:** Processing should match consented purposes. AI vendors are processors requiring DPAs.
+
+**Critical AI warning:** If you send personal data to an AI service without understanding its retention and training policies, you may already be non-compliant. Many AI services retain inputs, use them for training, or share them with third parties. Before sending personal data to any AI API, verify: Does the vendor retain data? For how long? Is it used for training? Can you get a DPA? Have you disclosed this processing to users?
 
 **Storage stage:** Encryption at rest. Access controls. Retention policies.
 
@@ -740,6 +778,10 @@ What to do if a breach occurs.
 
 **Section 10: Compliance Monitoring**
 How compliance is verified and maintained.
+
+### Scope Note
+
+This exercise is comprehensive. For core mastery, prioritize Parts 1-6 (system documentation, legal basis, consent, privacy policy, security, and vendor audits). Parts 7-11 (rights, retention, breach response, action plan, standards) represent enterprise-level maturity and can be completed in a second pass or when your needs require it.
 
 ### Deliverable
 

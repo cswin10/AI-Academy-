@@ -3,7 +3,11 @@
 -- Modernized with extensive content, 8 quiz questions, and exercise_schema
 -- ============================================================================
 
--- First, add 4 more quiz questions to reach 8 total
+-- First, remove any existing questions 5-8 to allow clean re-runs, then add 4 more to reach 8 total
+DELETE FROM quiz_questions
+WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Schema Design Quiz')
+AND order_index IN (5, 6, 7, 8);
+
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
 ((SELECT id FROM quizzes WHERE title = 'Schema Design Quiz'), 5,
 'How does the I-T-O framework from Module 2 apply to schema design?',
