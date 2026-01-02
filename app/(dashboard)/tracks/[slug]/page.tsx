@@ -42,7 +42,7 @@ export default async function TrackDetailPage({ params }: PageProps) {
   const moduleIds = modules.map((m: any) => m.id)
 
   // Run remaining queries in parallel
-  const [{ data: moduleProgress }, { data: sections }] = await Promise.all([
+  const [{ data: moduleProgress }, { data: sections }, { data: sectionProgress }] = await Promise.all([
     supabase
       .from('user_module_progress')
       .select('*')
@@ -50,8 +50,13 @@ export default async function TrackDetailPage({ params }: PageProps) {
       .in('module_id', moduleIds),
     supabase
       .from('sections')
-      .select('module_id')
+      .select('id, module_id')
       .in('module_id', moduleIds),
+    supabase
+      .from('user_section_progress')
+      .select('section_id, is_completed')
+      .eq('user_id', user.id)
+      .eq('is_completed', true),
   ])
 
   const sectionCountByModule: Record<string, number> = {}
@@ -59,9 +64,15 @@ export default async function TrackDetailPage({ params }: PageProps) {
     sectionCountByModule[s.module_id] = (sectionCountByModule[s.module_id] || 0) + 1
   })
 
+  // Calculate progress based on sections completed (more granular)
+  const totalSections = sections?.length || 0
+  const completedSectionIds = new Set(sectionProgress?.map(sp => sp.section_id) || [])
+  const trackSectionIds = new Set(sections?.map(s => s.id) || [])
+  const completedSectionsInTrack = Array.from(completedSectionIds).filter(id => trackSectionIds.has(id)).length
+  const overallProgress = totalSections > 0 ? Math.round((completedSectionsInTrack / totalSections) * 100) : 0
+
   const completedModules = moduleProgress?.filter((mp) => mp.is_completed).length || 0
   const totalModules = modules.length
-  const overallProgress = totalModules > 0 ? Math.round((completedModules / totalModules) * 100) : 0
 
   return (
     <div className="space-y-8">
@@ -103,7 +114,10 @@ export default async function TrackDetailPage({ params }: PageProps) {
         <div className="flex flex-col items-end gap-2">
           <div className="text-3xl font-bold text-primary">{overallProgress}%</div>
           <div className="text-sm text-muted-foreground">
-            {completedModules} of {totalModules} modules complete
+            {completedSectionsInTrack} of {totalSections} sections complete
+          </div>
+          <div className="text-xs text-muted-foreground">
+            {completedModules} of {totalModules} modules
           </div>
         </div>
       </div>

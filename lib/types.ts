@@ -46,6 +46,19 @@ export interface Module {
   created_at: string
 }
 
+export interface ExerciseField {
+  name: string
+  label: string
+  type: 'text' | 'textarea' | 'select' | 'multiselect' | 'number'
+  placeholder?: string
+  options?: string[]
+  required?: boolean
+}
+
+export interface ExerciseSchema {
+  fields: ExerciseField[]
+}
+
 export interface Section {
   id: string
   module_id: string
@@ -55,6 +68,7 @@ export interface Section {
   level: 'Beginner' | 'Intermediate' | 'Advanced'
   content_markdown: string
   exercise_markdown: string | null
+  exercise_schema: ExerciseSchema | null
   estimated_minutes: number | null
   is_required: boolean
   quiz_id: string | null

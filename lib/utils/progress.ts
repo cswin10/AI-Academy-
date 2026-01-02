@@ -103,7 +103,7 @@ export function calculateModuleProgress(
   return Math.round((completedCount / moduleSections.length) * 100)
 }
 
-// Calculate track progress percentage
+// Calculate track progress percentage (based on completed modules only - legacy)
 export function calculateTrackProgress(
   trackId: string,
   modules: Module[],
@@ -119,6 +119,27 @@ export function calculateTrackProgress(
   ).length
 
   return Math.round((completedCount / trackModules.length) * 100)
+}
+
+// Calculate track progress based on sections completed (more granular)
+export function calculateTrackProgressBySection(
+  trackId: string,
+  modules: Module[],
+  sections: Section[],
+  sectionProgress: UserSectionProgress[]
+): number {
+  const trackModules = modules.filter(m => m.track_id === trackId)
+  if (trackModules.length === 0) return 0
+
+  const trackModuleIds = trackModules.map(m => m.id)
+  const trackSections = sections.filter(s => trackModuleIds.includes(s.module_id))
+  if (trackSections.length === 0) return 0
+
+  const completedSections = trackSections.filter(section =>
+    sectionProgress.some(p => p.section_id === section.id && p.is_completed)
+  ).length
+
+  return Math.round((completedSections / trackSections.length) * 100)
 }
 
 // Get section status
