@@ -37,6 +37,8 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 UPDATE sections
 SET content_markdown = '# Error Handling & Graceful Failures
 
+**This is how automations survive failure.**
+
 Things will break. Always. The question is not "will my automation fail?" but "what happens when it does?" Good error handling separates amateur automations from production-ready systems. This section implements the failure handling concepts introduced in Section 5.1.
 
 ## Definitions
@@ -171,9 +173,21 @@ Important principle: Design operations to be reversible when possible. Some oper
 
 **Health Indicators**: Track API response times. Monitor authentication status. Check resource utilization.
 
+### Severity Levels
+
+Not all errors are equal. Define severity to match response urgency.
+
+**Critical (Immediate Response)**: Data loss or corruption. Payment processing failures. Security breaches. Compliance violations. Complete automation failure affecting customers. Response: Alert via SMS or phone within minutes.
+
+**High (Within 1 Hour)**: Main workflow is broken. Customer-facing features are down. Data is not flowing to critical systems. Revenue-impacting issues. Response: Alert via Slack or email.
+
+**Medium (Same Business Day)**: Non-critical features are down. Performance is degraded but functional. Workarounds exist. Response: Daily digest or threshold-based alert.
+
+**Low (Weekly Review)**: Minor warnings. Cosmetic issues. Edge cases that affect few records. Response: Log only, review in weekly maintenance.
+
 ### When to Alert
 
-Not all errors need immediate attention. Match response urgency to severity.
+Match alert method to severity level.
 
 Critical errors like payment failures or data loss need immediate response. Alert via SMS or phone.
 
@@ -243,13 +257,65 @@ Step 5 Learn: Update the automation to prevent recurrence.
 
 Step 6 Document: Record what happened and how it was resolved for future reference.
 
+## Human Recovery
+
+Some failures require human intervention. Know when to hand off and how.
+
+### When Humans Must Intervene
+
+**Permanent errors**: Invalid data that cannot be fixed automatically. Authentication failures that need credential refresh. Resources that no longer exist.
+
+**Business decisions**: Edge cases with no clear policy. Exceptions that require judgment. Customer situations needing relationship management.
+
+**Safety boundaries**: Before deleting or modifying irreversible data. When cascading effects are uncertain. When financial or legal implications are unclear.
+
+### Escalation Paths
+
+Define who gets involved and when. Not every issue goes to the same person.
+
+Data issues go to the data team or system owner. Customer impact goes to customer success or support. Technical failures go to engineering or automation owner. Compliance concerns go to legal or compliance team.
+
+### Handoff Requirements
+
+When escalating to humans, provide: What failed. What data was affected. What has been tried already. What action is needed. How urgent (severity level). Where to find more details.
+
+Incomplete handoffs waste time. The human should be able to act immediately upon reading your alert.
+
+## Things You Cannot Undo
+
+Some operations are irreversible. Sequence them last and guard them carefully.
+
+**Emails and notifications**: Once sent, you cannot unsend. A wrong email reaches real customers. Guard sends with validation and confirmation.
+
+**External API calls with side effects**: Posting to social media, submitting forms, triggering third-party workflows. These happen outside your system.
+
+**Financial transactions**: Charges, refunds, and transfers may be technically reversible but have real costs, delays, and customer impact.
+
+**Data deletion**: Hard deletes are permanent. Prefer soft deletes (marking as deleted) until you are certain.
+
+**Webhook calls to external systems**: The external system may take action immediately upon receiving your call.
+
+**Human communications**: Slack messages, SMS alerts, phone calls trigger human responses you cannot recall.
+
+Design principle: Put irreversible actions last in your workflow. Validate everything before reaching them. If an earlier step fails, the irreversible action never happens.
+
 ## Connection to Earlier Modules
 
 Error handling implements concepts from Section 5.1 on data flow. The failure handling patterns (retries, dead letter queues, graceful degradation) introduced there are fully implemented here.
 
 Error handling also connects to the execution layer of Module 2''s 4-layer model. The execution layer must handle failures in actions. Good error handling makes the execution layer reliable.
 
-The I-T-O framework from Module 2 applies to error recovery itself: Input is the failed operation and error details. Task is the recovery strategy (retry, escalate, rollback). Output is either successful retry or escalation to human review.',
+The I-T-O framework from Module 2 applies to error recovery itself: Input is the failed operation and error details. Task is the recovery strategy (retry, escalate, rollback). Output is either successful retry or escalation to human review.
+
+## Operator Principles
+
+**Classify errors by type and severity.** Transient errors deserve retries. Permanent errors need human review. Severity determines response urgency.
+
+**Sequence irreversible operations last.** Emails, financial transactions, and external API calls cannot be undone. Validate everything before reaching them.
+
+**Design for human handoff.** When automation cannot recover, provide complete context so humans can act immediately.
+
+**Build recovery into the design, not as an afterthought.** Dead letter queues, checkpoints, and compensating transactions are core architecture, not optional add-ons.',
 
 exercise_markdown = '## Exercise: Build Robust Error Handling
 

@@ -37,6 +37,8 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 UPDATE sections
 SET content_markdown = '# Testing & Debugging Automation Workflows
 
+**This is how automations earn trust.**
+
 "It works on my machine" is not good enough. Automations that are not properly tested will fail in production, usually at the worst possible time. Proper testing gives you confidence and helps you sleep at night. This section connects to Section 5.4 on data validation by verifying your validation rules work correctly.
 
 ## Definitions
@@ -72,6 +74,20 @@ Bugs are discovered by users, which is embarrassing and damages trust. Data corr
 **With testing:**
 
 Bugs are caught before users see them. Deployments happen with confidence. Development is actually faster because issues are caught early. Expected behavior is documented through test cases. Debugging is easier when issues do occur because you have a baseline.
+
+## Testing is Documentation
+
+Your tests document how the automation is supposed to behave. This is valuable beyond finding bugs.
+
+**Tests show intent.** When someone asks "what should happen when a VIP submits an order over $500?", the test case provides the authoritative answer.
+
+**Tests survive personnel changes.** The person who built the automation may leave. Tests remain and explain the expected behavior to whoever inherits the system.
+
+**Tests catch assumptions.** Writing tests forces you to explicitly state what you expect. "Does an empty phone field pass validation?" Write a test. Now you know.
+
+**Tests enable safe changes.** When you need to modify an automation, tests tell you if you broke something. Without tests, changes are risky guesses.
+
+If your test suite is complete, a new team member can understand the automation by reading the tests. If they cannot, your tests are incomplete.
 
 ## Types of Testing
 
@@ -236,11 +252,61 @@ Performance issue requiring optimization.
 
 Analyze: Which steps take the longest? Are operations running sequentially when they could be parallel? Is there unnecessary data processing? Are you hitting rate limits and retrying repeatedly?
 
+## Debugging Patterns
+
+Experienced debuggers recognize patterns. Learn to spot these common signatures.
+
+### The "It Used to Work" Pattern
+
+Symptoms: Automation worked yesterday, fails today with no code changes.
+
+Look for: API changes or deprecations. Expired credentials or tokens. External service outages. Data format changes from upstream systems. Platform updates affecting behavior.
+
+### The "Works for Some Data" Pattern
+
+Symptoms: Same automation succeeds for some inputs, fails for others.
+
+Look for: Data-dependent conditions not handling all cases. Special characters or encoding issues. Null or empty values in optional fields. Length limits being exceeded. Type mismatches between expected and actual data.
+
+### The "Silent Failure" Pattern
+
+Symptoms: No errors, but expected outcomes do not occur.
+
+Look for: Conditions that evaluate unexpectedly and skip execution. Filters blocking items from processing. Triggers not firing due to configuration. Permissions issues preventing actions silently. Actions completing but with empty or default values.
+
+### The "Cascade Failure" Pattern
+
+Symptoms: Multiple unrelated things start failing at once.
+
+Look for: A shared dependency failing. Rate limits being hit across multiple automations. A data source feeding multiple workflows going bad. Authentication token expiration affecting multiple integrations.
+
+### The "Timing Issue" Pattern
+
+Symptoms: Failures that are inconsistent or time-dependent.
+
+Look for: Race conditions between parallel operations. Operations assuming data is ready before it is. Timezone issues around midnight or business hours. Rate limits that reset on schedules.
+
 ## Testing Checklist
 
 Before deploying any automation, verify:
 
 Happy path tested with at least 3 different scenarios. Edge cases tested including empty fields, special characters, and boundary values. Error scenarios tested including invalid data and API failures. All conditional branches tested with cases for each path. Integration points verified to work correctly. Performance is acceptable under expected load. Error handling verified to work correctly. Logging captures necessary information for debugging. Monitoring and alerts are configured. Rollback plan is documented. Test data has been cleaned up.
+
+## Minimum Viable Test Suite
+
+If you cannot test everything, test these items at minimum. This is the smallest test suite that provides meaningful confidence.
+
+**One happy path test.** The most common use case works end-to-end. If this fails, nothing works.
+
+**One validation failure test.** Invalid input is rejected correctly. If this fails, bad data enters your systems.
+
+**One integration failure test.** An external API failure is handled gracefully. If this fails, your automation crashes when dependencies have issues.
+
+**One edge case test.** At least one boundary condition is handled. If this fails, you have gaps in your logic.
+
+**One retry test.** Transient errors trigger retry logic. If this fails, temporary issues become permanent failures.
+
+These five tests take 30 minutes to create and run. They catch the most common and damaging issues. Add more tests as time allows, but never deploy without at least these five.
 
 ## Setting Up Test Environments
 
@@ -266,7 +332,17 @@ Techniques: Feature flags to enable new functionality for a subset of users firs
 
 Testing connects to Section 5.4 on data validation. Your tests should verify that the validation rules you designed actually work. Test with valid data (should pass), invalid data (should fail), and edge cases (should handle correctly).
 
-Testing also validates your I-T-O designs from Module 2. Each test case is itself an I-T-O operation: specific input, the operation being tested, and expected output. Well-structured tests mirror well-structured automation design.',
+Testing also validates your I-T-O designs from Module 2. Each test case is itself an I-T-O operation: specific input, the operation being tested, and expected output. Well-structured tests mirror well-structured automation design.
+
+## Operator Principles
+
+**Treat tests as documentation.** A complete test suite explains expected behavior to anyone who inherits the automation.
+
+**Build the minimum viable test suite first.** Five essential tests (happy path, validation failure, integration failure, edge case, retry) provide baseline confidence in 30 minutes.
+
+**Recognize debugging patterns.** Most failures fit recognizable patterns. Learn to identify them quickly to accelerate diagnosis.
+
+**Test before every change.** Run regression tests before and after modifications. Changes that break tests do not ship.',
 
 exercise_markdown = '## Exercise: Comprehensive Testing and Debugging
 

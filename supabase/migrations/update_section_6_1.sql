@@ -37,6 +37,8 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 UPDATE sections
 SET content_markdown = '# Triggers, Actions, and Conditions
 
+**This is how automations begin and move.**
+
 Every automation has three core components: what starts it (trigger), what it does (actions), and what decisions it makes (conditions). These map directly to Module 2''s 4-layer model: triggers are the trigger layer, conditions implement the logic layer, and actions form the execution layer.
 
 ## Definitions
@@ -105,17 +107,23 @@ Examples include checking an email inbox every 5 minutes, looking for new files 
 
 Trade-offs of polling: simpler to set up than webhooks but may miss time-sensitive events, uses more API calls, and introduces delay between event and detection.
 
-### Choosing the Right Trigger
+### Trigger Selection Guide
 
-For new customer signups, use event-based triggers for immediate response.
+Choose event-based for immediate response (new signups, payments). Choose scheduled for recurring tasks (daily reports, weekly summaries). Choose webhooks for real-time external integrations (payment notifications). Choose manual for on-demand tasks (report generation). Choose polling when webhooks are unavailable.
 
-For daily sales reports, use scheduled triggers to run at a consistent time.
+### Trigger Failure Modes
 
-For payment notifications, use webhook triggers for real-time updates.
+Triggers misfire. Understanding how helps you design resilient automations.
 
-For on-demand invoice generation, use manual triggers.
+**Duplicate triggers**: Forms submit twice when users click impatiently. Webhooks retry on timeout. Polling detects the same record twice. Design your actions to handle receiving the same trigger multiple times.
 
-For checking competitor prices, use polling triggers at appropriate intervals.
+**Late triggers**: Webhooks arrive delayed due to service backlogs. Scheduled triggers fire late due to platform load. Build in tolerance for timing variations.
+
+**Out-of-order triggers**: Events arrive in unexpected sequence. Update triggers arrive before create triggers due to network timing. Do not assume order unless you verify it.
+
+**Missing triggers**: Webhooks fail silently. Polling misses items between intervals. Have fallback detection or manual trigger options for critical flows.
+
+**Manual trigger inconsistency**: Different people trigger with different expectations. Document when and why to use manual triggers clearly.
 
 ## Understanding Actions
 
@@ -159,6 +167,12 @@ Problematic pattern: One action that creates the record AND sends the email AND 
 
 **Make actions idempotent.** Safe to run twice without creating problems.
 
+Idempotent actions are safe under retries. When your automation fails partway through and restarts, idempotent actions do not create chaos.
+
+Non-idempotent actions create duplicates and spam. "Create new record" runs twice, you have two records. "Send email" runs twice, the customer gets two emails.
+
+You want every automation to have a way to recognize it already processed something. Check for existing records before creating. Use unique identifiers to prevent duplicates. Update with "set to value" rather than "increment by value."
+
 Idempotent examples: "Update record where ID equals 123" and "Set status to processed." Running these multiple times produces the same result.
 
 Non-idempotent examples: "Create new record" and "Increment counter." Running these multiple times creates duplicates or inflates values.
@@ -172,6 +186,16 @@ Incorrect order: sending an email referencing a record ID before creating the re
 ## Understanding Conditions
 
 A condition is a decision point. It implements the logic layer from Module 2''s 4-layer model.
+
+### Conditions Are Not Validation
+
+Some readers confuse conditions with validation. They solve different problems.
+
+Validation asks "is this data acceptable?" Validation checks if an email format is correct, if a required field is present, if a number is within range. Validation decides whether data should enter the system at all.
+
+Conditions ask "what path does acceptable data take?" Conditions route valid data to different workflows. If the lead is enterprise tier, go to sales. If the order is over 500 dollars, require approval.
+
+Both matter. Validation happens early to reject bad data. Conditions happen after to route good data. Do not use conditions to catch data that should have been validated.
 
 ### Basic Condition Types
 
@@ -251,19 +275,17 @@ Output layer: Communication actions and the results of your automation form the 
 
 Understanding this connection helps you design automations systematically rather than ad-hoc.
 
-## Best Practices Summary
+## Operator Principles
 
-### Trigger Best Practices
+Design for duplicate triggers. Assume users will click twice, webhooks will retry, and polls will overlap.
 
-Choose the trigger type that matches your timing needs. Handle cases where triggers might fire multiple times. Test triggers with realistic data volumes. Document what triggers each automation.
+Make actions idempotent. If it runs twice, nothing breaks.
 
-### Action Best Practices
+Validate early, route later. Keep conditions for routing, not data quality.
 
-Keep actions focused with single responsibility. Design for idempotency when possible. Consider failure scenarios for each action. Log important actions for debugging.
+Every trigger type has failure modes. Know them before you ship.
 
-### Condition Best Practices
-
-Use clear, readable condition names. Always provide a default or else path. Handle null and empty values explicitly. Avoid deeply nested conditions and flatten when possible.',
+Document what triggers each automation. Your future self will thank you.',
 
 exercise_markdown = '## Exercise: Build Your First Complete Automation
 

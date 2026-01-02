@@ -37,6 +37,8 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 UPDATE sections
 SET content_markdown = '# Conditional Logic & Branching
 
+**This is how automations decide.**
+
 Automations need to make decisions. The quality of your decision logic determines how smart your automations are. Good logic equals smart automations. Bad logic equals bugs, confusion, and failed workflows. This section implements the logic layer from Module 2''s 4-layer model.
 
 ## Definitions
@@ -61,6 +63,8 @@ Automations need to make decisions. The quality of your decision logic determine
 
 **Lookup Table**: A data structure that replaces many conditions with a single data lookup, simplifying complex branching.
 
+**Priority Rule**: The explicit order in which conditions are checked when multiple could match.
+
 ## Boolean Logic Fundamentals
 
 All conditions ultimately evaluate to true or false. Understanding boolean logic is the foundation for all conditional automation.
@@ -71,12 +75,7 @@ Both conditions must be true for the overall expression to be true.
 
 Example: If amount is greater than 100 AND country equals "US", then apply the domestic bulk discount.
 
-The truth table for AND shows that both inputs must be true:
-
-When amount greater than 100 is true AND country equals US is true, the result is true.
-When amount greater than 100 is true AND country equals US is false, the result is false.
-When amount greater than 100 is false AND country equals US is true, the result is false.
-When amount greater than 100 is false AND country equals US is false, the result is false.
+AND truth table: Only true when both inputs are true. Any false input makes the result false.
 
 Use AND when all criteria must be met for an action to occur.
 
@@ -86,12 +85,7 @@ At least one condition must be true for the overall expression to be true.
 
 Example: If source equals "Website" OR source equals "Mobile App", then track as a digital lead.
 
-The truth table for OR shows that any true input produces true:
-
-When source equals Website is true OR source equals Mobile App is true, the result is true.
-When source equals Website is true OR source equals Mobile App is false, the result is true.
-When source equals Website is false OR source equals Mobile App is true, the result is true.
-When source equals Website is false OR source equals Mobile App is false, the result is false.
+OR truth table: True when any input is true. Only false when all inputs are false.
 
 Use OR when any of the criteria being met is sufficient.
 
@@ -114,6 +108,34 @@ If (A AND B) OR C evaluates as: true if both A and B are true, OR if C is true a
 If A AND (B OR C) evaluates as: true if A is true AND at least one of B or C is true.
 
 Practical example: If customer equals "VIP" AND (amount greater than 500 OR items greater than 10). This means VIP customers get the discount on either large orders or bulk quantities.
+
+## Priority Rules
+
+When multiple conditions can match, you need explicit priority order. If you do not define priority, your automation will define it accidentally.
+
+### Why Priority Matters
+
+Consider expense approval: A $600 expense is missing a receipt. It matches both "over $500, needs finance approval" AND "missing receipt, needs manual review." Which path does it take?
+
+Without explicit priority, you get unpredictable behavior. With explicit priority, you get consistent routing.
+
+### Common Priority Patterns
+
+**Override conditions first**: Compliance and security flags override everything else. Missing receipt overrides amount-based routing. Flagged vendor overrides normal approval flow.
+
+**Specificity first**: More specific conditions before general ones. VIP customer with billing issue goes to VIP support, not general billing queue.
+
+**Severity first**: Higher severity conditions before lower. Angry sentiment escalates to manager before routing by category.
+
+### Documenting Priority
+
+Always document your priority order. Example:
+
+Priority 1: Security flags (always escalate)
+Priority 2: Compliance issues (always escalate)
+Priority 3: VIP status (priority handling)
+Priority 4: Category-based routing
+Priority 5: Default path
 
 ## Branching Patterns
 
@@ -288,6 +310,46 @@ When VIP is false and amount is low (either discount): No discount.
 
 This systematic approach ensures you handle every combination.
 
+### When Truth Tables Are Required
+
+Truth tables are not optional for complex logic. Use them when:
+
+You have 3 or more variables influencing the outcome. Two variables can be reasoned through. Three or more creates exponential combinations that humans misjudge.
+
+The outcomes have high risk. Incorrect routing of sensitive data, money, or compliance items demands proof that all paths are covered.
+
+Multiple team members will maintain the logic. A truth table documents intent clearly for everyone.
+
+You find yourself saying "I think this covers everything." Thinking is not proof. A truth table is proof.
+
+## Readability Rules
+
+Logic that is correct but unreadable will eventually become incorrect. Future you (or your teammate) will misread it and introduce bugs.
+
+### Avoid Deep Nesting
+
+More than 2-3 levels of nesting becomes unreadable. Flatten with early exits or combined conditions.
+
+### Name Paths Clearly
+
+Instead of "Branch 1" and "Branch 2", use "VIP Priority Path" and "Standard Processing Path". Names document intent.
+
+### Always Include Default
+
+Every decision point needs an explicit default path. "Else: log unexpected value and alert" is better than silent failure.
+
+### Do Not Mix AND and OR Without Brackets
+
+Ambiguous: If A AND B OR C.
+Clear: If (A AND B) OR C.
+Also clear: If A AND (B OR C).
+
+The brackets make operator precedence explicit.
+
+### Handle Empty Values Early
+
+Check for null, empty, or missing data before applying business logic. Do not let empty strings reach your conditions.
+
 ## Connection to Module 2
 
 Conditional logic implements the logic layer from Module 2''s 4-layer model.
@@ -301,7 +363,17 @@ Transformation patterns implement "how should this change?" decisions.
 
 Every condition follows I-T-O: Input is the data being evaluated. Task is applying the condition rules. Output is the routing decision or transformed result.
 
-Design your logic layer by first identifying all the decisions that need to be made, then implementing each as a clear condition pattern.',
+Design your logic layer by first identifying all the decisions that need to be made, then implementing each as a clear condition pattern.
+
+## Operator Principles
+
+**Document your priority order.** When multiple conditions can match, explicit priority prevents unpredictable behavior.
+
+**Build truth tables for complex logic.** If you have 3 or more variables or high-risk outcomes, a truth table is required, not optional.
+
+**Make logic readable for future maintainers.** Avoid deep nesting, name paths clearly, use brackets to show precedence, and always include a default path.
+
+**Handle edge cases explicitly.** Null values, unexpected inputs, and boundary conditions will occur. Design for them.',
 
 exercise_markdown = '## Exercise: Master Conditional Logic
 

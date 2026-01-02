@@ -37,6 +37,8 @@ INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correc
 UPDATE sections
 SET content_markdown = '# Optimization & Performance
 
+**This is how automations scale.**
+
 A working automation is not necessarily a good automation. Good automations run fast, cost little, and scale smoothly. Optimization is about making your automations better without changing what they do. This section connects directly to Module 2''s I-T-O framework and Module 3''s capability tiers for AI right-sizing.
 
 ## Definitions
@@ -102,6 +104,36 @@ If you optimize Step 3 from 10 seconds to 2 seconds, the new total is 4 seconds.
 Know when to stop optimizing. Stop when the cost savings are less than the optimization effort cost. Stop when performance is already meeting requirements. Stop when further optimization would add significant complexity. Stop when reliability might suffer.
 
 An automation that runs in 3 seconds instead of 2 seconds is rarely worth another week of optimization work.
+
+## Optimization Order
+
+Optimize in this sequence for maximum impact with minimum wasted effort.
+
+**First: Make it work.** An automation that does not function correctly cannot be optimized. Fix bugs and handle errors before thinking about performance.
+
+**Second: Make it right.** Clean up the design. Ensure clarity and maintainability. An optimized mess is still a mess.
+
+**Third: Make it fast.** Only now optimize for speed. You understand what the automation does and can measure accurately.
+
+**Fourth: Make it cheap.** With a working, well-designed, fast automation, reduce costs. Right-size AI tiers, consolidate API calls, eliminate waste.
+
+**Fifth: Make it scale.** Prepare for growth. Add caching, batching, and parallel execution for volume that does not exist yet only when you have evidence it will.
+
+Skipping steps costs more time overall. Optimizing broken code means re-optimizing after fixing. Optimizing messy code means fighting the design while tuning.
+
+## Cost as a Metric
+
+Cost is a performance metric. Treat it with the same rigor as speed.
+
+**Measure cost per operation.** Know exactly what each automation run costs. Platform fees, API calls, AI tokens, storage, compute. Sum them.
+
+**Set cost budgets.** Just like you have latency targets, set cost targets. "This automation should cost less than $0.05 per run."
+
+**Alert on cost anomalies.** A sudden 10x cost increase is a bug. Detect it like you would detect an error spike.
+
+**Include cost in optimization decisions.** A 2x speed improvement that costs 5x more is rarely worth it. A 50% cost reduction that adds 1 second latency might be.
+
+**Track cost trends.** Monthly cost for each automation. Cost per thousand operations. Cost as percentage of value generated.
 
 ## What to Measure
 
@@ -225,6 +257,20 @@ Over-provisioned: Paying for unused capacity.
 
 Right-sized: Enough capacity for peak load plus a reasonable buffer.
 
+## Hidden Loops
+
+Some of the worst performance problems come from loops you did not know you had.
+
+**Nested API calls.** For each customer, fetch their orders. For each order, fetch its items. For each item, fetch its details. What looks like 3 API calls is actually customers times orders times items. 100 customers with 10 orders each with 5 items equals 5000 API calls.
+
+**Recursive triggers.** Automation A updates a record. That update triggers Automation B. Automation B updates a record. That update triggers Automation A. Infinite loop until rate limits stop it.
+
+**Retry amplification.** A failing step retries 3 times. That step is called 10 times per run. 30 retries per run. With 100 runs per hour during an outage: 3000 failed retry attempts.
+
+**Lookup multiplication.** Each record does a lookup. With 1000 records, that is 1000 lookups. Often the same lookup repeated. Cache eliminates this.
+
+**Finding hidden loops:** Look for "for each" patterns with API calls inside. Check if any automation output can trigger itself or another automation that triggers it. Count actual API calls during a sample run, not the expected number. Multiply: if step X happens Y times, the time for step X is actually X times Y.
+
 ## Connection to Module 2 and Module 3
 
 This section connects optimization to earlier module concepts.
@@ -267,7 +313,33 @@ Before optimizing, ensure you have measured current performance, identified bott
 
 Optimization techniques to consider include parallelizing independent operations, batching similar operations, caching repeated lookups, reducing API calls, using cheaper AI models where appropriate, shortening prompts, filtering data early, scheduling non-urgent work, using webhooks over polling, and eliminating redundant operations.
 
-After optimizing, ensure you have measured improvement, verified no functionality is broken, updated documentation, and set up ongoing monitoring.',
+After optimizing, ensure you have measured improvement, verified no functionality is broken, updated documentation, and set up ongoing monitoring.
+
+## Module 6 Recap
+
+This module covered the operational fundamentals of automation: building, running, and maintaining production systems.
+
+**Section 6.1: Triggers & Workflow Initiation.** This is how automations begin and move. Trigger types, idempotency, execution flow, and conditions. Automation flows where you intend, when you intend.
+
+**Section 6.2: Conditional Logic & Branching.** This is how automations decide. Boolean logic, priority rules, truth tables, and readability. Decisions are explicit, documented, and correct.
+
+**Section 6.3: Error Handling & Graceful Failures.** This is how automations survive failure. Error types, recovery strategies, severity levels, and human handoff. Failures are contained and recoverable.
+
+**Section 6.4: Testing & Debugging.** This is how automations earn trust. Test types, debugging patterns, minimum viable test suites. Quality is verified before deployment.
+
+**Section 6.5: Optimization & Performance.** This is how automations scale. Measurement, bottleneck analysis, optimization strategies, and cost tracking. Performance is managed as a feature.
+
+The production mindset: Every automation you build will eventually face unexpected data, failing dependencies, and scale beyond your initial design. Module 6 prepares you to handle these realities.
+
+## Operator Principles
+
+**Follow the optimization order.** Make it work, make it right, make it fast, make it cheap, make it scale. In that sequence.
+
+**Treat cost as a performance metric.** Measure, budget, alert, and optimize cost with the same rigor as speed and reliability.
+
+**Find and eliminate hidden loops.** Nested API calls, recursive triggers, and lookup multiplication are the most common sources of unexpected cost and latency.
+
+**Measure before and after.** Optimization without measurement is guessing. Quantify improvements to prove they worked.',
 
 exercise_markdown = '## Exercise: Optimize an Automation
 
