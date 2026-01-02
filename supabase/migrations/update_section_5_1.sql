@@ -3,7 +3,11 @@
 -- Modernized with extensive content, 8 quiz questions, and exercise_schema
 -- ============================================================================
 
--- First, add 4 more quiz questions to reach 8 total
+-- First, remove any existing questions 5-8 to allow clean re-runs, then add 4 more to reach 8 total
+DELETE FROM quiz_questions
+WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Data Flow Quiz')
+AND order_index IN (5, 6, 7, 8);
+
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
 ((SELECT id FROM quizzes WHERE title = 'Data Flow Quiz'), 5,
 'How does the I-T-O framework from Module 2 relate to data flow design?',
@@ -75,7 +79,7 @@ Manual entry where humans type directly into systems. Manual entry is error-pron
 
 File uploads including CSVs, PDFs, images, and documents. Files require parsing and format handling.
 
-Integrations where tools like Zapier or Make connect systems. Integrations move data automatically based on triggers.
+Integrations where automation platforms like n8n, Make, or Zapier connect systems. Integrations move data automatically based on triggers.
 
 Sensors and IoT devices that collect data automatically. Sensor data tends to be high-volume and requires aggregation.
 
@@ -362,9 +366,15 @@ Logs are essential for debugging, compliance, and understanding system behavior.
 
 ### Practice 6: Handle Failures Gracefully
 
-When something breaks, do not lose data. Retry failed operations. Queue for manual review. Alert humans. Keep failed data for debugging.
+When something breaks, do not lose data. Design for the assumption that things will fail. Because they will.
 
-Design for the assumption that things will fail. Because they will.
+**Use queues for reliability.** Instead of processing data directly, place it in a queue first. The queue guarantees delivery even if the processor is temporarily down. Failed items can be retried automatically. This pattern is essential for production systems.
+
+**Retry with backoff.** When an operation fails, wait before retrying. Increase the wait time with each retry (exponential backoff). This prevents overwhelming a struggling service.
+
+**Dead letter queues.** After maximum retries, move failed items to a separate queue for human review rather than losing them.
+
+**Alert on patterns.** Individual failures happen. Alert when failure rate exceeds threshold, indicating a systemic problem.
 
 ## Designing Your First Data Flow
 

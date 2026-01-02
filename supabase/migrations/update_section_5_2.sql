@@ -3,7 +3,11 @@
 -- Modernized with extensive content, 8 quiz questions, and exercise_schema
 -- ============================================================================
 
--- First, add 4 more quiz questions to reach 8 total
+-- First, remove any existing questions 5-8 to allow clean re-runs, then add 4 more to reach 8 total
+DELETE FROM quiz_questions
+WHERE quiz_id = (SELECT id FROM quizzes WHERE title = 'Data Structures Quiz')
+AND order_index IN (5, 6, 7, 8);
+
 INSERT INTO quiz_questions (quiz_id, order_index, question_text, options, correct_option_index, explanation) VALUES
 ((SELECT id FROM quizzes WHERE title = 'Data Structures Quiz'), 5,
 'How does the execution layer of the 4-layer model from Module 2 influence storage tool selection?',
@@ -405,7 +409,7 @@ What would change your recommendation: _______
 
 **Scenario B: Startup Customer Database**
 
-Requirements: Track 2,000+ customers. Store contact info, subscription tier, usage metrics, support tickets. Five team members need access (sales, support, product). Zapier integrations for email automation. Need reports on churn and usage patterns.
+Requirements: Track 2,000+ customers. Store contact info, subscription tier, usage metrics, support tickets. Five team members need access (sales, support, product). Automation platform integrations (n8n, Make, or Zapier) for email automation. Need reports on churn and usage patterns.
 
 Recommended tool: _______
 
@@ -463,7 +467,7 @@ Sheet 3 - Usage Metrics:
 Limitations you would face:
 - What breaks at 5,000 customers: _______
 - How do you handle concurrent editing: _______
-- How do Zapier integrations work: _______
+- How do automation platform integrations work: _______
 
 **Design B: In Airtable**
 
