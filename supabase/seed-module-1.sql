@@ -1861,7 +1861,7 @@ SELECT id, 'Introduction To Business Systems Architecture', 'https://www.youtube
 FROM sections WHERE slug = 'four-layer-system-model';
 
 INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
-SELECT id, 'How No-Code Tools Work Together', 'https://www.youtube.com/watch?v=XBmLKAkhCaY', 'video', 2
+SELECT id, 'How No-Code Tools Work Together', 'https://www.youtube.com/watch?v=JSA2oezQWOU', 'video', 2
 FROM sections WHERE slug = 'four-layer-system-model';
 
 -- ============================================================================
@@ -2581,7 +2581,7 @@ SELECT id, 'Process Design Fundamentals', 'https://www.youtube.com/watch?v=qB8sp
 FROM sections WHERE slug = 'inputs-transformations-outputs';
 
 INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
-SELECT id, 'Workflow Automation Best Practices', 'https://www.youtube.com/watch?v=d6lP43WAbEc', 'video', 2
+SELECT id, 'Workflow Automation Best Practices', 'https://www.youtube.com/watch?v=JtdUgJGI_Oo', 'video', 2
 FROM sections WHERE slug = 'inputs-transformations-outputs';
 
 -- ============================================================================
@@ -3445,7 +3445,7 @@ SELECT id, 'The Art of Starting Simple', 'https://www.youtube.com/watch?v=t4cIdO
 FROM sections WHERE slug = 'manual-first-simple-first';
 
 INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
-SELECT id, 'MVP Thinking for Automation', 'https://www.youtube.com/watch?v=j8PxqgliIno', 'video', 2
+SELECT id, 'MVP Thinking for Automation', 'https://www.youtube.com/watch?v=QRZ_l7cVzzU', 'video', 2
 FROM sections WHERE slug = 'manual-first-simple-first';
 
 -- ============================================================================
@@ -4571,9 +4571,9 @@ WHERE m.slug = 'operator-foundations';
 
 -- External resources for Section 1.5
 INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
-SELECT id, 'How to Write Documentation That Actually Helps', 'https://www.youtube.com/watch?v=t4vKPhjcMZg', 'video', 1
+SELECT id, 'How to Write Documentation That Actually Helps', 'https://www.youtube.com/watch?v=R6zeIBvs4Ls', 'video', 1
 FROM sections WHERE slug = 'documentation-communication';
 
 INSERT INTO external_resources (section_id, title, url, resource_type, order_index)
-SELECT id, 'Technical Communication for Non-Technical Audiences', 'https://www.youtube.com/watch?v=YScv19MqWAQ', 'video', 2
+SELECT id, 'Technical Communication for Non-Technical Audiences', 'https://www.youtube.com/watch?v=8Nn5uqE3C9w', 'video', 2
 FROM sections WHERE slug = 'documentation-communication';

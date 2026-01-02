@@ -393,7 +393,7 @@ UNION ALL
 SELECT
   id,
   'Zero-Shot vs Few-Shot Explained',
-  'https://www.youtube.com/watch?v=JJp5DPyTWsQ',
+  'https://www.youtube.com/watch?v=wjZofJX0v4M',
   'video',
   2
 FROM sections WHERE slug = 'zero-shot-few-shot';
@@ -852,7 +852,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Getting JSON from LLMs Reliably',
-  'https://www.youtube.com/watch?v=f5EvLjVrLaU',
+  'https://www.youtube.com/watch?v=KerHlb8nuVc',
   'video',
   1
 FROM sections WHERE slug = 'structured-output';
@@ -1331,7 +1331,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Building LLM Pipelines',
-  'https://www.youtube.com/watch?v=A8e2M9oRpN0',
+  'https://www.youtube.com/watch?v=TLf90ipMzfE',
   'video',
   1
 FROM sections WHERE slug = 'prompt-chaining';
@@ -1757,7 +1757,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Self-Refine: Iterative Refinement with Self-Feedback',
-  'https://www.youtube.com/watch?v=6Zp9EvnmDWY',
+  'https://www.youtube.com/watch?v=5SgJKZLBrmg',
   'video',
   1
 FROM sections WHERE slug = 'self-critique';
@@ -2245,7 +2245,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Prompt Injection and LLM Security',
-  'https://www.youtube.com/watch?v=Gzj81lVPdUQ',
+  'https://www.youtube.com/watch?v=Pp5vW-xT8XE',
   'video',
   1
 FROM sections WHERE slug = 'edge-cases'
@@ -2253,7 +2253,7 @@ UNION ALL
 SELECT
   id,
   'Building Reliable LLM Applications',
-  'https://www.youtube.com/watch?v=dC0QN7w8CQQ',
+  'https://www.youtube.com/watch?v=bZQun8Y4L2A',
   'video',
   2
 FROM sections WHERE slug = 'edge-cases';

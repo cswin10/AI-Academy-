@@ -476,7 +476,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Zapier Automation Basics',
-  'https://www.youtube.com/watch?v=lNQoRFfuZKo',
+  'https://www.youtube.com/watch?v=dC5oGlCBNdw',
   'video',
   1
 FROM sections WHERE slug = 'triggers-actions-conditions'
@@ -484,7 +484,7 @@ UNION ALL
 SELECT
   id,
   'Understanding Triggers and Actions',
-  'https://www.youtube.com/watch?v=S8j0CyJhY8Y',
+  'https://www.youtube.com/watch?v=Kvg7KIoVe40',
   'video',
   2
 FROM sections WHERE slug = 'triggers-actions-conditions';
@@ -1049,7 +1049,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Conditional Logic in Automation',
-  'https://www.youtube.com/watch?v=YqhNhO7sJ-g',
+  'https://www.youtube.com/watch?v=rn3v3ogz9WM',
   'video',
   1
 FROM sections WHERE slug = 'conditional-logic-branching';
@@ -1608,7 +1608,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Error Handling Best Practices',
-  'https://www.youtube.com/watch?v=X8XnAiZqe5w',
+  'https://www.youtube.com/watch?v=ONgECvZNI3o',
   'video',
   1
 FROM sections WHERE slug = 'error-handling'
@@ -1616,7 +1616,7 @@ UNION ALL
 SELECT
   id,
   'Building Resilient Automations',
-  'https://www.youtube.com/watch?v=LDBctyb6Akg',
+  'https://www.youtube.com/watch?v=kCc8FmEb1nY',
   'video',
   2
 FROM sections WHERE slug = 'error-handling';
@@ -2259,7 +2259,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Testing Automation Workflows',
-  'https://www.youtube.com/watch?v=2M8g9jkWR9Q',
+  'https://www.youtube.com/watch?v=u6QfIXgjwGQ',
   'video',
   1
 FROM sections WHERE slug = 'testing-debugging'
@@ -2267,7 +2267,7 @@ UNION ALL
 SELECT
   id,
   'Debugging Zapier Automations',
-  'https://www.youtube.com/watch?v=Cj4fXzVvzwI',
+  'https://www.youtube.com/watch?v=Bz_VGqDMHH0',
   'video',
   2
 FROM sections WHERE slug = 'testing-debugging';
@@ -2911,7 +2911,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Optimizing Automation Workflows',
-  'https://www.youtube.com/watch?v=5rLKTp0GGxA',
+  'https://www.youtube.com/watch?v=IhmHEXQgfH4',
   'video',
   1
 FROM sections WHERE slug = 'optimization-performance'
@@ -2919,7 +2919,7 @@ UNION ALL
 SELECT
   id,
   'Performance Best Practices for Automation',
-  'https://www.youtube.com/watch?v=aP-c3WBYfPE',
+  'https://www.youtube.com/watch?v=Mus_vwhTCq0',
   'video',
   2
 FROM sections WHERE slug = 'optimization-performance';

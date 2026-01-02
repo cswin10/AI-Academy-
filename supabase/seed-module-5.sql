@@ -629,7 +629,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Understanding Data Flow in Systems',
-  'https://www.youtube.com/watch?v=L9y8fKVfghA',
+  'https://www.youtube.com/watch?v=OkqLnAfqD30',
   'video',
   1
 FROM sections WHERE slug = 'data-flow';
@@ -1034,7 +1034,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Database vs Spreadsheet - When to Use Each',
-  'https://www.youtube.com/watch?v=7xp7CG8j6D8',
+  'https://www.youtube.com/watch?v=F8sSc6uer0w',
   'video',
   1
 FROM sections WHERE slug = 'databases-spreadsheets-documents'
@@ -1042,7 +1042,7 @@ UNION ALL
 SELECT
   id,
   'Airtable Tutorial for Beginners',
-  'https://www.youtube.com/watch?v=oDwxLCZpRKM',
+  'https://www.youtube.com/watch?v=8Mm4N0kXnZ8',
   'video',
   2
 FROM sections WHERE slug = 'databases-spreadsheets-documents';
@@ -1251,7 +1251,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Database Schema Design Tutorial',
-  'https://www.youtube.com/watch?v=3BZz8R7mqu0',
+  'https://www.youtube.com/watch?v=ztHopE5Wnpc',
   'video',
   1
 FROM sections WHERE slug = 'schema-design';
@@ -1417,7 +1417,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Data Validation Best Practices',
-  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  'https://www.youtube.com/watch?v=WNOGqJxrS6c',
   'video',
   1
 FROM sections WHERE slug = 'data-validation-quality';
@@ -1607,7 +1607,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'GDPR Explained Simply',
-  'https://www.youtube.com/watch?v=Arj7KX63Yzg',
+  'https://www.youtube.com/watch?v=j6wwBqfSk-o',
   'video',
   1
 FROM sections WHERE slug = 'privacy-security-compliance'
@@ -1615,7 +1615,7 @@ UNION ALL
 SELECT
   id,
   'Data Security Best Practices',
-  'https://www.youtube.com/watch?v=inWWhr5tnEA',
+  'https://www.youtube.com/watch?v=hXSFdwIOfnE',
   'video',
   2
 FROM sections WHERE slug = 'privacy-security-compliance';

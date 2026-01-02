@@ -327,7 +327,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Prompt Engineering Tutorial – Beginner''s Guide to LLMs',
-  'https://www.youtube.com/watch?v=_IrBzNSoUC4',
+  'https://www.youtube.com/watch?v=_ZvnD96BXbY',
   'video',
   1
 FROM sections WHERE slug = 'what-llms-are'
@@ -823,7 +823,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Advanced Prompt Engineering Techniques',
-  'https://www.youtube.com/watch?v=T9aRN5JkmL8',
+  'https://www.youtube.com/watch?v=hhHdMQ48HVo',
   'video',
   1
 FROM sections WHERE slug = 'chain-of-thought'
@@ -831,7 +831,7 @@ UNION ALL
 SELECT
   id,
   'Chain of Thought Prompting Explained',
-  'https://www.youtube.com/watch?v=H4YWNSOhu7Q',
+  'https://www.youtube.com/watch?v=yVP88nZrHZ0',
   'video',
   2
 FROM sections WHERE slug = 'chain-of-thought';
@@ -1163,7 +1163,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'System Prompts and Custom Instructions',
-  'https://www.youtube.com/watch?v=aQMiqkJfkeI',
+  'https://www.youtube.com/watch?v=jC4v5AS4RIM',
   'video',
   1
 FROM sections WHERE slug = 'system-prompts';
@@ -1510,7 +1510,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Understanding LLM Pricing and Tokens',
-  'https://www.youtube.com/watch?v=SCrHvpnvQew',
+  'https://www.youtube.com/watch?v=BnX7OdYqHXw',
   'video',
   1
 FROM sections WHERE slug = 'model-selection';
@@ -1935,7 +1935,7 @@ INSERT INTO external_resources (section_id, title, url, resource_type, order_ind
 SELECT
   id,
   'Understanding LLM Context Windows',
-  'https://www.youtube.com/watch?v=e58qDlo8xX0',
+  'https://www.youtube.com/watch?v=p4qCWxvy6Pc',
   'video',
   1
 FROM sections WHERE slug = 'context-windows';
