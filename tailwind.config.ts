@@ -10,57 +10,57 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#FFFDF9',
+        background: '#FAFAFA',
         card: {
           DEFAULT: '#FFFFFF',
-          hover: '#FFF9F0',
+          hover: '#FAFAFA',
         },
         primary: {
-          DEFAULT: '#E11D48',
-          hover: '#BE123C',
+          DEFAULT: '#DB2777',
+          hover: '#BE185D',
           light: '#FDF2F8',
           foreground: '#ffffff',
         },
         secondary: {
-          DEFAULT: '#F59E0B',
-          hover: '#D97706',
+          DEFAULT: '#D97706',
+          hover: '#B45309',
           light: '#FFFBEB',
           foreground: '#ffffff',
         },
         success: '#059669',
-        warning: '#F59E0B',
+        warning: '#D97706',
         danger: '#DC2626',
         text: {
-          primary: '#1F2937',
+          primary: '#374151',
           secondary: '#6B7280',
           muted: '#9CA3AF',
         },
         border: {
-          DEFAULT: '#F3E8E0',
-          hover: '#E5D5C5',
+          DEFAULT: '#E5E7EB',
+          hover: '#D1D5DB',
         },
         muted: {
-          DEFAULT: '#F9F5F1',
+          DEFAULT: '#F3F4F6',
           foreground: '#6B7280',
         },
         accent: {
-          DEFAULT: '#E11D48',
+          DEFAULT: '#DB2777',
           foreground: '#ffffff',
         },
         destructive: {
           DEFAULT: '#DC2626',
           foreground: '#ffffff',
         },
-        ring: '#E11D48',
-        input: '#F9F5F1',
-        foreground: '#1F2937',
+        ring: '#DB2777',
+        input: '#F3F4F6',
+        foreground: '#374151',
         popover: {
           DEFAULT: '#FFFFFF',
-          foreground: '#1F2937',
+          foreground: '#374151',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       borderRadius: {
