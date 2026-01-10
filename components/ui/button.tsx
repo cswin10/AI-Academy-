@@ -8,14 +8,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] btn-shine',
-        destructive: 'bg-gradient-to-r from-destructive to-destructive/90 text-destructive-foreground hover:shadow-lg hover:shadow-destructive/25 hover:scale-[1.02] active:scale-[0.98]',
-        outline: 'border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10',
-        secondary: 'bg-gradient-to-r from-secondary to-secondary/90 text-secondary-foreground hover:shadow-lg hover:shadow-secondary/25 hover:scale-[1.02] active:scale-[0.98]',
-        ghost: 'hover:bg-white/10 hover:text-foreground hover:backdrop-blur-sm',
-        link: 'text-primary underline-offset-4 hover:underline hover:text-primary/80',
-        success: 'bg-gradient-to-r from-success to-success/90 text-white hover:shadow-lg hover:shadow-success/25 hover:scale-[1.02] active:scale-[0.98]',
-        glow: 'bg-gradient-to-r from-primary via-purple-500 to-secondary text-white hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] btn-shine',
+        default: 'bg-gradient-to-r from-rose-500 to-pink-500 text-white hover:from-rose-600 hover:to-pink-600 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-[1.02] active:scale-[0.98] btn-shine',
+        destructive: 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:shadow-lg hover:shadow-red-500/25 hover:scale-[1.02] active:scale-[0.98]',
+        outline: 'border-2 border-gray-200 bg-white hover:bg-gray-50 hover:border-rose-200 text-gray-700 hover:text-gray-900',
+        secondary: 'bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 hover:shadow-lg hover:shadow-amber-500/25 hover:scale-[1.02] active:scale-[0.98]',
+        ghost: 'hover:bg-gray-100 text-gray-700 hover:text-gray-900',
+        link: 'text-rose-500 underline-offset-4 hover:underline hover:text-rose-600',
+        success: 'bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 hover:scale-[1.02] active:scale-[0.98]',
+        glow: 'bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-white hover:shadow-xl hover:shadow-rose-500/30 hover:scale-[1.02] active:scale-[0.98] btn-shine',
       },
       size: {
         default: 'h-10 px-4 py-2',
