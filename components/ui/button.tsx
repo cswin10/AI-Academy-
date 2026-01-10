@@ -4,18 +4,18 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils/cn'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden',
   {
     variants: {
       variant: {
-        default: 'bg-gradient-to-r from-rose-500 to-pink-500 text-white hover:from-rose-600 hover:to-pink-600 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-[1.02] active:scale-[0.98] btn-shine',
-        destructive: 'bg-gradient-to-r from-red-500 to-red-600 text-white hover:shadow-lg hover:shadow-red-500/25 hover:scale-[1.02] active:scale-[0.98]',
-        outline: 'border-2 border-gray-200 bg-white hover:bg-gray-50 hover:border-rose-200 text-gray-700 hover:text-gray-900',
-        secondary: 'bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 hover:shadow-lg hover:shadow-amber-500/25 hover:scale-[1.02] active:scale-[0.98]',
-        ghost: 'hover:bg-gray-100 text-gray-700 hover:text-gray-900',
-        link: 'text-rose-500 underline-offset-4 hover:underline hover:text-rose-600',
-        success: 'bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 hover:scale-[1.02] active:scale-[0.98]',
-        glow: 'bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-white hover:shadow-xl hover:shadow-rose-500/30 hover:scale-[1.02] active:scale-[0.98] btn-shine',
+        default: 'bg-pink-600 text-white hover:bg-pink-700 hover:shadow-md active:scale-[0.98]',
+        destructive: 'bg-red-600 text-white hover:bg-red-700 hover:shadow-md active:scale-[0.98]',
+        outline: 'border border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 text-gray-700',
+        secondary: 'bg-amber-600 text-white hover:bg-amber-700 hover:shadow-md active:scale-[0.98]',
+        ghost: 'hover:bg-gray-100 text-gray-600 hover:text-gray-900',
+        link: 'text-pink-600 underline-offset-4 hover:underline hover:text-pink-700',
+        success: 'bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-md active:scale-[0.98]',
+        glow: 'bg-gradient-to-r from-pink-600 to-amber-600 text-white hover:from-pink-700 hover:to-amber-700 hover:shadow-lg hover:shadow-pink-500/20 active:scale-[0.98]',
       },
       size: {
         default: 'h-10 px-4 py-2',
